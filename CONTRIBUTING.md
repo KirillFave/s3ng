@@ -15,7 +15,7 @@
 
   _Пример:_
 
-      task-15-feat-example-service
+      feat-example-service
 	   
 ## 2. Формат пулл реквестов
 
