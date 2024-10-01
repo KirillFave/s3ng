@@ -1,0 +1,21 @@
+services:
+
+     webhost:
+       environment:
+         "DOTNET_ENVIRONMENT": "Development"
+       build:
+         context: ./WebHost
+         dockerfile: Dockerfile
+       ports:
+         - "8080:8080"
+       depends_on:
+         - authentication
+
+     authentication:
+       environment:
+         "DOTNET_ENVIRONMENT": "Development"
+       build:
+         context: ./Authentication
+         dockerfile: Dockerfile
+       ports:
+         - "50051:50051"
