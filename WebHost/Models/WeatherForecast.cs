@@ -1,4 +1,4 @@
-namespace WebHost.Models
+namespace s3ng.WebHost.Models
 {
     public class WeatherForecast
     {

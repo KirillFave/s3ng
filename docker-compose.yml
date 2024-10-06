@@ -1,5 +1,28 @@
 services:
 
+     iam_postgres:
+       image: postgres
+       hostname: iam_postgres
+       restart: always
+       environment:
+        POSTGRES_DB: iam
+        POSTGRES_USER: pgad
+        POSTGRES_PASSWORD: pwd!123
+       volumes:
+         - pg-data:/var/lib/postgresql/data
+       ports:
+         - "5432:5432"
+
+     iam:
+       environment:
+         "DOTNET_ENVIRONMENT": "Development"
+         "ConnectionString": "Host=localhost;Port=5432;Database=iam;UserId=pgad;Password=pwd!123"
+       build:
+         context: ./IAM
+         dockerfile: Dockerfile
+       ports:
+         - "50051:50051"
+
      webhost:
        environment:
          "DOTNET_ENVIRONMENT": "Development"
@@ -9,13 +32,10 @@ services:
        ports:
          - "8080:8080"
        depends_on:
-         - authentication
+         - iam
 
-     authentication:
-       environment:
-         "DOTNET_ENVIRONMENT": "Development"
-       build:
-         context: ./Authentication
-         dockerfile: Dockerfile
-       ports:
-         - "50051:50051"
+
+volumes:
+  pg-data:
+  pg-admin:
+    driver: local

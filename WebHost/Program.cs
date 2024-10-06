@@ -1,4 +1,6 @@
-namespace WebHost
+using s3ng.Contracts.IAM;
+
+namespace s3ng.WebHost
 {
     public class Program
     {
@@ -7,7 +9,10 @@ namespace WebHost
             var builder = WebApplication.CreateBuilder(args);
 
             // Add services to the container.
-
+            builder.Services.AddGrpcClient<Registration.RegistrationClient>(x =>
+            {
+                x.Address = new Uri("https://localhost:50051");
+            });
             builder.Services.AddControllers();
             // Learn more about configuring Swagger/OpenAPI at https://aka.ms/aspnetcore/swashbuckle
             builder.Services.AddEndpointsApiExplorer();

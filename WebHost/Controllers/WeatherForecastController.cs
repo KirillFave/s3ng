@@ -1,7 +1,7 @@
 using Microsoft.AspNetCore.Mvc;
-using WebHost.Models;
+using s3ng.WebHost.Models;
 
-namespace WebHost.Controllers
+namespace s3ng.WebHost.Controllers
 {
     [ApiController]
     [Route("[controller]")]
