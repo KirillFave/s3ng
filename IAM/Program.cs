@@ -14,12 +14,13 @@ namespace s3ng.IAM
 
             builder.Services.AddGrpc();
             builder.Services.AddTransient<IHashCalculator, SHAHashCalculator>();
-            var connectionString = Environment.GetEnvironmentVariable("ConnectionString");
+            var connectionString = "Server=localhost;Port=5432;Database=iam;User Id=pgad;Password=pwd!123;";
+                //Environment.GetEnvironmentVariable("ConnectionString"); ef migration dont work. host is null????
             builder.Services.AddDbContext<DatabaseContext>(
                 optionsBuilder => optionsBuilder.UseNpgsql(connectionString));
 
             var app = builder.Build();
-
+            
             app.MapGrpcService<RegistrationService>();
             app.MapGet("/", () => "Communication with gRPC endpoints must be made through a gRPC client. To learn how to create a client, visit: https://go.microsoft.com/fwlink/?linkid=2086909");
 
