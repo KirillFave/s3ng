@@ -13,6 +13,9 @@ namespace WebHost
             builder.Services.AddEndpointsApiExplorer();
             builder.Services.AddSwaggerGen();
 
+            builder.Services.AddGrpc();
+            builder.Services.AddGrpcReflection();
+
             var app = builder.Build();
 
             // Configure the HTTP request pipeline.
