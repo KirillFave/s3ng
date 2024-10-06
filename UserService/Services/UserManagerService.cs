@@ -1,32 +1,26 @@
 using Grpc.Core;
 
-namespace UserService.Services
+namespace UserService.Services;
+
+public class UserManagerService : UserManager.UserManagerBase
 {
-    public class UserManagerService : UserManager.UserManagerBase
+    public override async Task<CreateUserResponse> CreateUser(CreateUserRequest request, ServerCallContext context)
     {
-        public UserManagerService()
-        {
+        return await base.CreateUser(request, context);
+    }
 
-        }
+    public override async Task<GetUserResponse> GetUser(GetUserRequest request, ServerCallContext context)
+    {
+        return await base.GetUser(request, context);
+    }
 
-        public override async Task<UserResponse> CreateUser(CreateUserRequest request, ServerCallContext context)
-        {
-            return await base.CreateUser(request, context);
-        }
+    public override async Task<UpdateUserResponse> UpdateUser(UpdateUserRequest request, ServerCallContext context)
+    {
+        return await base.UpdateUser(request, context);
+    }
 
-        public override async Task<UserResponse> GetUserById(GetUserByIdRequest request, ServerCallContext context)
-        {
-            return await base.GetUserById(request, context);
-        }
-
-        public override async Task<UserResponse> UpdateUser(UpdateUserRequest request, ServerCallContext context)
-        {
-            return await base.UpdateUser(request, context);
-        }
-
-        public override async Task<DeleteUserResponse> DeleteUser(DeleteUserRequest request, ServerCallContext context)
-        {
-            return await base.DeleteUser(request, context);
-        }
+    public override async Task<DeleteUserResponse> DeleteUser(DeleteUserRequest request, ServerCallContext context)
+    {
+        return await base.DeleteUser(request, context);
     }
 }
