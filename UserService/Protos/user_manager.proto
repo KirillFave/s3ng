@@ -20,7 +20,10 @@ service UserManager {
 }
 
 message GetUserRequest {
-  string id = 1;
+  oneof user_identifier {
+    string id = 1;
+    string login = 2;
+  }
 }
 
 message GetUserResponse {
@@ -102,7 +105,9 @@ message UserInfo {
   Role role = 8;
 }
 
-message Role {
-  string role_name = 1;
-  repeated string permissions = 2;
+enum Role {
+  USER_ROLE_UNSPECIFIED = 0;
+  USER_ROLE_BUYER = 1;
+  USER_ROLE_SELLER = 2;
+  USER_ROLE_MODERATOR = 3;
 }

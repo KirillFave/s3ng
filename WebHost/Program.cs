@@ -1,3 +1,6 @@
+using Microsoft.AspNetCore.Server.Kestrel.Core;
+using WebHost.UserServiceClient;
+
 namespace WebHost
 {
     public class Program
@@ -14,7 +17,14 @@ namespace WebHost
             builder.Services.AddSwaggerGen();
 
             builder.Services.AddGrpc();
-            builder.Services.AddGrpcReflection();
+
+            var configuration = builder.Configuration;
+            builder.Services.AddUserServiceClient(configuration);
+
+            builder.WebHost.ConfigureKestrel(o =>
+            {
+                o.ListenAnyIP(8080, listenOptions => listenOptions.Protocols = HttpProtocols.Http1AndHttp2AndHttp3);
+            });
 
             var app = builder.Build();
 

@@ -11,7 +11,14 @@ public class UserManagerService : UserManager.UserManagerBase
 
     public override async Task<GetUserResponse> GetUser(GetUserRequest request, ServerCallContext context)
     {
-        return await base.GetUser(request, context);
+        return new GetUserResponse()
+        {
+            User = new UserInfo
+            {
+                FirstName = "Vlad",
+                Phone = 789668555
+            }
+        };
     }
 
     public override async Task<UpdateUserResponse> UpdateUser(UpdateUserRequest request, ServerCallContext context)

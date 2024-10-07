@@ -1,21 +1,35 @@
+version: '3.8'
+
 services:
+  webhost:
+    image: ${DOCKER_REGISTRY-}webhost
+    build:
+      context: .
+      dockerfile: WebHost/Dockerfile
+    environment:
+        USER_SERVICE_URI: ${USER_SERVICE_URI}
+        DOTNET_ENVIRONMENT: "Development"
+    ports:
+      - "8080:8080"
 
-     webhost:
-       environment:
-         "DOTNET_ENVIRONMENT": "Development"
-       build:
-         context: ./WebHost
-         dockerfile: Dockerfile
-       ports:
-         - "8080:8080"
-       depends_on:
-         - authentication
+  userservice:
+    image: ${DOCKER_REGISTRY-}userservice
+    build:
+      context: .
+      dockerfile: UserService/Dockerfile
+    ports:
+      - "5005:5005"
 
-     authentication:
-       environment:
-         "DOTNET_ENVIRONMENT": "Development"
-       build:
-         context: ./Authentication
-         dockerfile: Dockerfile
-       ports:
-         - "50051:50051"
+  userservicepostgres:
+    image: postgres:14
+    environment:
+      POSTGRES_DB: ${USER_SERVICE_POSTGRES_DB}
+      POSTGRES_USER: ${USER_SERVICE_POSTGRES_USER}
+      POSTGRES_PASSWORD: ${USER_SERVICE_POSTGRES_PASSWORD}
+    ports:
+      - "5432:5432"
+    volumes:
+      - postgres_data:/var/lib/postgresql/data
+
+volumes:
+  postgres_data:
