@@ -1,0 +1,108 @@
+syntax = "proto3";
+
+service UserManager {
+  /**
+   * Возвращает user в соответвии с переденным идентификатором
+   */
+  rpc GetUser (GetUserRequest) returns (GetUserResponse);
+  /**
+   * Создает нового user
+   */
+  rpc CreateUser (CreateUserRequest) returns (CreateUserResponse);
+  /**
+   * Изменяет user в соответвии с request
+   */
+  rpc UpdateUser (UpdateUserRequest) returns (UpdateUserResponse);
+  /**
+   * Удаляет user
+   */
+  rpc DeleteUser (DeleteUserRequest) returns (DeleteUserResponse);
+}
+
+message GetUserRequest {
+  string id = 1;
+}
+
+message GetUserResponse {
+  GetUserResult result = 1;
+  UserInfo user = 2;
+
+  enum GetUserResult {
+    GET_USER_BY_ID_RESULT_UNSPECIFIED = 0;
+    GET_USER_BY_ID_RESULT_FAIL = 1;
+    GET_USER_BY_ID_RESULT_SUCCESS = 2;
+    GET_USER_BY_ID_RESULT_NOT_FOUND = 3;
+  }
+}
+
+message CreateUserRequest {
+  UserInfo user = 1;
+}
+
+message CreateUserResponse {
+  CreateUserResult result = 1;
+  UserInfo user = 2;
+
+  enum CreateUserResult {
+    CREATE_USER_RESULT_UNSPECIFIED = 0;
+    CREATE_USER_RESULT_FAIL = 1;
+    CREATE_USER_RESULT_SUCCESS = 2;
+  }
+}
+
+message UpdateUserRequest {
+  oneof user_identifier {
+    string id = 1;
+    string login = 2;
+  }
+  string first_name = 3;
+  string last_name = 4;
+  string address = 5;
+  int64 phone = 6;
+}
+
+message UpdateUserResponse {
+  UpdateUserResult result = 1;
+  UserInfo user = 2;
+
+  enum UpdateUserResult {
+    UPDATE_USER_RESULT_UNSPECIFIED = 0;
+    UPDATE_USER_RESULT_FAIL = 1;
+    UPDATE_USER_RESULT_SUCCESS = 2;
+    UPDATE_USER_RESULT_NOT_FOUND = 3;
+  }
+}
+
+message DeleteUserRequest {
+  oneof user_identifier {
+    string id = 1;
+    string login = 2;
+  }
+}
+
+message DeleteUserResponse {
+  DeleteUserResult result = 1;
+
+  enum DeleteUserResult {
+    DELETE_USER_RESULT_UNSPECIFIED = 0;
+    DELETE_USER_RESULT_FAIL = 1;
+    DELETE_USER_RESULT_SUCCESS = 2;
+    DELETE_USER_RESULT_NOT_FOUND = 3;
+  }
+}
+
+message UserInfo {
+  string login = 1;
+  string first_name = 2;
+  string last_name = 3;
+  string role_name = 4;
+  int64 phone = 5;
+  string address = 6;
+  string created_at = 7;
+  Role role = 8;
+}
+
+message Role {
+  string role_name = 1;
+  repeated string permissions = 2;
+}
