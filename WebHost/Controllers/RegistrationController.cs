@@ -1,4 +1,4 @@
-using AutoMapper;
+п»їusing AutoMapper;
 using Microsoft.AspNetCore.Mvc;
 using s3ng.Contracts.IAM;
 using s3ng.WebHost.Dto;
@@ -21,10 +21,10 @@ namespace s3ng.WebHost.Controllers
         }
 
         /// <summary>
-        /// Зарегистрировать поользователя
+        /// Р—Р°СЂРµРіРёСЃС‚СЂРёСЂРѕРІР°С‚СЊ РїРѕР»СЊР·РѕРІР°С‚РµР»СЏ
         /// </summary>
-        /// <param name="requestDto">Запрос</param>
-        /// <param name="ct">Токен отмены</param>
+        /// <param name="requestDto">Р—Р°РїСЂРѕСЃ</param>
+        /// <param name="ct">РўРѕРєРµРЅ РѕС‚РјРµРЅС‹</param>
         [HttpPost]
         [ProducesResponseType<Guid>(StatusCodes.Status200OK)]
         [ProducesResponseType(StatusCodes.Status400BadRequest)]
