@@ -10,6 +10,7 @@
   </PropertyGroup>
 
   <ItemGroup>
+    <PackageReference Include="DotNetEnv" Version="3.1.1" />
     <PackageReference Include="Google.Protobuf" Version="3.28.2" />
     <PackageReference Include="Grpc.AspNetCore" Version="2.66.0" />
     <PackageReference Include="Grpc.AspNetCore.Server" Version="2.66.0" />
@@ -28,7 +29,7 @@
 
   <ItemGroup>
     <Protobuf Include="Protos\Registration.proto" GrpcServices="Server">
-      <SourceUri>https://github.com/romaib116/s3ng.contracts/raw/refs/heads/main/Registration.proto</SourceUri>
+      <SourceUri>https://raw.githubusercontent.com/romaib116/s3ng.contracts/refs/heads/main/Contracts/Contracts/Registration.proto</SourceUri>
     </Protobuf>
   </ItemGroup>
 

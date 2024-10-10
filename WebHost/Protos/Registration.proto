@@ -2,21 +2,21 @@ syntax = "proto3";
 
 option csharp_namespace = "s3ng.Contracts.IAM";
 
-package greet;
+package registration;
 
-// ������ �����������
+//Сервис регистрации
 service Registration {
- // ���������������� ������������	
+ //Зарегистрировать пользователя	
 rpc RegisterUser (RegisterRequest) returns (RegisterResponse);
 }
 
-// ������ �� �����������
+//Запрос на регистрацию
 message RegisterRequest {
   string login = 1;
   string password = 2;
 }
 
-// ��������� �����������
+//Результат регистрации
 message RegisterResponse {
   string message = 1;
   bool success = 2;

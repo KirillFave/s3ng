@@ -5,38 +5,47 @@ services:
        hostname: iam_postgres
        restart: always
        environment:
-        POSTGRES_DB: iam
-        POSTGRES_USER: pgad
-        POSTGRES_PASSWORD: pwd!123
+         POSTGRES_DB: ${IAM_SERVICE_POSTGRES_DB}
+         POSTGRES_USER: ${IAM_SERVICE_POSTGRES_USER}
+         POSTGRES_PASSWORD: ${IAM_SERVICE_POSTGRES_PASSWORD}
        volumes:
          - pg-data:/var/lib/postgresql/data
        ports:
          - "5432:5432"
+       networks: 
+         - s3ng-net
 
-     iam:
+     iam_service:
+       image: ${DOCKER_REGISTRY-}iam_service
        environment:
          "DOTNET_ENVIRONMENT": "Development"
-         "ConnectionString": "Host=localhost;Port=5432;Database=iam;UserId=pgad;Password=pwd!123"
        build:
          context: ./IAM
          dockerfile: Dockerfile
        ports:
          - "50051:50051"
-         - "50052:50052"
+       networks: 
+         - s3ng-net
 
      webhost:
+       image: ${DOCKER_REGISTRY-}webhost
        environment:
+         "IAM_SERVICE_URI": ${IAM_SERVICE_URI}
          "DOTNET_ENVIRONMENT": "Development"
        build:
-         context: ./WebHost
-         dockerfile: Dockerfile
+         context: .
+         dockerfile: WebHost/Dockerfile
        ports:
          - "8080:8080"
-       depends_on:
-         - iam
+       networks: 
+         - s3ng-net
 
 
 volumes:
   pg-data:
   pg-admin:
     driver: local
+
+networks:
+  s3ng-net:
+    driver: bridge

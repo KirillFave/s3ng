@@ -1,30 +1,23 @@
+using DotNetEnv;
+using DotNetEnv.Configuration;
+using Microsoft.AspNetCore.Server.Kestrel.Core;
 using s3ng.IAM.DAL;
 using s3ng.IAM.Seedwork;
 using s3ng.IAM.Seedwork.Abstractions;
 using s3ng.IAM.Services;
-using Microsoft.EntityFrameworkCore;
 
-namespace s3ng.IAM
-{
-    public class Program
-    {
-        public static void Main(string[] args)
-        {
-            var builder = WebApplication.CreateBuilder(args);
+var builder = WebApplication.CreateBuilder(args);
 
-            builder.Services.AddGrpc();
-            builder.Services.AddTransient<IHashCalculator, SHAHashCalculator>();
-            var connectionString = "Server=localhost;Port=5432;Database=iam;User Id=pgad;Password=pwd!123;";
-                //Environment.GetEnvironmentVariable("ConnectionString"); ef migration dont work. host is null????
-            builder.Services.AddDbContext<DatabaseContext>(
-                optionsBuilder => optionsBuilder.UseNpgsql(connectionString));
+builder.Services.AddGrpc();
+builder.Services.AddTransient<IHashCalculator, SHAHashCalculator>();
 
-            var app = builder.Build();
-            
-            app.MapGrpcService<RegistrationService>();
-            app.MapGet("/", () => "Communication with gRPC endpoints must be made through a gRPC client. To learn how to create a client, visit: https://go.microsoft.com/fwlink/?linkid=2086909");
+builder.Configuration.AddDotNetEnvMulti([".env" ], LoadOptions.TraversePath());
+builder.Services.ConfigureContext(builder.Configuration);
+builder.WebHost.ConfigureListen(builder.Configuration);
 
-            app.Run();
-        }
-    }
-}
+var app = builder.Build();
+
+app.MapGrpcService<RegistrationService>();
+app.MapGet("/", () => "Communication with gRPC endpoints must be made through a gRPC client. To learn how to create a client, visit: https://go.microsoft.com/fwlink/?linkid=2086909");
+
+app.Run();

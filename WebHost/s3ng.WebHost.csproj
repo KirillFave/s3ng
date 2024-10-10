@@ -6,9 +6,11 @@
     <ImplicitUsings>enable</ImplicitUsings>
     <DockerDefaultTargetOS>Linux</DockerDefaultTargetOS>
     <DockerfileContext>.</DockerfileContext>
+    <UserSecretsId>82be1093-d483-470d-a7d7-e1a507ee9a6b</UserSecretsId>
   </PropertyGroup>
 
   <ItemGroup>
+    <PackageReference Include="AutoMapper" Version="13.0.1" />
     <PackageReference Include="Google.Protobuf" Version="3.28.2" />
     <PackageReference Include="Grpc.AspNetCore" Version="2.66.0" />
     <PackageReference Include="Microsoft.VisualStudio.Azure.Containers.Tools.Targets" Version="1.21.0" />
@@ -17,7 +19,7 @@
 
   <ItemGroup>
     <Protobuf Include="Protos\Registration.proto" GrpcServices="Client">
-      <SourceUri>https://github.com/romaib116/s3ng.contracts/raw/refs/heads/main/Registration.proto</SourceUri>
+      <SourceUri>https://raw.githubusercontent.com/romaib116/s3ng.contracts/refs/heads/main/Contracts/Contracts/Registration.proto</SourceUri>
     </Protobuf>
   </ItemGroup>
 

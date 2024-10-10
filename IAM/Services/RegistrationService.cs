@@ -42,7 +42,7 @@ namespace s3ng.IAM.Services
                 throw new ArgumentNullException(nameof(request.Password));
             }
 
-            var isAlreadyExists = (await _databaseContext.Set<User>().FirstOrDefaultAsync(x => x.Login == request.Login)) is not null;
+            var isAlreadyExists = (await _databaseContext.Users.FirstOrDefaultAsync(x => x.Login == request.Login, cancellationToken: context.CancellationToken)) is not null;
             if (isAlreadyExists)
             {
                 var textError = $"{request.Login} is exists";
@@ -54,7 +54,8 @@ namespace s3ng.IAM.Services
                 var passwordHash = _hashCalculator.Compute(request.Password);
                 var newId = Guid.NewGuid();
                 var newUser = new User { Id = newId, Login = request.Login, PasswordHash = passwordHash };
-                await _databaseContext.Set<User>().AddAsync(newUser);
+                await _databaseContext.Users.AddAsync(newUser, cancellationToken: context.CancellationToken);
+                await _databaseContext.SaveChangesAsync();
                 return new RegisterResponse() { Message = newId.ToString(), Success = true };
             }
         }
