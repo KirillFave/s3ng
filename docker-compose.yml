@@ -7,8 +7,8 @@ services:
       context: .
       dockerfile: WebHost/Dockerfile
     environment:
-        USER_SERVICE_URI: ${USER_SERVICE_URI}
-        DOTNET_ENVIRONMENT: "Development"
+      USER_SERVICE_URI: ${USER_SERVICE_URI}
+      DOTNET_ENVIRONMENT: "Development"
     ports:
       - "8080:8080"
 
@@ -17,10 +17,16 @@ services:
     build:
       context: .
       dockerfile: UserService/Dockerfile
+    environment:
+      USER_SERVICE_POSTGRES_DB: ${USER_SERVICE_POSTGRES_DB}
+      USER_SERVICE_POSTGRES_USER: ${USER_SERVICE_POSTGRES_USER}
+      USER_SERVICE_POSTGRES_PASSWORD: ${USER_SERVICE_POSTGRES_PASSWORD}
+      USER_SERVICE_POSTGRES_HOST: ${USER_SERVICE_POSTGRES_HOST}
+      USER_SERVICE_POSTGRES_PORT: ${USER_SERVICE_POSTGRES_PORT}
     ports:
       - "5005:5005"
 
-  userservicepostgres:
+  userservice-bd:
     image: postgres:14
     environment:
       POSTGRES_DB: ${USER_SERVICE_POSTGRES_DB}

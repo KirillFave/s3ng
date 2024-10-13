@@ -6,13 +6,11 @@ public static class Configuration
 {
     public static IServiceCollection ConfigureContext(this IServiceCollection services, IConfiguration configuration)
     {
-        var connectionString = $"Host={configuration["USER_SERVICE_POSTGRES_HOST"] ?? "localhost"};" +
-                               $"Port={configuration["USER_SERVICE_POSTGRES_PORT"] ?? "5432"};" +
-                               $"Database={configuration["USER_SERVICE_POSTGRES_DB"] ?? "UsersBD"};" +
-                               $"Username={configuration["USER_SERVICE_POSTGRES_USER"] ?? "userservise"};" +
-                               $"Password={configuration["USER_SERVICE_POSTGRES_PASSWORD"] ?? "123qwe"}";
-
-        var ff = configuration["USER_SERVICE_URI"];
+        var connectionString = $"Host={configuration["USER_SERVICE_POSTGRES_HOST"]};" +
+                               $"Port={configuration["USER_SERVICE_POSTGRES_PORT"]};" +
+                               $"Database={configuration["USER_SERVICE_POSTGRES_DB"]};" +
+                               $"Username={configuration["USER_SERVICE_POSTGRES_USER"]};" +
+                               $"Password={configuration["USER_SERVICE_POSTGRES_PASSWORD"]}";
 
         services.AddDbContext<UserServiceContext>(optionsBuilder
             => optionsBuilder
