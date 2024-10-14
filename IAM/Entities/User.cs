@@ -1,22 +1,22 @@
-namespace s3ng.IAM.Entities
+п»їnamespace s3ng.IAM.Entities
 {
     /// <summary>
-    /// Пользователь
+    /// РџРѕР»СЊР·РѕРІР°С‚РµР»СЊ
     /// </summary>
     internal class User
     {
         /// <summary>
-        /// Идентификатор
+        /// РРґРµРЅС‚РёС„РёРєР°С‚РѕСЂ
         /// </summary>
         internal required Guid Id { get; set; }
 
         /// <summary>
-        /// Логин
+        /// Р›РѕРіРёРЅ
         /// </summary>
         internal required string Login { get; set; }
 
         /// <summary>
-        /// Хэш пароля
+        /// РҐСЌС€ РїР°СЂРѕР»СЏ
         /// </summary>
         internal required string PasswordHash { get; set; }
     }
