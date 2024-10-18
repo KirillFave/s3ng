@@ -22,6 +22,8 @@ namespace WebHost
                 app.UseSwaggerUI();
             }
 
+            app.UseHttpsRedirection();
+
             app.UseAuthorization();
 
 
