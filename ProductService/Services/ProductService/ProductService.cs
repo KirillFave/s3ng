@@ -11,9 +11,10 @@ namespace s3ng.ProductService.Services
         private readonly IProductRepository _productRepository;
         private readonly IMapper _mapper;
 
-        public ProductService(IProductRepository productRepository, IMapper _mapper)
+        public ProductService(IProductRepository productRepository, IMapper mapper)
         {
             _productRepository = productRepository;
+            _mapper = mapper;
         }
 
         /// <summary>
@@ -53,7 +54,7 @@ namespace s3ng.ProductService.Services
 
             if (product is null) 
             {
-                throw new Exception($"товар с идентфикатором {id} не найден");
+                throw new Exception($"Товар с идентфикатором {id} не найден");
             }
 
             //????????????????????????????
