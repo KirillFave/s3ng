@@ -21,6 +21,8 @@ namespace s3ng.ProductService.DataAccess.EntityFramework
         protected override void OnModelCreating(ModelBuilder modelBuilder)
         {
             base.OnModelCreating(modelBuilder);
+
+            modelBuilder.Entity<Product>().HasKey(property => property.Id);
         }
 
         protected override void OnConfiguring(DbContextOptionsBuilder optionsBuilder)

@@ -14,7 +14,7 @@ Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Элементы решен
 EndProject
 Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "ProductService", "ProductService", "{A830B346-190C-4114-934A-514983C5243D}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "ProductService.Host", "ProductService\ProductService.Host\ProductService.Host.csproj", "{3A39FCB0-BFC2-466A-AFBD-1A99DAD58ED1}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "ProductService.Host", "ProductService\ProductService.Host\ProductService.Host.csproj", "{3A39FCB0-BFC2-466A-AFBD-1A99DAD58ED1}"
 EndProject
 Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Core", "Core", "{0E30C7EA-838F-4B35-B7CB-3B6BBC598A4D}"
 EndProject
@@ -34,7 +34,7 @@ Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "ProductService.Repositories
 EndProject
 Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "ProductService.ProductService", "ProductService\Services\ProductService\ProductService.ProductService.csproj", "{53B51578-E5FB-40AB-B3B8-369CA23C2A10}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "ProductService.EntityFramework", "ProductService\DataAccess\ProductService.EntityFramework\ProductService.EntityFramework.csproj", "{01CA69FF-72E2-4231-B619-9464D0C34077}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "ProductService.EntityFramework", "ProductService\DataAccess\ProductService.EntityFramework\ProductService.EntityFramework.csproj", "{01CA69FF-72E2-4231-B619-9464D0C34077}"
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
