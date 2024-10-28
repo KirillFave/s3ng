@@ -16,14 +16,7 @@ public class UserController : ControllerBase
     [HttpGet("{id}")]
     public async Task<GetUserResponse> GetAsync(string id)
     {
-        var request = new GetUserRequest { Id = id };
-        return await _client.GetUserAsync(request);
-    }
-
-    [HttpPost]
-    public async Task<CreateUserResponse> CreateAsync(UserInfo userInfo)
-    {
-        var request = new CreateUserRequest { User = userInfo };
-        return await _client.CreateUserAsync(request);
+        var request = new GetUserByIdRequest { Id = id };
+        return await _client.GetUserByIdAsync(request);
     }
 }

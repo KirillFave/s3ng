@@ -1,38 +1,60 @@
+using AutoMapper;
 using Grpc.Core;
+using MediatR;
+using UserService.Models.Requests;
 
 namespace UserService.Services;
 
 public class UserManagerService : UserManager.UserManagerBase
 {
-    public override async Task<CreateUserResponse> CreateUser(CreateUserRequest request, ServerCallContext context)
+    private readonly IMediator _mediator;
+    private readonly IMapper _mapper;
+
+    public UserManagerService(IMediator mediator, IMapper mapper)
     {
-        return await base.CreateUser(request, context);
+        _mediator = mediator;
+        _mapper = mapper;
     }
 
-    public override async Task<GetUserResponse> GetUser(GetUserRequest request, ServerCallContext context)
+    public override async Task<GetUserResponse> GetUserById(GetUserByIdRequest request, ServerCallContext context)
     {
-        //todo
-        return new GetUserResponse()
-        {
-            Result = GetUserResponse.Types.GetUserResult.GetUserByIdResultSuccess,
-            User = new UserInfo
-            {
-                FirstName = "Vlad",
-                Phone = 789668555,
-                LastName = "Ivanov",
-                Role = Role.UserRoleBuyer,
-                Address = "Novosibirsk"
-            }
-        };
+        var getUserByIdReq = _mapper.Map<GetUserByIdRequestDto>(request);
+        var getUserRsp = await _mediator.Send(getUserByIdReq);
+        return _mapper.Map<GetUserResponse>(getUserRsp);
+    }
+
+    public override async Task<GetUserResponse> GetUserByAuthenticationId(GetUserByAuthenticationIdRequest request, ServerCallContext context)
+    {
+        var getUserByAuthenticationIdReq = _mapper.Map<GetUserByAuthenticationIdRequestDto>(request);
+        var getUserRsp = await _mediator.Send(getUserByAuthenticationIdReq);
+        return _mapper.Map<GetUserResponse>(getUserRsp);
+    }
+
+    public override async Task<GetAllUsersResponse> GetAllUsers(GetAllUsersRequest request, ServerCallContext context)
+    {
+        var getAllUsersReq = _mapper.Map<GetAllUsersRequestDto>(request);
+        var getAllUsersRsp = await _mediator.Send(getAllUsersReq);
+        return _mapper.Map<GetAllUsersResponse>(getAllUsersRsp);
+    }
+
+    public override async Task<CreateUserResponse> CreateUser(CreateUserRequest request, ServerCallContext context)
+    {
+        var createUserReq = _mapper.Map<CreateUserRequestDto>(request);
+        var createUserRsp = await _mediator.Send(createUserReq);
+        return _mapper.Map<CreateUserResponse>(createUserRsp);
     }
 
     public override async Task<UpdateUserResponse> UpdateUser(UpdateUserRequest request, ServerCallContext context)
     {
-        return await base.UpdateUser(request, context);
+        var updateUserReq = _mapper.Map<UpdateUserRequestDto>(request);
+        var updateUserRsp = await _mediator.Send(updateUserReq);
+        return _mapper.Map<UpdateUserResponse>(updateUserRsp);
     }
 
     public override async Task<DeleteUserResponse> DeleteUser(DeleteUserRequest request, ServerCallContext context)
     {
-        return await base.DeleteUser(request, context);
+        var deleteUserReq = _mapper.Map<DeleteUserRequestDto>(request);
+        var deleteUserRsp = await _mediator.Send(deleteUserReq);
+        return _mapper.Map<DeleteUserResponse>(deleteUserRsp);
     }
 }

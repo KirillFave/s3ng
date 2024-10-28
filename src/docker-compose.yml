@@ -11,6 +11,8 @@ services:
       DOTNET_ENVIRONMENT: "Development"
     ports:
       - "8080:8080"
+    networks:
+      - app-network
 
   userservice:
     image: ${DOCKER_REGISTRY-}userservice
@@ -25,9 +27,11 @@ services:
       USER_SERVICE_POSTGRES_PORT: ${USER_SERVICE_POSTGRES_PORT}
     ports:
       - "5005:5005"
+    networks:
+      - app-network
 
-  userservice-bd:
-    image: postgres:14
+  userpostgres:
+    image: postgres
     environment:
       POSTGRES_DB: ${USER_SERVICE_POSTGRES_DB}
       POSTGRES_USER: ${USER_SERVICE_POSTGRES_USER}
@@ -36,6 +40,11 @@ services:
       - "5432:5432"
     volumes:
       - postgres_data:/var/lib/postgresql/data
+    networks:
+      - app-network
 
 volumes:
   postgres_data:
+
+networks:
+  app-network:  
