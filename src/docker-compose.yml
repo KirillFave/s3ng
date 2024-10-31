@@ -1,5 +1,9 @@
 version: '3.8'
 
+networks:
+  app-network:
+    driver: bridge
+
 services:
   webhost:
     image: ${DOCKER_REGISTRY-}webhost
@@ -29,9 +33,11 @@ services:
       - "5005:5005"
     networks:
       - app-network
+    depends_on:
+      - userpostgres
 
   userpostgres:
-    image: postgres
+    image: postgres:latest
     environment:
       POSTGRES_DB: ${USER_SERVICE_POSTGRES_DB}
       POSTGRES_USER: ${USER_SERVICE_POSTGRES_USER}
@@ -45,6 +51,3 @@ services:
 
 volumes:
   postgres_data:
-
-networks:
-  app-network:  
