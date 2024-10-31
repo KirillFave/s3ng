@@ -24,7 +24,7 @@ jobs:
         run: dotnet restore src/s3ng.sln
 
       - name: Build project
-        run: dotnet build --configuration Release --no-restore
+        run: dotnet build src/s3ng.sln --configuration Release --no-restore
 
       - name: Run tests
-        run: dotnet test --no-build --verbosity normal
+        run: dotnet test src/s3ng.sln --no-build --verbosity normal
