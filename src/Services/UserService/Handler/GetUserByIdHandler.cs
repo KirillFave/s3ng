@@ -37,7 +37,7 @@ public class GetUserByIdHandler : IRequestHandler<GetUserByIdRequestDto, GetUser
             getUserResponseDto.User = userDto;
             return getUserResponseDto;
         }
-        catch (Exception ex)
+        catch
         {
             getUserResponseDto.Result = GetUserResultModel.Fail;
             return getUserResponseDto;
