@@ -5,7 +5,7 @@ using s3ng.ProductService.Core.Domain.Managment;
 namespace s3ng.ProductService.ProductService.Mapping
 {
     /// <summary>
-    /// Профиль автомаппера для сущности курса.
+    /// Профиль автомаппера для сущности товара.
     /// </summary>
     public class ProductMappingsProfile : Profile
     {

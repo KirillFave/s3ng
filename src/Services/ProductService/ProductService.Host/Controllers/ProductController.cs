@@ -19,37 +19,37 @@ namespace ProductService.Host.Controllers
         }
 
         [HttpGet("GetProduct")]
-        public async Task<ProductModel> GetAsync(Guid id)
+        public async Task<IActionResult> GetAsync(Guid id)
         {
             var productModel = _mapper.Map<ProductModel>(await _productService.GetByIdAsync(id));
 
-            return productModel;
+            return productModel is null ? NotFound() : Ok(productModel);
         }
 
         [HttpPost("CreateProduct")]
-        public async Task<Guid> CreateAsync(CreatingProductModel creatingProductModel)
+        public async Task<IActionResult> CreateAsync(CreatingProductModel creatingProductModel)
         {
             var creatingProductDto = _mapper.Map<CreatingProductDto>(creatingProductModel);
             var createdProductGuid = await _productService.CreateAsync(creatingProductDto);
 
-            return createdProductGuid;
+            return Created("", createdProductGuid);
         }
 
         [HttpPut("UpdateProduct")]
         public async Task<IActionResult> UpdateAsync(Guid id, UpdatingProductModel updatingProductModel)
         {
             var updatingProductDto = _mapper.Map<UpdatingProductDto>(updatingProductModel);
-            await _productService.UpdateAsync(id, updatingProductDto);
+            bool isUpdated = await _productService.TryUpdateAsync(id, updatingProductDto);
 
-            return Ok();
+            return isUpdated ? Ok() : NotFound($"Товар с идентфикатором {id} не найден");
         }
 
         [HttpDelete("DeleteProduct")]
         public async Task<IActionResult> DeleteAsync(Guid id)
         {
-            await _productService.DeleteAsync(id);
+            bool isDeleted = await _productService.TryDeleteAsync(id);
 
-            return Ok();
+            return isDeleted ? Ok() : NotFound();
         }
     }
 }

@@ -2,9 +2,9 @@
 {
     public class CreatingProductModel
     {
-        public string Name { get; set; }
-        public string Description { get; set; }
-        public decimal Price { get; set; }
-        public Guid SellerId { get; set; }
+        public required string Name { get; set; }
+        public required string Description { get; set; }
+        public required decimal Price { get; set; }
+        public required Guid SellerId { get; set; }
     }
 }

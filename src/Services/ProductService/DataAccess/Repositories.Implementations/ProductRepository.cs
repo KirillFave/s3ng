@@ -23,7 +23,7 @@ namespace s3ng.ProductService.DataAccess.Repositories.Implementations
 
         public async Task<Product> GetAsync(Guid id, CancellationToken cancellationToken = default)
         {
-            return await _productSet.FindAsync((object)id);
+            return await _productSet.FindAsync(id);
         }
 
         public IQueryable<Product> GetAll(bool asNoTracking = false)
@@ -49,6 +49,7 @@ namespace s3ng.ProductService.DataAccess.Repositories.Implementations
 
         public void Update(Product product)
         {
+            product.TimeModified = DateTime.Now;
             _productSet.Entry(product).State = EntityState.Modified;
         }
 
