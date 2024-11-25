@@ -4,5 +4,6 @@ public enum OperationResult
 {
     NotEntityFound,
     Success,
-    NotChangesApplied
+    NotChangesApplied,
+    NotModified
 }

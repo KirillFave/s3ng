@@ -2,7 +2,7 @@
 
 public class OrderItem : BaseEntity
 {
-    public Order Order { get; }
+    public Order Order { get; set; }
     public Guid OrderGuid { get; }
     public Guid ProductGuid { get; }
     public Decimal PricePerUnit { get; private set; }
