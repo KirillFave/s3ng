@@ -1,0 +1,88 @@
+version: '3.8'
+
+services:
+  webhost:
+    image: ${DOCKER_REGISTRY-}webhost
+    build:
+      context: .
+      dockerfile: ApiGateway/WebHost/Dockerfile
+    environment:
+      USER_SERVICE_URI: ${USER_SERVICE_URI}
+      "IAM_SERVICE_URI": ${IAM_SERVICE_URI}
+      DOTNET_ENVIRONMENT: "Development"
+    ports:
+      - "8080:8080"
+    networks:
+      - app-network
+      - s3ng-net
+
+  userservice:
+    image: ${DOCKER_REGISTRY-}userservice
+    build:
+      context: .
+      dockerfile: Services/UserService/Dockerfile
+    environment:
+      USER_SERVICE_POSTGRES_DB: ${USER_SERVICE_POSTGRES_DB}
+      USER_SERVICE_POSTGRES_USER: ${USER_SERVICE_POSTGRES_USER}
+      USER_SERVICE_POSTGRES_PASSWORD: ${USER_SERVICE_POSTGRES_PASSWORD}
+      USER_SERVICE_POSTGRES_HOST: ${USER_SERVICE_POSTGRES_HOST}
+      USER_SERVICE_POSTGRES_PORT: ${USER_SERVICE_POSTGRES_PORT}
+    ports:
+      - "5005:5005"
+    networks:
+      - app-network
+
+  userpostgres:
+    image: postgres
+    environment:
+      POSTGRES_DB: ${USER_SERVICE_POSTGRES_DB}
+      POSTGRES_USER: ${USER_SERVICE_POSTGRES_USER}
+      POSTGRES_PASSWORD: ${USER_SERVICE_POSTGRES_PASSWORD}
+    ports:
+      - "5432:5432"
+    volumes:
+      - postgres_data:/var/lib/postgresql/data
+    networks:
+      - app-network
+  
+  iam_postgres:
+    image: postgres
+    hostname: iam_postgres
+    env_file: ${IAM_SERVICE_PATH}.env
+    environment:
+      POSTGRES_DB: ${IAM_SERVICE_POSTGRES_DB}
+      POSTGRES_USER: ${IAM_SERVICE_POSTGRES_USER}
+      POSTGRES_PASSWORD: ${IAM_SERVICE_POSTGRES_PASSWORD}
+    expose:
+      - "5435"
+    ports:
+      - 5435:5435
+    volumes:
+      - pg-data:/var/lib/postgresql/data
+    networks: 
+      - s3ng-net
+    command: -p 5435
+
+  iam_service:
+    image: ${DOCKER_REGISTRY-}iam_service
+    environment:
+      "DOTNET_ENVIRONMENT": "Development"
+    build:
+      context: ${IAM_SERVICE_PATH}
+      dockerfile: Dockerfile
+    ports:
+      - "50051:50051"
+    networks: 
+      - s3ng-net
+
+volumes:
+  pg-data:
+  pg-admin:
+    driver: local
+  postgres_data:
+
+networks:
+  s3ng-net:
+    driver: bridge
+  app-network:  
+  
