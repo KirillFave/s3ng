@@ -10,6 +10,16 @@ service Registration {
 rpc RegisterUser (RegisterRequest) returns (RegisterResponse);
 }
 
+//Перечисление результата регистрации
+enum RegisterResult {
+	//Неизвестно
+	unspecified = 0;
+	//Ошибка
+	fail = 1;
+	//Успех
+	success = 2;
+}
+
 //Запрос на регистрацию
 message RegisterRequest {
   string login = 1;
@@ -19,5 +29,5 @@ message RegisterRequest {
 //Результат регистрации
 message RegisterResponse {
   string message = 1;
-  bool success = 2;
+  RegisterResult result = 2;
 }

@@ -33,8 +33,8 @@ namespace WebHost.Controllers
             _logger.LogInformation($"Api method {nameof(RegisterUser)} was called with parameters {requestDto.Login}, {requestDto.Password}");
             var serviceRequest = _mapper.Map<RegisterRequest>(requestDto);
             var result = await _registrationClient.RegisterUserAsync(serviceRequest, cancellationToken: ct);
-            _logger.LogInformation($"end call registration with result {result.Success}, {result.Message}");
-            return result.Success ? new OkObjectResult(result.Message) : new BadRequestObjectResult(result.Message);
+            _logger.LogInformation($"end call registration with result {result.Result}, {result.Message}");
+            return result.Result == RegisterResult.Success ? new OkObjectResult(result.Message) : new BadRequestObjectResult(result.Message);
         }
     }
 }

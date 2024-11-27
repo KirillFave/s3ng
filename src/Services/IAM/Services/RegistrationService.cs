@@ -47,7 +47,7 @@ namespace IAM.Services
             {
                 var textError = $"{request.Login} is exists";
                 _logger.LogError(textError);
-                return new RegisterResponse() { Message = textError };
+                return new RegisterResponse() { Message = textError, Result = RegisterResult.Fail };
             }
             else
             {
@@ -56,7 +56,7 @@ namespace IAM.Services
                 var newUser = new User { Id = newId, Login = request.Login, PasswordHash = passwordHash };
                 await _databaseContext.Users.AddAsync(newUser, cancellationToken: context.CancellationToken);
                 await _databaseContext.SaveChangesAsync();
-                return new RegisterResponse() { Message = newId.ToString(), Success = true };
+                return new RegisterResponse() { Message = newId.ToString(), Result = RegisterResult.Success };
             }
         }
     }
