@@ -17,17 +17,10 @@ builder.Services.AddScoped<IUserRepository, UserRepository>();
 
 var configuration = builder.Configuration;
 
-//TODO временное решение
-var connectionString = $"Host={configuration["USER_SERVICE_POSTGRES_HOST"]};" +
-                       $"Port={configuration["USER_SERVICE_POSTGRES_PORT"]};" +
-                       $"Database={configuration["USER_SERVICE_POSTGRES_DB"]};" +
-                       $"Username={configuration["USER_SERVICE_POSTGRES_USER"]};" +
-                       $"Password={configuration["USER_SERVICE_POSTGRES_PASSWORD"]}";
-
 builder.Services.AddDbContext<UserServiceContext>(optionsBuilder
     => optionsBuilder
         .UseLazyLoadingProxies()
-        .UseNpgsql(connectionString));
+        .UseNpgsql(configuration.GetConnectionString("UserDb")));
 
 builder.WebHost.ConfigureKestrel(options =>
 {   //TODO
