@@ -1,15 +1,15 @@
 namespace IAM.Seedwork.Abstractions
 {
     /// <summary>
-    /// Вычислятор хэшей
+    /// Р’С‹С‡РёСЃР»СЏС‚РѕСЂ С…СЌС€РµР№
     /// </summary>
     internal interface IHashCalculator
     {
         /// <summary>
-        /// Рассчитать хэш
+        /// Р Р°СЃСЃС‡РёС‚Р°С‚СЊ С…СЌС€
         /// </summary>
-        /// <param name="value">Значение</param>
-        /// <returns>Хэш</returns>
+        /// <param name="value">Р—РЅР°С‡РµРЅРёРµ</param>
+        /// <returns>РҐСЌС€</returns>
         internal string Compute(string value);
     }
 }
