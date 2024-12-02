@@ -1,5 +1,9 @@
 version: '3.8'
 
+networks:
+  app-network:
+    driver: bridge
+
 services:
   webhost:
     image: ${DOCKER_REGISTRY-}webhost
@@ -8,32 +12,27 @@ services:
       dockerfile: ApiGateway/WebHost/Dockerfile
     environment:
       USER_SERVICE_URI: ${USER_SERVICE_URI}
-      "IAM_SERVICE_URI": ${IAM_SERVICE_URI}
+      IAM_SERVICE_URI: ${IAM_SERVICE_URI}
       DOTNET_ENVIRONMENT: "Development"
     ports:
       - "8080:8080"
     networks:
       - app-network
-      - s3ng-net
 
   userservice:
     image: ${DOCKER_REGISTRY-}userservice
     build:
       context: .
       dockerfile: Services/UserService/Dockerfile
-    environment:
-      USER_SERVICE_POSTGRES_DB: ${USER_SERVICE_POSTGRES_DB}
-      USER_SERVICE_POSTGRES_USER: ${USER_SERVICE_POSTGRES_USER}
-      USER_SERVICE_POSTGRES_PASSWORD: ${USER_SERVICE_POSTGRES_PASSWORD}
-      USER_SERVICE_POSTGRES_HOST: ${USER_SERVICE_POSTGRES_HOST}
-      USER_SERVICE_POSTGRES_PORT: ${USER_SERVICE_POSTGRES_PORT}
     ports:
       - "5005:5005"
     networks:
       - app-network
+    depends_on:
+      - userpostgres
 
   userpostgres:
-    image: postgres
+    image: postgres:latest
     environment:
       POSTGRES_DB: ${USER_SERVICE_POSTGRES_DB}
       POSTGRES_USER: ${USER_SERVICE_POSTGRES_USER}
@@ -46,7 +45,7 @@ services:
       - app-network
   
   iam_postgres:
-    image: postgres
+    image: postgres:latest
     hostname: iam_postgres
     env_file: ${IAM_SERVICE_PATH}.env
     environment:
@@ -60,7 +59,7 @@ services:
     volumes:
       - pg-data:/var/lib/postgresql/data
     networks: 
-      - s3ng-net
+      - app-network
     command: -p 5435
 
   iam_service:
@@ -73,16 +72,10 @@ services:
     ports:
       - "50051:50051"
     networks: 
-      - s3ng-net
+      - app-network
 
 volumes:
   pg-data:
   pg-admin:
     driver: local
-  postgres_data:
-
-networks:
-  s3ng-net:
-    driver: bridge
-  app-network:  
-  
+  postgres_data:  
