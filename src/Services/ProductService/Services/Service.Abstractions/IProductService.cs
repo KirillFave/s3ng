@@ -22,12 +22,12 @@ namespace s3ng.ProductService.Services.Abstractions
         /// </summary>
         /// <param name="id"> Иентификатор товара. </param>
         /// <param name="updatingProductDto"> ДТО редактируемого товара. </param>
-        public Task UpdateAsync(Guid id, UpdatingProductDto updatingProductDto);
+        public Task<bool> TryUpdateAsync(Guid id, UpdatingProductDto updatingProductDto);
 
         /// <summary>
         /// Удалить товар.
         /// </summary>
         /// <param name="id"> Идентификатор товара. </param>
-        public Task DeleteAsync(Guid id);
+        public Task<bool> TryDeleteAsync(Guid id);
     }
 }

@@ -47,21 +47,21 @@ Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Repositories.Abstractions",
 EndProject
 Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Service.Abstractions", "Service.Abstractions", "{917D761A-1F32-4D33-845A-D25BBC372F31}"
 EndProject
-Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "ProductService.Services.Abstractions", "..\..\..\s3ng\src\Services\ProductService\Services\Service.Abstractions\ProductService.Services.Abstractions.csproj", "{FEAB8940-E772-4E34-84D8-705ACD5C6D8E}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "ProductService.Services.Abstractions", "Services\ProductService\Services\Service.Abstractions\ProductService.Services.Abstractions.csproj", "{FEAB8940-E772-4E34-84D8-705ACD5C6D8E}"
 EndProject
-Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "ProductService.Repositories.Abstractions", "..\..\..\s3ng\src\Services\ProductService\Services\Repositories.Abstractions\ProductService.Repositories.Abstractions.csproj", "{55FC3CC8-87F8-4303-8CBA-B6FAB9F6DF13}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "ProductService.Repositories.Abstractions", "Services\ProductService\Services\Repositories.Abstractions\ProductService.Repositories.Abstractions.csproj", "{55FC3CC8-87F8-4303-8CBA-B6FAB9F6DF13}"
 EndProject
-Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "ProductService.ProductService", "..\..\..\s3ng\src\Services\ProductService\Services\ProductService\ProductService.ProductService.csproj", "{80507FDF-54FF-4DCB-BA1B-377C47744170}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "ProductService.ProductService", "Services\ProductService\Services\ProductService\ProductService.ProductService.csproj", "{80507FDF-54FF-4DCB-BA1B-377C47744170}"
 EndProject
-Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "ProductService.Contracts", "..\..\..\s3ng\src\Services\ProductService\Services\Contracts\ProductService.Contracts.csproj", "{7A146EF6-2339-4870-A252-F75B61B3CE5B}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "ProductService.Contracts", "Services\ProductService\Services\Contracts\ProductService.Contracts.csproj", "{7A146EF6-2339-4870-A252-F75B61B3CE5B}"
 EndProject
-Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "ProductService.Host", "..\..\..\s3ng\src\Services\ProductService\ProductService.Host\ProductService.Host.csproj", "{3613ADA7-1090-47F3-A685-A3FE1F7EAE65}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "ProductService.Host", "Services\ProductService\ProductService.Host\ProductService.Host.csproj", "{3613ADA7-1090-47F3-A685-A3FE1F7EAE65}"
 EndProject
-Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "ProductService.Core", "..\..\..\s3ng\src\Services\ProductService\ProductService.Core\ProductService.Core.csproj", "{F190A799-C6DD-4E71-B52A-F8B5F209C09F}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "ProductService.Core", "Services\ProductService\ProductService.Core\ProductService.Core.csproj", "{F190A799-C6DD-4E71-B52A-F8B5F209C09F}"
 EndProject
-Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "ProductService.Repositories.Implementstions", "..\..\..\s3ng\src\Services\ProductService\DataAccess\Repositories.Implementations\ProductService.Repositories.Implementstions.csproj", "{E41D9E87-E33A-485E-8D4F-659C259DD0DF}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "ProductService.Repositories.Implementstions", "Services\ProductService\DataAccess\Repositories.Implementations\ProductService.Repositories.Implementstions.csproj", "{E41D9E87-E33A-485E-8D4F-659C259DD0DF}"
 EndProject
-Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "ProductService.EntityFramework", "..\..\..\s3ng\src\Services\ProductService\DataAccess\ProductService.EntityFramework\ProductService.EntityFramework.csproj", "{85138FE0-7C58-4E96-A3AF-A5CFFFB3F237}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "ProductService.EntityFramework", "Services\ProductService\DataAccess\ProductService.EntityFramework\ProductService.EntityFramework.csproj", "{85138FE0-7C58-4E96-A3AF-A5CFFFB3F237}"
 EndProject
 Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "OrderService", "Services\OrderService\OrderService.csproj", "{01F40DDC-1295-4CB1-B5A2-7720934C1E87}"
 EndProject

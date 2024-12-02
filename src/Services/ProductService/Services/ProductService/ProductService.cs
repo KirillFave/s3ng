@@ -48,33 +48,44 @@ namespace s3ng.ProductService.Services
         /// </summary>
         /// <param name="id"> Иентификатор товара. </param>
         /// <param name="updatingProductDto"> ДТО редактируемого товара. </param>
-        public async Task UpdateAsync(Guid id, UpdatingProductDto updatingProductDto)
+        public async Task<bool> TryUpdateAsync(Guid id, UpdatingProductDto updatingProductDto)
         {
             var product = await _productRepository.GetAsync(id, CancellationToken.None);
 
-            if (product is null) 
+            if (product is null)
             {
-                throw new Exception($"Товар с идентфикатором {id} не найден");
+                return false;
             }
 
-            //????????????????????????????
             product.Description = updatingProductDto.Description;
             product.Price = updatingProductDto.Price;
             product.SellerId = updatingProductDto.SellerId;
-            product.TimeModified = DateTime.Now;
 
             _productRepository.Update(product);
             await _productRepository.SaveChangesAsync();
+
+            return true;
         }
 
         /// <summary>
         /// Удалить товар.
         /// </summary>
         /// <param name="id"> Идентификатор товара. </param>
-        public async Task DeleteAsync(Guid id)
+        public async Task<bool> TryDeleteAsync(Guid id)
         {
             var product = await _productRepository.GetAsync(id, CancellationToken.None);
+
+            if (product is null)
+            {
+                return false;
+            }
+
             product.IsDeleted = true;
+
+            _productRepository.Update(product);
+            await _productRepository.SaveChangesAsync();
+
+            return true;
         }
     }
 }

@@ -5,7 +5,7 @@ using s3ng.ProductService.Host.Models.Product;
 namespace s3ng.ProductService.Host.Mapping
 {
     /// <summary>
-    /// Профиль автомаппера для сущности курса.
+    /// Профиль автомаппера для сущности товара.
     /// </summary>
     public class ProductMappingsProfile : Profile
     {
