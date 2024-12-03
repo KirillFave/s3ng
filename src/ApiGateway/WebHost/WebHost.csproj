@@ -9,6 +9,7 @@
   </PropertyGroup>
 
   <ItemGroup>
+    <PackageReference Include="AutoMapper" Version="13.0.1" />
     <PackageReference Include="Microsoft.VisualStudio.Azure.Containers.Tools.Targets" Version="1.21.0" />
     <PackageReference Include="Swashbuckle.AspNetCore" Version="6.4.0" />
 	<PackageReference Include="Grpc.AspNetCore" Version="2.66.0" />
@@ -16,6 +17,9 @@
   </ItemGroup>
 
   <ItemGroup>
+    <Protobuf Include="Protos\Registration.proto" GrpcServices="Client">
+      <SourceUri>https://raw.githubusercontent.com/romaib116/s3ng.contracts/refs/heads/main/Contracts/Contracts/Registration.proto</SourceUri>
+    </Protobuf>
     <Protobuf Include="protos\user_manager.proto" GrpcServices="Client" Link="protos\user_manager.proto" />
   </ItemGroup>
 
