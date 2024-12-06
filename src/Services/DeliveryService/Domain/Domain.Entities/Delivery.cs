@@ -2,7 +2,7 @@
 
 namespace DeliveryService.Domain.Domain.Entities
 {
-    public class DeliveryModel : IEntity<Guid>
+    public class Delivery : IEntity<Guid>
     {
         [Key]
         public required Guid Id { get; set; }
