@@ -16,5 +16,8 @@ namespace DeliveryService.Domain.Domain.Entities
         public int Order_Id { get; set; }
         public int Courer_Id { get; set; }
         public DateTime Delivery_Time { get; set; }
+        public DateTime CreateTimeestamp { get; set; }
+
+        public Delivery() : base() { }
     }
 }

@@ -29,6 +29,12 @@ Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "DeliveryService", "Delivery
 EndProject
 Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "DeliveryService", "Services\DeliveryService\DeliveryService.csproj", "{7C9F83B5-9D7C-46A1-8D1E-9EA51FE1BDFA}"
 EndProject
+Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "DTO", "DTO", "{F08DDEC2-3B36-4CA1-814C-5BA9D43D16DD}"
+	ProjectSection(SolutionItems) = preProject
+		CreateDeliveryDTO.cs = CreateDeliveryDTO.cs
+		CreateDeliveryItemDTO.cs = CreateDeliveryItemDTO.cs
+	EndProjectSection
+EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
 		Debug|Any CPU = Debug|Any CPU
@@ -70,6 +76,7 @@ Global
 		{B8531050-83A3-483D-9F34-E83005067417} = {77849D35-37D4-4802-81DC-9477B2775A40}
 		{11BEB69F-4962-4389-AE42-E980F4DBDCA4} = {91CF7717-08AB-4E65-B10E-0B426F01E2E8}
 		{7C9F83B5-9D7C-46A1-8D1E-9EA51FE1BDFA} = {11BEB69F-4962-4389-AE42-E980F4DBDCA4}
+		{F08DDEC2-3B36-4CA1-814C-5BA9D43D16DD} = {11BEB69F-4962-4389-AE42-E980F4DBDCA4}
 	EndGlobalSection
 	GlobalSection(ExtensibilityGlobals) = postSolution
 		SolutionGuid = {D191DEA7-F878-4855-84A6-22850C11AC70}
