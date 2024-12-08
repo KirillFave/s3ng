@@ -1,9 +1,8 @@
 ﻿using AutoMapper;
 using Google.Protobuf.WellKnownTypes;
 using DeliveryService.Abstractions;
-using DeliveryService.Domain;
-//using DeliveryService.Models.Requests;
-//using DeliveryService.Models.Response;
+using DeliveryService.Domain.Domain.Entities;
+using DeliveryService.DTO;
 
 namespace DeliveryService.Services.Mapping
 {
@@ -11,7 +10,7 @@ namespace DeliveryService.Services.Mapping
     {
         public DeliveryMappingProfile() 
         {
-
+            CreateMap<Delivery, CreateDeliveryDTO>();
         }
     }
 }

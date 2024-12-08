@@ -6,18 +6,20 @@ namespace DeliveryService.Domain.Domain.Entities
     {
         [Key]
         public required Guid Id { get; set; }
-        public required string OrderStatus { get; set; }
-        public required decimal Total_Price { get; set; }
-        public required decimal Total_Quantity { get; set; }
+        public required Guid Order_Id { get; set; }
+        //public List<OrderItem> Items { get; set; }
+        public required Guid UserGuid {  get; set; } 
         
-        [MaxLength(200)]
-        public required string Shipping_Address { get; set; }
-        //public PaymentType PaymentType { get; set; }
-        public int Order_Id { get; set; }
-        public int Courer_Id { get; set; }
-        public DateTime Delivery_Time { get; set; }
-        public DateTime CreateTimeestamp { get; set; }
+        //public required OrderStatus OrderStatus { get; set; }
+        public required int Total_Quantity { get; set; }
+        public required decimal Total_Price { get; set; }
 
-        public Delivery() : base() { }
+        [MaxLength(200)]
+        public required string Shipping_Address { get; set; }        
+        
+        public required Guid Courer_Id { get; set; }
+        public required DateTime Delivery_Time { get; set; }
+        public DateTime CreateTimeestamp { get; set; }
+        public bool IsDeleted { get; set; }               
     }
 }
