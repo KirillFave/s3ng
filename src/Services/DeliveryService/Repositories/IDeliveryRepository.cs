@@ -3,7 +3,7 @@ using DeliveryService.Domain.Domain.Entities;
 
 namespace DeliveryService.Repositories;
 
-    public interface IDeliveryRepository
+    public interface IDeliveryRepository<Delivery>
 {
     /// <summary>
     /// Запросить все сущности в базе.
@@ -53,6 +53,10 @@ namespace DeliveryService.Repositories;
     /// Сохранить изменения.
     /// </summary>
     Task SaveChangesAsync(CancellationToken cancellationToken = default);
+    Task<Domain.Domain.Entities.Delivery> GetByIdAsync(Guid guid);
+    Task<bool> AddAsync(Domain.Domain.Entities.Delivery delivery);
+    Task<OperationResults> UpdateAsync(Domain.Domain.Entities.Delivery delivery);
+    Task<OperationResults> DeleteAsync(Guid guid);
 }
 
 
