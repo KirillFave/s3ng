@@ -13,6 +13,7 @@ namespace DeliveryService.Domain.Domain.Entities
         //public required OrderStatus OrderStatus { get; set; }
         public required int Total_Quantity { get; set; }
         public required decimal Total_Price { get; set; }
+        //public PaymentType PaymentType { get; set; }
 
         [MaxLength(200)]
         public required string Shipping_Address { get; set; }        
