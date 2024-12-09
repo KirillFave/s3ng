@@ -22,7 +22,7 @@ services:
     image: ${DOCKER_REGISTRY-}userservice
     build:
       context: .
-      dockerfile: Services/UserService/Dockerfile
+      dockerfile: Services/UserService/UserService.Application/Dockerfile
     ports:
       - "5005:5005"
     networks:
