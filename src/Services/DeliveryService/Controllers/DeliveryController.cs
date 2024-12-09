@@ -2,6 +2,7 @@
 using Microsoft.AspNetCore.Http;
 using Microsoft.EntityFrameworkCore;
 using DeliveryService.Data;
+using DeliveryService.DTO;
 using DeliveryService.Domain.Domain.Entities;
 using DeliveryService.Repositories;
 
@@ -19,6 +20,7 @@ namespace DeliveryService.Controllers
         }
 
         [HttpGet]
+        [ProducesResponseType(typeof(IEnumerable<GetDeliveryResponse>), 200)]
         public async Task<ActionResult> Get(Guid guid)
         {
             Delivery delivery = await _deliveryRepository.GetByIdAsync(guid);
@@ -27,6 +29,7 @@ namespace DeliveryService.Controllers
         }
 
         [HttpPut]
+        [ProducesResponseType(typeof(IEnumerable<CreateDeliveryDTO>), 200)]
         public async Task<ActionResult> Create(Delivery delivery)
         {
             bool result = await _deliveryRepository.AddAsync(delivery);
@@ -35,6 +38,7 @@ namespace DeliveryService.Controllers
         }
 
         [HttpPatch]
+        [ProducesResponseType(typeof(IEnumerable<UpdateDeliveryDTO>), 200)]
         public async Task<ActionResult> Update(Delivery delivery)
         {
             OperationResults result = await _deliveryRepository.UpdateAsync(delivery);
