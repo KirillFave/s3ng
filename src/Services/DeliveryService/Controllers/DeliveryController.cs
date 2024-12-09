@@ -11,9 +11,9 @@ namespace DeliveryService.Controllers
     [Route("api/v1/[controller]")]
     public class DeliveryController : Controller
     {
-        private readonly IDeliveryRepository _deliveryRepository;
+        private readonly DeliveryRepository _deliveryRepository;
 
-        public DeliveryController(IDeliveryRepository deliveryRepository)
+        public DeliveryController(DeliveryRepository deliveryRepository)
         {
             _deliveryRepository = deliveryRepository;
         }
