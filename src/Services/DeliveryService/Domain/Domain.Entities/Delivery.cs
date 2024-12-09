@@ -15,7 +15,8 @@ namespace DeliveryService.Domain.Domain.Entities
         public required decimal Total_Price { get; set; }
         //public PaymentType PaymentType { get; set; }
 
-        [MaxLength(200)]
+        [Required]
+        [MaxLength(200, ErrorMessage = "Length must be less then 200 characters")]
         public required string Shipping_Address { get; set; }        
         
         public required Guid Courer_Id { get; set; }

@@ -3,7 +3,7 @@ using DeliveryService.Domain.Domain.Entities;
 
 namespace DeliveryService.Repositories;
 
-    public interface IDeliveryRepository<Delivery>
+    public interface IDeliveryRepository //<Delivery>
 {
     /// <summary>
     /// Запросить все сущности в базе.

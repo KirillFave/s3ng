@@ -183,6 +183,26 @@ namespace DeliveryService.Repositories
             await Context.SaveChangesAsync(cancellationToken);
         }
 
+        public Task<Delivery> GetByIdAsync(Guid guid)
+        {
+            throw new NotImplementedException();
+        }
+
+        public Task<bool> AddAsync(Delivery delivery)
+        {
+            throw new NotImplementedException();
+        }
+
+        public Task<OperationResults> UpdateAsync(Delivery delivery)
+        {
+            throw new NotImplementedException();
+        }
+
+        public Task<OperationResults> DeleteAsync(Guid guid)
+        {
+            throw new NotImplementedException();
+        }
+
         #endregion
     }
 }
