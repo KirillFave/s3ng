@@ -8,6 +8,6 @@ namespace DeliveryService.Domain.Domain.Entities
         public Guid Id { get; set; }
         
         [Required]
-        public required string Name { get; set; }
+        public string Name { get; set; }
     }
 }
