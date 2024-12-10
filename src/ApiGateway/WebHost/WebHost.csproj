@@ -23,4 +23,8 @@
     <Protobuf Include="protos\user_manager.proto" GrpcServices="Client" Link="protos\user_manager.proto" />
   </ItemGroup>
 
+  <ItemGroup>
+    <Folder Include="Models\" />
+  </ItemGroup>
+
 </Project>
