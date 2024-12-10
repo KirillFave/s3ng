@@ -1,6 +1,6 @@
-﻿using UserService.Models.Results;
+﻿using UserService.Application.Models.Results;
 
-namespace UserService.Models.Response;
+namespace UserService.Application.Models.Response;
 
 public class UpdateUserResponseDto
 {

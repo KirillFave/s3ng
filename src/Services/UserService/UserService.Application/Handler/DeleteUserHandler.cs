@@ -1,10 +1,10 @@
 ﻿using MediatR;
 using UserService.Infrastructure.Repository;
-using UserService.Models.Requests;
-using UserService.Models.Response;
-using UserService.Models.Results;
+using UserService.Application.Models.Requests;
+using UserService.Application.Models.Response;
+using UserService.Application.Models.Results;
 
-namespace UserService.Handler;
+namespace UserService.Application.Handler;
 
 public class DeleteUserHandler : IRequestHandler<DeleteUserRequestDto, DeleteUserResponseDto>
 {

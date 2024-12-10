@@ -1,11 +1,11 @@
 ﻿using AutoMapper;
 using Google.Protobuf.WellKnownTypes;
 using UserService.Domain.Entities;
-using UserService.Models;
-using UserService.Models.Requests;
-using UserService.Models.Response;
+using UserService.Application.Models;
+using UserService.Application.Models.Requests;
+using UserService.Application.Models.Response;
 
-namespace UserService.Mapping;
+namespace UserService.Application.Mapping;
 
 public class UserServiceMappingProfile : Profile
 {

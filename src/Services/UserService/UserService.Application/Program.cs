@@ -1,6 +1,6 @@
 using Microsoft.AspNetCore.Server.Kestrel.Core;
-using UserService.Mapping;
-using UserService.Services;
+using UserService.Application.Mapping;
+using UserService.Application.Services;
 using MediatR;
 using Microsoft.EntityFrameworkCore;
 using UserService.Infrastructure.Repository;

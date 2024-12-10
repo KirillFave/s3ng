@@ -1,12 +1,12 @@
 ﻿using UserService.Domain.Entities;
-using UserService.Models;
-using UserService.Models.Results;
+using UserService.Application.Models;
+using UserService.Application.Models.Results;
 using static CreateUserResponse.Types;
 using static DeleteUserResponse.Types;
 using static GetUserResponse.Types;
 using static UpdateUserResponse.Types;
 
-namespace UserService;
+namespace UserService.Application;
 
 public static class Converter
 {

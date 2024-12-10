@@ -1,4 +1,4 @@
-﻿namespace UserService.Models.Results;
+﻿namespace UserService.Application.Models.Results;
 
 public enum GetUserResultModel
 {

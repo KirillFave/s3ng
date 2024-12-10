@@ -1,4 +1,4 @@
-﻿namespace UserService.Models;
+﻿namespace UserService.Application.Models;
 
 public enum RoleDto
 {

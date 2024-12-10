@@ -35,7 +35,7 @@ public class UserRepository : IUserRepository
         var deleteEntity = await _entityUserSet.FindAsync(id, cancellationToken);
         if (deleteEntity == null)
         {
-            return false;
+            return true;
         }
 
         _entityUserSet.Remove(deleteEntity);

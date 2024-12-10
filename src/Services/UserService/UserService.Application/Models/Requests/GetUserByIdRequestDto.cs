@@ -1,7 +1,7 @@
 ﻿using MediatR;
-using UserService.Models.Response;
+using UserService.Application.Models.Response;
 
-namespace UserService.Models.Requests;
+namespace UserService.Application.Models.Requests;
 
 public class GetUserByIdRequestDto : IRequest<GetUserResponseDto>
 {

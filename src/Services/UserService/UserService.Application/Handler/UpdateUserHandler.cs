@@ -2,12 +2,13 @@
 using AutoMapper;
 using UserService.Domain.Entities;
 using UserService.Infrastructure.Repository;
-using UserService.Models;
-using UserService.Models.Requests;
-using UserService.Models.Response;
-using UserService.Models.Results;
+using UserService.Application.Models;
+using UserService.Application.Models.Requests;
+using UserService.Application.Models.Response;
+using UserService.Application.Models.Results;
+using System.Net;
 
-namespace UserService.Handler;
+namespace UserService.Application.Handler;
 
 public class UpdateUserHandler : IRequestHandler<UpdateUserRequestDto, UpdateUserResponseDto>
 {
@@ -54,18 +55,13 @@ public class UpdateUserHandler : IRequestHandler<UpdateUserRequestDto, UpdateUse
         }
     }
 
-    private User GetUpdateUser(UpdateUserRequestDto dto, User oldUser)
+    private User GetUpdateUser(UpdateUserRequestDto dto, User user)
     {
-        return new User()
-        {
-            Id = dto.Id,
-            AuthenticationId = oldUser.AuthenticationId,
-            FirstName = dto.FirstName ?? oldUser.FirstName,
-            LastName = dto.LastName ?? oldUser.LastName,
-            Role = oldUser.Role,
-            Address = dto.Address ?? oldUser.Address,
-            Phone = dto.PhoneNumber > 0 ? dto.PhoneNumber : oldUser.Phone,
-            CreatedAt = oldUser.CreatedAt
-        };
+        user.FirstName = string.IsNullOrEmpty(dto.FirstName) ? user.FirstName : dto.FirstName;
+        user.LastName = string.IsNullOrEmpty(dto.LastName) ? user.LastName : dto.LastName;
+        user.Address = string.IsNullOrEmpty(dto.Address) ? user.Address : dto.Address;
+        user.Phone = dto.PhoneNumber > 0 ? dto.PhoneNumber : user.Phone;
+
+        return user;
     }
 }

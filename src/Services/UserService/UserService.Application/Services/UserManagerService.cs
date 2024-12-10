@@ -1,9 +1,9 @@
 using AutoMapper;
 using Grpc.Core;
 using MediatR;
-using UserService.Models.Requests;
+using UserService.Application.Models.Requests;
 
-namespace UserService.Services;
+namespace UserService.Application.Services;
 
 public class UserManagerService : UserManager.UserManagerBase
 {

@@ -2,12 +2,12 @@
 using MediatR;
 using UserService.Domain.Entities;
 using UserService.Infrastructure.Repository;
-using UserService.Models;
-using UserService.Models.Requests;
-using UserService.Models.Response;
-using UserService.Models.Results;
+using UserService.Application.Models;
+using UserService.Application.Models.Requests;
+using UserService.Application.Models.Response;
+using UserService.Application.Models.Results;
 
-namespace UserService.Handler;
+namespace UserService.Application.Handler;
 
 public class CreateUserHandler : IRequestHandler<CreateUserRequestDto, CreateUserResponseDto>
 {
