@@ -74,8 +74,21 @@ services:
     networks: 
       - app-network
 
+  seq:
+    image: datalust/seq:latest
+    hostname: seq
+    ports:
+      - "5341:80"
+    environment:
+      ACCEPT_EULA: "Y"
+    networks: 
+      - app-network
+    volumes:
+      - seq-data:/data
+
 volumes:
   pg-data:
   pg-admin:
     driver: local
-  postgres_data:  
+  postgres_data:
+  seq-data:
