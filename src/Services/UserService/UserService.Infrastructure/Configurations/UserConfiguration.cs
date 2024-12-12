@@ -1,4 +1,3 @@
-﻿using Castle.Core.Resource;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Metadata.Builders;
 using UserService.Domain.Entities;
