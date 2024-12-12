@@ -7,7 +7,7 @@ using UserService.Infrastructure.Repository;
 using UserService.Infrastructure.EFCore;
 using Serilog;
 using Microsoft.AspNetCore.Diagnostics;
-using System.Text.Json;
+using UserService.Application;
 
 var builder = WebApplication.CreateBuilder(args);
 
@@ -31,14 +31,7 @@ builder.WebHost.ConfigureKestrel(options =>
 });
 ;
 
-Log.Logger = new LoggerConfiguration()
-    .Destructure.AsScalar<JsonDocument>()
-    .WriteTo.Console()
-    .WriteTo.Seq("http://seq:5341")
-    .MinimumLevel.Verbose()
-    .CreateLogger();
-
-builder.Host.UseSerilog();
+builder.Host.UseSerilog(LogerHelper.AddLogger());
 
 var app = builder.Build();
 
