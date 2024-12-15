@@ -3,8 +3,6 @@ using OrderService.Models;
 using OrderService.Repositories;
 
 using Microsoft.EntityFrameworkCore;
-using OrderService.Data;
-using OrderService.Repositories;
 
 var builder = WebApplication.CreateBuilder(args);
 
@@ -17,8 +15,7 @@ builder.Services.AddDbContext<DatabaseContext>(
     optionsBuilder => optionsBuilder.UseSqlite(builder.Configuration["ConnectionString"]));
 
 builder.Services.AddScoped(typeof(IRepository<Order>), typeof(EfRepository<Order>));
-//builder.Services.AddScoped(typeof(IRepository<OrderItem>), (x) =>
-//    new EfRepository<Customer>(FakeDataFactory.Customers));
+builder.Services.AddScoped(typeof(IRepository<OrderItem>), typeof(EfRepository<OrderItem>));
 
 builder.Services.AddOpenApiDocument(options =>
 {
@@ -35,14 +32,14 @@ builder.Services.AddOpenApiDocument(options =>
             }
         }
     };
-    options.Title = "OrderService API Doc";
+    options.Title = "API Doc";
     options.Version = "1.0";
 });
 
 builder.Services.AddAutoMapper(typeof(Program));
 
 var app = builder.Build();
-
+    
 // Configure the HTTP request pipeline.
 if (!app.Environment.IsDevelopment())
 {
@@ -65,5 +62,20 @@ app.UseRouting();
 app.MapControllers();
 
 app.UseAuthorization();
+
+using (var scope = app.Services.CreateScope())
+{
+    var services = scope.ServiceProvider;
+    var context = services.GetRequiredService<DatabaseContext>();
+
+    try
+    {
+        context.Database.Migrate();
+    }
+    catch (Exception ex)
+    {
+        Console.WriteLine($"Ошибка применения миграций: {ex.Message}");
+    }
+}
 
 app.Run();

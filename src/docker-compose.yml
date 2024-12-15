@@ -122,6 +122,16 @@ services:
       - app-network
     command: -p 5433
 
+  orderservice:
+    image: ${DOCKER_REGISTRY-}orderservice
+    build:
+      context: .
+      dockerfile: Services/OrderService/Dockerfile
+    ports:
+      - "5066:5066"
+    networks:
+      - app-network
+
 volumes:
   pg-data:
   pg-admin:

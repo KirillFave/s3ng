@@ -11,7 +11,7 @@ using OrderService.Database;
 namespace OrderService.Migrations
 {
     [DbContext(typeof(DatabaseContext))]
-    [Migration("20241003171949_Init")]
+    [Migration("20241208155702_Init")]
     partial class Init
     {
         /// <inheritdoc />
@@ -82,11 +82,13 @@ namespace OrderService.Migrations
 
             modelBuilder.Entity("OrderService.Models.OrderItem", b =>
                 {
-                    b.HasOne("OrderService.Models.Order", null)
+                    b.HasOne("OrderService.Models.Order", "Order")
                         .WithMany("Items")
                         .HasForeignKey("OrderGuid")
                         .OnDelete(DeleteBehavior.Cascade)
                         .IsRequired();
+
+                    b.Navigation("Order");
                 });
 
             modelBuilder.Entity("OrderService.Models.Order", b =>

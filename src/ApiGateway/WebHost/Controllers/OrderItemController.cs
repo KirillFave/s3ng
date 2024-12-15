@@ -4,7 +4,7 @@ using OrderService.Dto;
 using OrderService.Models;
 using OrderService.Repositories;
 
-namespace OrderService.Controllers;
+namespace WebHost.Controllers;
 
 [ApiController]
 [Route("api/v1/[controller]")]
