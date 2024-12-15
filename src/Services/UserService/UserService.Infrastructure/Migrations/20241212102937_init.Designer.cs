@@ -12,7 +12,7 @@ using UserService.Infrastructure.EFCore;
 namespace UserService.Infrastructure.Migrations
 {
     [DbContext(typeof(UserServiceContext))]
-    [Migration("20241210163949_init")]
+    [Migration("20241212102937_init")]
     partial class init
     {
         /// <inheritdoc />

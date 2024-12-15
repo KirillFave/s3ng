@@ -11,10 +11,10 @@ EXPOSE 50051
 FROM mcr.microsoft.com/dotnet/sdk:8.0 AS build
 ARG BUILD_CONFIGURATION=Release
 WORKDIR /src
-COPY ["IAM.csproj", "."]
-RUN dotnet restore "./IAM.csproj"
+COPY ["Services/IAM/IAM.csproj", "IAM/IAM.csproj"]
+RUN dotnet restore "Services/IAM/IAM.csproj"
 COPY . .
-WORKDIR "/src/."
+WORKDIR "/src/IAM"
 RUN dotnet build "./IAM.csproj" -c $BUILD_CONFIGURATION -o /app/build
 
 # Этот этап используется для публикации проекта службы, который будет скопирован на последний этап
