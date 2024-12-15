@@ -16,6 +16,10 @@
   </ItemGroup>
 
   <ItemGroup>
+    <ProjectReference Include="..\..\Services\OrderService\OrderService.csproj" />
+  </ItemGroup>
+
+  <ItemGroup>
     <Protobuf Include="protos\user_manager.proto" GrpcServices="Client" Link="protos\user_manager.proto" />
   </ItemGroup>
 

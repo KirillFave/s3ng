@@ -1,19 +1,16 @@
-﻿using Microsoft.AspNetCore.Http;
-using Microsoft.AspNetCore.Mvc;
-using Microsoft.EntityFrameworkCore;
-using OrderService.Database;
+﻿using Microsoft.AspNetCore.Mvc;
 using OrderService.Models;
 using OrderService.Repositories;
 
-namespace OrderService.Controllers;
+namespace WebHost.Controllers;
 
 [ApiController]
 [Route("api/v1/[controller]")]
 public class OrderController : Controller
 {
-    private readonly IRepository<Order> _orderRepository;
+    private readonly OrderRepository _orderRepository;
 
-    public OrderController(IRepository<Order> orderRepository)
+    public OrderController(OrderRepository orderRepository)
     {
         _orderRepository = orderRepository;
     }
@@ -37,7 +34,7 @@ public class OrderController : Controller
     [HttpPatch]
     public async Task<ActionResult> Update(Order order)
     {
-        OperationResult result = await _orderRepository.UpdateAsync(order);
+        OperationResult result = await _orderRepository.UpdateAsync(order, false);
 
         return result switch
         {
