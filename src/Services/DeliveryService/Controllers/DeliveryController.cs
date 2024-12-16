@@ -20,7 +20,7 @@ namespace DeliveryService.Controllers
         }
 
         [HttpGet]
-        [ProducesResponseType(typeof(IEnumerable<GetDeliveryResponse>), 200)]
+        [ProducesResponseType(typeof(IEnumerable<GetDeliveryDTO>), 200)]
         public async Task<ActionResult> Get(Guid guid)
         {
             Delivery delivery = await _deliveryRepository.GetByIdAsync(guid);

@@ -37,7 +37,7 @@ namespace DeliveryService.Domain.Domain.Entities
         /// </summary>
 
         public required DateTime Estimated_Delivery_Time { get; set; }
-        public required DateTime Actual_Delivery_Time { get; set; }
+        public DateTime Actual_Delivery_Time { get; set; }
         public DateTime CreateTimestamp { get; set; }        
 
         /// <summary>
