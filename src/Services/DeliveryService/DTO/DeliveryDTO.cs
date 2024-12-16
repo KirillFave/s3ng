@@ -2,6 +2,7 @@
 using System.Collections.Generic;
 using System.ComponentModel.DataAnnotations;
 using DeliveryService.Domain.Domain.Entities;
+using DeliveryService.Domain.External.Entities;
 
 
 namespace DeliveryService.DTO;

@@ -1,4 +1,5 @@
 ﻿using DeliveryService.Domain.Domain.Entities;
+using DeliveryService.Enums;
 
 namespace DeliveryService.Domain.External.Entities
 {

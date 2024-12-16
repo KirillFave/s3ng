@@ -1,4 +1,4 @@
-﻿namespace DeliveryService.Domain.External.Entities
+﻿namespace DeliveryService.Enums
 {
     public enum OrderStatus
     {
