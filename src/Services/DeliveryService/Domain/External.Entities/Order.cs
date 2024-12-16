@@ -9,7 +9,7 @@ namespace DeliveryService.Domain.External.Entities
         public List<OrderItem> Items { get; set; }
         public OrderStatus Status { get; set; }
         public PaymentType PaymentType { get; set; }
-        public required string ShipAddress { get; set; }
+        public required string Shipping_Address { get; set; }
         public DateTime CreatedTimestamp { get; set; }
     }
 }
