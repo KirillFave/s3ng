@@ -15,6 +15,9 @@ builder.Configuration.AddDotNetEnvMulti([".env" ], LoadOptions.TraversePath());
 builder.Services.ConfigureContext(builder.Configuration);
 builder.WebHost.ConfigureListen(builder.Configuration);
 
+var jwtSection = builder.Configuration.GetSection(JwtOptions.Jwt);
+builder.Services.Configure<JwtOptions>(jwtSection);
+
 var app = builder.Build();
 
 app.MapGrpcService<RegistrationService>();

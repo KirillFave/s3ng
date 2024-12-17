@@ -1,22 +1,21 @@
-using IAM.Entities;
-using IAM.Seedwork.Abstractions;
-using Microsoft.IdentityModel.Tokens;
 using System.IdentityModel.Tokens.Jwt;
 using System.Security.Claims;
 using System.Text;
+using IAM.Entities;
+using IAM.Seedwork.Abstractions;
+using Microsoft.Extensions.Options;
+using Microsoft.IdentityModel.Tokens;
 
 namespace IAM.Seedwork
 {
     /// <inheritdoc/>
     internal sealed class JwtTokenProvider : ITokenProvider
     {
-        private readonly IConfiguration _configuration;
-        private const string _secretKeyConfigName = "JwtSecretKey";
-        private const string _expiredHoursConfigName = "JwtTokenExpireHours";
+        private readonly JwtOptions _options;
 
-        public JwtTokenProvider(IConfiguration configuration)
+        public JwtTokenProvider(IOptions<JwtOptions> options)
         {
-            _configuration = configuration;
+            _options = options.Value;
         }
 
         /// <inheritdoc/>
@@ -25,15 +24,16 @@ namespace IAM.Seedwork
             if (user is null)
                 throw new ArgumentNullException(nameof(user));
 
-            var secretKey = _configuration[_secretKeyConfigName] ?? throw new ArgumentNullException(_secretKeyConfigName);
-            var expiredHours = int.Parse(_configuration[_expiredHoursConfigName] ?? throw new ArgumentNullException(_expiredHoursConfigName));
-
             var claims = new Claim[] { new("userId", user.Id.ToString()) };
-            var key = new SymmetricSecurityKey(Encoding.UTF8.GetBytes(secretKey));
+            var key = new SymmetricSecurityKey(Encoding.UTF8.GetBytes(_options.SecretKey));
             var signingCredentials = new SigningCredentials(key, SecurityAlgorithms.HmacSha256);
 
-            var token = new JwtSecurityToken(signingCredentials: signingCredentials, 
-                claims: claims, expires: DateTime.Now.AddHours(expiredHours));  
+            var token = new JwtSecurityToken(
+                signingCredentials: signingCredentials, 
+                claims: claims, 
+                audience: _options.Audience,
+                issuer: _options.Issuer,
+                expires: DateTime.Now.AddHours(_options.ExpireHours));  
 
             var tokenValue = new JwtSecurityTokenHandler().WriteToken(token);
 

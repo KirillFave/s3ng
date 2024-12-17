@@ -1,10 +1,10 @@
 using s3ng.Contracts.IAM;
 
-namespace WebHost.RegisterServiceClient
+namespace WebHost.IAMConfiguration
 {
     public static class ConfigurationIAMServiceClient
     {
-        public static IServiceCollection AddRegistrationServiceClient(this IServiceCollection services, IConfiguration configuration)
+        public static IServiceCollection AddIAMServiceClient(this IServiceCollection services, IConfiguration configuration)
         {
             var iamServiceUri = configuration["IAM_SERVICE_URI"] ??
                     throw new Exception("IAM_SERVICE_URI is not specified in ENV");

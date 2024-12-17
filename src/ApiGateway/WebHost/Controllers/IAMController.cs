@@ -63,7 +63,10 @@ namespace WebHost.Controllers
             switch (result.Result)
             {
                 case AuthenticationResult.Success:
-                    return new OkObjectResult(result.Token);
+                    {
+                        HttpContext.Response.Cookies.Append("drugs", result.Token);
+                        return new OkObjectResult(result.Token);
+                    }
                 case AuthenticationResult.BadPassword:
                     return new UnauthorizedObjectResult("Bad password");
                 case AuthenticationResult.UserNotFound:
