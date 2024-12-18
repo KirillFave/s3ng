@@ -16,11 +16,7 @@ namespace DeliveryService.Domain.External.Entities
         {
             throw new NotImplementedException();
         }
-
-        /// <summary>
-        /// Актуализировать стоимость единицы товара.
-        /// Актуальная стоимость берётся из ProductService.
-        /// </summary>
+        
         public bool ActualizePricePerUnit()
         {
             throw new NotImplementedException();

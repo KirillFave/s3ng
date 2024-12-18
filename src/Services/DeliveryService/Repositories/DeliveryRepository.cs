@@ -34,14 +34,14 @@ namespace DeliveryService.Repositories
         }
 
         /// <summary>
-        /// Получить сущность по AuthenticationId.
+        /// Получить сущность по UserId.
         /// </summary>
         /// <param name="id"> Id сущности. </param>
         /// <param name="cancellationToken"></param>
         /// <returns> Cущность. </returns>
-        public async Task<Delivery> GetByAuthenticationIdAsync(Guid authenticationId, CancellationToken cancellationToken)
+        public async Task<Delivery> GetByUserIdAsync(Guid userId, CancellationToken cancellationToken)
         {
-            return await _entityDeliverySet.FindAsync(authenticationId, cancellationToken);
+            return await _entityDeliverySet.FindAsync(userId, cancellationToken);
         }
 
         #endregion
