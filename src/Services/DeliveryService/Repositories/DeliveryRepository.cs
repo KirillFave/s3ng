@@ -180,12 +180,7 @@ namespace DeliveryService.Repositories
         public async Task SaveChangesAsync(CancellationToken cancellationToken = default)
         {
             await Context.SaveChangesAsync(cancellationToken);
-        }
-
-        public Task<Delivery> GetByIdAsync(Guid guid)
-        {
-            throw new NotImplementedException();
-        }
+        }        
 
         public Task<bool> AddAsync(Delivery delivery)
         {

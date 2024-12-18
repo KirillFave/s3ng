@@ -21,9 +21,9 @@ namespace DeliveryService.Controllers
 
         [HttpGet]
         [ProducesResponseType(typeof(IEnumerable<GetDeliveryDTO>), 200)]
-        public async Task<ActionResult> Get(Guid guid)
+        public async Task<ActionResult> Get(Guid guid, CancellationToken cancellationToken)
         {
-            Delivery delivery = await _deliveryRepository.GetByIdAsync(guid);
+            Delivery delivery = await _deliveryRepository.GetByIdAsync(guid, cancellationToken);
 
             return delivery is null ? NotFound() : Ok(delivery);
         }
