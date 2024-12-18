@@ -4,11 +4,12 @@ using WebHost.Dto;
 
 namespace WebHost.Mappers
 {
-    public class RegistrationProfile : Profile
+    public class IAMProfile : Profile
     {
-        public RegistrationProfile() 
+        public IAMProfile() 
         {
             CreateMap<RegistrationRequestDto, RegisterRequest>();
+            CreateMap<AuthenticationRequestDto, AuthenticationRequest>();
         }
     }
 }

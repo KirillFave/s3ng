@@ -4,8 +4,10 @@ using IAM.Seedwork.Abstractions;
 
 namespace IAM.Seedwork
 {
+    /// <inheritdoc/>
     internal class SHAHashCalculator : IHashCalculator
     {
+        /// <inheritdoc/>
         string IHashCalculator.Compute(string value)
         {
             // Create a SHA256

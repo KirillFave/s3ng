@@ -6,17 +6,23 @@
     <ImplicitUsings>enable</ImplicitUsings>
     <DockerDefaultTargetOS>Linux</DockerDefaultTargetOS>
     <DockerfileContext>.</DockerfileContext>
+    <UserSecretsId>2937f3ce-7e97-4fdf-b652-2ad33042ee57</UserSecretsId>
   </PropertyGroup>
 
   <ItemGroup>
     <PackageReference Include="AutoMapper" Version="13.0.1" />
+    <PackageReference Include="Microsoft.AspNetCore.Authentication.JwtBearer" Version="8.0.11" />
     <PackageReference Include="Microsoft.VisualStudio.Azure.Containers.Tools.Targets" Version="1.21.0" />
     <PackageReference Include="Swashbuckle.AspNetCore" Version="6.4.0" />
 	<PackageReference Include="Grpc.AspNetCore" Version="2.66.0" />
 	<PackageReference Include="Grpc.Net.Client" Version="2.66.0" />
+	<PackageReference Include="System.IdentityModel.Tokens.Jwt" Version="8.3.0" />
   </ItemGroup>
 
   <ItemGroup>
+    <Protobuf Include="Protos\Authentication.proto" GrpcServices="Client">
+      <SourceUri>https://raw.githubusercontent.com/romaib116/s3ng.contracts/refs/heads/main/Contracts/Contracts/Authentication.proto</SourceUri>
+    </Protobuf>
     <Protobuf Include="Protos\Registration.proto" GrpcServices="Client">
       <SourceUri>https://raw.githubusercontent.com/romaib116/s3ng.contracts/refs/heads/main/Contracts/Contracts/Registration.proto</SourceUri>
     </Protobuf>
@@ -26,5 +32,5 @@
   <ItemGroup>
     <Folder Include="Models\" />
   </ItemGroup>
-
+  
 </Project>
