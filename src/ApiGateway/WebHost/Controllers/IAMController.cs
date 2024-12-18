@@ -2,7 +2,8 @@ using System.Net;
 using AutoMapper;
 using Microsoft.AspNetCore.Mvc;
 using s3ng.Contracts.IAM;
-using WebHost.Dto;
+using WebHost.Dto.IAM;
+using ILogger = Serilog.ILogger;
 
 namespace WebHost.Controllers
 {
@@ -10,12 +11,12 @@ namespace WebHost.Controllers
     [Route("[controller]")]
     public sealed class IAMController : ControllerBase
     {
-        private readonly ILogger<IAMController> _logger;
+        private readonly ILogger _logger;
         private readonly Registration.RegistrationClient _registrationClient;
         private readonly Authentication.AuthenticationClient _authenticationClient;
         private readonly IMapper _mapper;
 
-        public IAMController(ILogger<IAMController> logger
+        public IAMController(ILogger logger
             , Registration.RegistrationClient registrationClient
             , Authentication.AuthenticationClient authenticationClient
             , IMapper mapper)
@@ -36,10 +37,10 @@ namespace WebHost.Controllers
         [ProducesResponseType(StatusCodes.Status400BadRequest)]
         public async Task<IActionResult> RegisterUser(RegistrationRequestDto requestDto, CancellationToken ct)
         {
-            _logger.LogInformation($"Api method {nameof(RegisterUser)} was called with parameters {requestDto.Login}, {requestDto.Password}");
+            _logger.Information($"Api method {nameof(RegisterUser)} was called with parameters {requestDto.Login}, {requestDto.Password}");
             var serviceRequest = _mapper.Map<RegisterRequest>(requestDto);
             var result = await _registrationClient.RegisterUserAsync(serviceRequest, cancellationToken: ct);
-            _logger.LogInformation($"end call registration with result {result.Result}, {result.Message}");
+            _logger.Information($"end call registration with result {result.Result}, {result.Message}");
             return result.Result == RegisterResult.Success ? new OkObjectResult(result.Message) : new BadRequestObjectResult(result.Message);
         }
 
@@ -56,10 +57,10 @@ namespace WebHost.Controllers
         [ProducesResponseType(StatusCodes.Status500InternalServerError)]
         public async Task<IActionResult> AuthenticationUser(AuthenticationRequestDto requestDto, CancellationToken ct)
         {
-            _logger.LogInformation($"Api method {nameof(AuthenticationUser)} was called with parameters {requestDto.Login}, {requestDto.Password}");
+            _logger.Information($"Api method {nameof(AuthenticationUser)} was called with parameters {requestDto.Login}, {requestDto.Password}");
             var serviceRequest = _mapper.Map<AuthenticationRequest>(requestDto);
             var result = await _authenticationClient.AuthenticateUserAsync(serviceRequest, cancellationToken: ct);
-            _logger.LogInformation($"end call registration with result {result.Result}, {result.Token}");
+            _logger.Information($"end call registration with result {result.Result}, {result.Token}");
             switch (result.Result)
             {
                 case AuthenticationResult.Success:

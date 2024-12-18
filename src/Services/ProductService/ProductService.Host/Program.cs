@@ -3,7 +3,9 @@ using s3ng.ProductService.DataAccess.EntityFramework;
 using s3ng.ProductService.Services.Abstractions;
 using s3ng.ProductService.Services.Repositories.Abstractions;
 using s3ng.ProductService.Host.Settings;
+using s3ng.ProductService.Host;
 using AutoMapper;
+using Serilog;
 
 public class Program
 {
@@ -22,19 +24,15 @@ public class Program
         builder.Services.AddSingleton(applicationSettings);
         builder.Services.AddSingleton((IConfigurationRoot)builder.Configuration);
 
-        #region Подключение сервиса товаров
         builder.Services.AddTransient<IProductService, s3ng.ProductService.Services.ProductService>();
-        #endregion Подключение сервиса товаров
-
-        // Add repositories to the container
-        #region Подключение репозитория товаров
         builder.Services.AddTransient<IProductRepository, ProductRepository>();
-        #endregion Подключение репозитория товаров
 
         builder.Services.AddControllers();
         // Learn more about configuring Swagger/OpenAPI at https://aka.ms/aspnetcore/swashbuckle
         builder.Services.AddEndpointsApiExplorer();
         builder.Services.AddSwaggerGen();
+
+        builder.Host.UseSerilog(LoggerHelper.AddLogger(builder.Configuration));
 
         var app = builder.Build();
 

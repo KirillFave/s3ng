@@ -1,6 +1,6 @@
 using AutoMapper;
 using s3ng.Contracts.IAM;
-using WebHost.Dto;
+using WebHost.Dto.IAM;
 
 namespace WebHost.Mappers
 {

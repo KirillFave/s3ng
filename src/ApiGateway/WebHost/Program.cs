@@ -1,4 +1,7 @@
+using Microsoft.AspNetCore.Diagnostics;
 using Microsoft.AspNetCore.Server.Kestrel.Core;
+using Serilog;
+using WebHost;
 using WebHost.IAMConfiguration;
 using WebHost.Mappers;
 using WebHost.UserServiceClient;
@@ -8,6 +11,7 @@ var builder = WebApplication.CreateBuilder(args);
 // Add services to the container.
 //automapper
 builder.Services.AddAutoMapper(typeof(IAMProfile));
+builder.Services.AddAutoMapper(typeof(UsersMappingProfile));
 
 //general
 builder.Services.AddControllers();
@@ -30,21 +34,34 @@ builder.WebHost.ConfigureKestrel(o =>
     o.ListenAnyIP(8080, listenOptions => listenOptions.Protocols = HttpProtocols.Http1AndHttp2AndHttp3);
 });
 
+builder.Host.UseSerilog(LoggerHelper.AddLogger(configuration));
+
 var app = builder.Build();
 
 app.UseAuthentication();
 app.UseAuthorization();
 
-// Configure the HTTP request pipeline.
-if (app.Environment.IsDevelopment())
-{
-    app.UseSwagger();
-    app.UseSwaggerUI();
-}
+app.UseSwagger();
+app.UseSwaggerUI();
 
 app.UseAuthorization();
 
-
 app.MapControllers();
+
+app.UseExceptionHandler(appBuilder =>
+{
+    appBuilder.Run(context =>
+    {
+        var exceptionHandlerFeature = context.Features.Get<IExceptionHandlerFeature>();
+        if (exceptionHandlerFeature != null)
+        {
+            if (app.Services.GetService<Serilog.ILogger>() is { } logger)
+            {
+                logger.Error(exceptionHandlerFeature.Error, "UseExceptionHandler поймал ошибку в UserService");
+            }
+        }
+        return Task.CompletedTask;
+    });
+});
 
 app.Run();
