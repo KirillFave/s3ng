@@ -29,6 +29,11 @@ builder.Services.AddJwtAuthentication(configuration);
 builder.Services.AddIAMServiceClient(configuration);
 builder.Services.AddUserServiceClient(configuration);
 
+builder.Services.AddHttpClient("ProductService", client =>
+{
+    client.BaseAddress = new Uri("http://product_service:50052");
+});
+
 builder.WebHost.ConfigureKestrel(o =>
 {
     o.ListenAnyIP(8080, listenOptions => listenOptions.Protocols = HttpProtocols.Http1AndHttp2AndHttp3);

@@ -6,6 +6,9 @@ using s3ng.ProductService.Host.Settings;
 using s3ng.ProductService.Host;
 using AutoMapper;
 using Serilog;
+using DotNetEnv;
+using DotNetEnv.Configuration;
+using Microsoft.EntityFrameworkCore;
 
 public class Program
 {
@@ -14,11 +17,12 @@ public class Program
         var builder = WebApplication.CreateBuilder(args);
         var applicationSettings = builder.Configuration.Get<ApplicationSettings>();
 
+        builder.Configuration.AddDotNetEnvMulti([".env"], LoadOptions.TraversePath());
         // Add AutoMappers to the container
         builder.Services.AddSingleton<IMapper>(new Mapper(GetMapperConfiguration()));
 
         // Add DbContexts to the container
-        builder.Services.ConfigureContext(applicationSettings.ConnectionString);
+        builder.Services.ConfigureContext(builder.Configuration);
 
         // Add services to the container
         builder.Services.AddSingleton(applicationSettings);
@@ -46,6 +50,21 @@ public class Program
         app.UseAuthorization();
 
         app.MapControllers();
+
+        using (var scope = app.Services.CreateScope())
+        {
+            var services = scope.ServiceProvider;
+            var context = services.GetRequiredService<DatabaseContext>();
+
+            try
+            {
+                context.Database.Migrate();
+            }
+            catch (Exception ex)
+            {
+                Console.WriteLine($"Ошибка применения миграций: {ex.Message}");
+            }
+        }
 
         app.Run();
     }

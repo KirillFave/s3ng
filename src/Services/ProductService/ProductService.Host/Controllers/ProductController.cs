@@ -18,7 +18,7 @@ namespace ProductService.Host.Controllers
             _mapper = mapper;
         }
 
-        [HttpGet("GetProduct")]
+        [HttpGet("/api/product/{id}")]
         public async Task<IActionResult> GetAsync(Guid id)
         {
             var productModel = _mapper.Map<ProductModel>(await _productService.GetByIdAsync(id));
@@ -41,7 +41,7 @@ namespace ProductService.Host.Controllers
             var updatingProductDto = _mapper.Map<UpdatingProductDto>(updatingProductModel);
             bool isUpdated = await _productService.TryUpdateAsync(id, updatingProductDto);
 
-            return isUpdated ? Ok() : NotFound($"Товар с идентфикатором {id} не найден");
+            return isUpdated ? Ok() : NotFound($"пїЅпїЅпїЅпїЅпїЅ пїЅ пїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅ {id} пїЅпїЅ пїЅпїЅпїЅпїЅпїЅпїЅ");
         }
 
         [HttpDelete("DeleteProduct")]
