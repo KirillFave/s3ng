@@ -4,6 +4,7 @@
     {
         Created,
         Postponed,
+        Dispatched,
         Delivered,
         Canceled
     }

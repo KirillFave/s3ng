@@ -16,7 +16,11 @@ namespace DeliveryService.Migrations
                 columns: table => new
                 {
                     Id = table.Column<Guid>(type: "uuid", nullable: false),
-                    Order_Id = table.Column<Guid>(type: "uuid", nullable: false),
+                    
+                    
+                    
+                    
+                    _Id = table.Column<Guid>(type: "uuid", nullable: false),
                     UserGuid = table.Column<Guid>(type: "uuid", nullable: false),
                     Total_Quantity = table.Column<int>(type: "integer", nullable: false),
                     Total_Price = table.Column<decimal>(type: "numeric", nullable: false),

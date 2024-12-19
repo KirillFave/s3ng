@@ -43,7 +43,8 @@ namespace DeliveryService.Migrations
                     b.Property<bool>("IsDeleted")
                         .HasColumnType("boolean");
 
-                    b.Property<Guid>("Order_Id")
+                    b.Property<Guid>("
+                        _Id")
                         .HasColumnType("uuid");
 
                     b.Property<string>("Shipping_Address")

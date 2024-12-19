@@ -9,7 +9,7 @@ namespace DeliveryService.Repositories;
     /// <summary>
     /// Создать доставку.
     /// </summary>
-    /// <param name="creatingProductDto"> ДТО создаваемого товара. </param>
+    /// <param name="creatingDeliveryDTO"> ДТО создаваемого товара. </param>
     public Task<Guid> CreateAsync(CreateDeliveryDTO creatingDeliveryDTO);
     /// <summary>
     /// Запросить все сущности в базе.
@@ -29,16 +29,16 @@ namespace DeliveryService.Repositories;
     /// Изменить товар по id.
     /// </summary>
     /// <param name="id"> Иентификатор товара. </param>
-    /// <param name="updatingProductDto"> ДТО редактируемого товара. </param>
+    /// <param name="updateDeliveryDTO"> ДТО редактируемого товара. </param>
     public Task<bool> TryUpdateAsync(Guid id, UpdateDeliveryDTO updateDeliveryDTO);
 
     /// <summary>
-    /// Получить сущность по AuthenticationId.
+    /// Получить сущность по UserId.
     /// </summary>
     /// <param name="id"> Id сущности. </param>
     /// <param name="cancellationToken"></param>
     /// <returns> Cущность. </returns>
-    Task<Delivery> GetByAuthenticationIdAsync(Guid authenticationId, CancellationToken cancellationToken);
+    Task<Delivery> GetByUserIdAsync(Guid UserGuid, CancellationToken cancellationToken);
 
     /// <summary>
     /// Добавить в базу одну сущность.

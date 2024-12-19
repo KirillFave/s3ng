@@ -4,7 +4,7 @@ using DeliveryService.Domain.Domain.Entities;
 using DeliveryService.Enums;
 using DeliveryService.Domain.External.Entities;
 
-namespace DeliveryService.Repositories
+namespace DeliveryService.Repositories 
 {
     /// <summary>
     /// Репозиторий.
@@ -102,7 +102,7 @@ namespace DeliveryService.Repositories
         #region Update
 
         /// <summary>
-        /// Для сущности проставить состояние - что она изменена.
+        /// Для сущности определить состояние - на кое она изменена.
         /// </summary>
         /// <param name="entity"> Сущность для изменения. </param>
         public virtual void Update(Delivery entity)
@@ -130,8 +130,14 @@ namespace DeliveryService.Repositories
             }
 
             if (deliveryToUpdate.PaymentType == delivery.PaymentType &&
-            deliveryToUpdate.DeliveryStatus == delivery.DeliveryStatus &&
-                deliveryToUpdate.Items == delivery.Items)
+                deliveryToUpdate.DeliveryStatus == delivery.DeliveryStatus &&
+                deliveryToUpdate.Items == delivery.Items &&
+                deliveryToUpdate.CourierId == delivery.CourierId &&
+                deliveryToUpdate.Shipping_Address == delivery.Shipping_Address &&
+                deliveryToUpdate.Total_Quantity == delivery.Total_Quantity &&
+                deliveryToUpdate.Total_Price == delivery.Total_Price &&
+                deliveryToUpdate.Estimated_Delivery_Time == delivery.Estimated_Delivery_Time                
+                )
             {
                 return OperationResult.NotModified;
             }
