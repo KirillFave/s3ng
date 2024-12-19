@@ -2,6 +2,7 @@
 using DeliveryService.Models;
 //using OrderService.Models;
 using Newtonsoft.Json;
+using DeliveryService.Data;
 
 namespace DeliveryService.Kafka
 {
@@ -33,12 +34,12 @@ namespace DeliveryService.Kafka
 
                 var order = JsonConvert.DeserializeObject<OrderMessage>(consumeResult.Message.Value);
                 using var scope = scopeFactory.CreateScope();
-                var dbContext = scope.ServiceProvider.GetRequiredService<ProductDbContext>();
+                var dbContext = scope.ServiceProvider.GetRequiredService<DeliveryDBContext>();
 
-                var product = await dbContext.Products.FindAsync(order.ProductId);
-                if (product != null)
+                var product = await dbContext.Deliveries.FindAsync(order.Total_Quantity);
+                if (order != null)
                 {
-                    product.Quantity -= order.Quantity;
+                    order.Total_Quantity -= order.Total_Quantity;
                     await dbContext.SaveChangesAsync();
                 }
             }

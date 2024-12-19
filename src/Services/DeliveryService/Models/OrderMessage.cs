@@ -6,7 +6,7 @@ namespace DeliveryService.Models
 {
     public class OrderMessage
     {
-        public Guid OrderId { get; set; }
+        public Guid Order_Id { get; set; }
         public List<OrderItem> Items { get; set; }
         public int Total_Quantity { get; set; }
         public decimal Total_Price { get; set; }
