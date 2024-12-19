@@ -1,4 +1,4 @@
-namespace WebHost.Dto
+namespace WebHost.Dto.IAM
 {
     /// <summary>
     /// Запрос на регистрацию

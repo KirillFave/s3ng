@@ -3,7 +3,12 @@ using s3ng.ProductService.DataAccess.EntityFramework;
 using s3ng.ProductService.Services.Abstractions;
 using s3ng.ProductService.Services.Repositories.Abstractions;
 using s3ng.ProductService.Host.Settings;
+using s3ng.ProductService.Host;
 using AutoMapper;
+using Serilog;
+using DotNetEnv;
+using DotNetEnv.Configuration;
+using Microsoft.EntityFrameworkCore;
 
 public class Program
 {
@@ -12,29 +17,26 @@ public class Program
         var builder = WebApplication.CreateBuilder(args);
         var applicationSettings = builder.Configuration.Get<ApplicationSettings>();
 
+        builder.Configuration.AddDotNetEnvMulti([".env"], LoadOptions.TraversePath());
         // Add AutoMappers to the container
         builder.Services.AddSingleton<IMapper>(new Mapper(GetMapperConfiguration()));
 
         // Add DbContexts to the container
-        builder.Services.ConfigureContext(applicationSettings.ConnectionString);
+        builder.Services.ConfigureContext(builder.Configuration);
 
         // Add services to the container
         builder.Services.AddSingleton(applicationSettings);
         builder.Services.AddSingleton((IConfigurationRoot)builder.Configuration);
 
-        #region Подключение сервиса товаров
         builder.Services.AddTransient<IProductService, s3ng.ProductService.Services.ProductService>();
-        #endregion Подключение сервиса товаров
-
-        // Add repositories to the container
-        #region Подключение репозитория товаров
         builder.Services.AddTransient<IProductRepository, ProductRepository>();
-        #endregion Подключение репозитория товаров
 
         builder.Services.AddControllers();
         // Learn more about configuring Swagger/OpenAPI at https://aka.ms/aspnetcore/swashbuckle
         builder.Services.AddEndpointsApiExplorer();
         builder.Services.AddSwaggerGen();
+
+        builder.Host.UseSerilog(LoggerHelper.AddLogger(builder.Configuration));
 
         var app = builder.Build();
 
@@ -48,6 +50,21 @@ public class Program
         app.UseAuthorization();
 
         app.MapControllers();
+
+        using (var scope = app.Services.CreateScope())
+        {
+            var services = scope.ServiceProvider;
+            var context = services.GetRequiredService<DatabaseContext>();
+
+            try
+            {
+                context.Database.Migrate();
+            }
+            catch (Exception ex)
+            {
+                Console.WriteLine($"РћС€РёР±РєР° РїСЂРёРјРµРЅРµРЅРёСЏ РјРёРіСЂР°С†РёР№: {ex.Message}");
+            }
+        }
 
         app.Run();
     }
