@@ -6,6 +6,9 @@ using DeliveryService.DTO;
 
 namespace DeliveryService.Services.Mapping
 {
+    /// <summary>
+    /// Automapper Profile for Delivery Entities 
+    /// </summary>
     public class DeliveryMappingProfile : Profile
     {
         public DeliveryMappingProfile() 

@@ -10,7 +10,7 @@ namespace DeliveryService.Domain.Domain.Entities
         [Key]
         public Guid Id { get; set; }
         /// <summary>
-        /// Order basics parameters
+        /// Delivery basic parameters
         /// </summary>         
         public DeliveryStatus DeliveryStatus { get; set; }
         public Guid Order_Id { get; set; }               
@@ -37,5 +37,9 @@ namespace DeliveryService.Domain.Domain.Entities
         public virtual List<Courier> ? Couriers { get; set; }
         public bool IsDeleted { get; set; }
 
+        public static implicit operator bool(Delivery v)
+        {
+            throw new NotImplementedException();
+        }
     }
 }

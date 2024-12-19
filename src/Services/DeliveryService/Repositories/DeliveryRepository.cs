@@ -1,6 +1,8 @@
 ﻿using Microsoft.EntityFrameworkCore;
 using DeliveryService.Data;
 using DeliveryService.Domain.Domain.Entities;
+using DeliveryService.Enums;
+using DeliveryService.Domain.External.Entities;
 
 namespace DeliveryService.Repositories
 {
@@ -12,7 +14,7 @@ namespace DeliveryService.Repositories
     public class DeliveryRepository 
     {
         protected readonly DeliveryDBContext Context;
-        private readonly DbSet<Delivery> _entityDeliverySet;
+        private readonly DbSet<Delivery> ?_entityDeliverySet;
 
         public DeliveryRepository(DeliveryDBContext context)
         {
@@ -36,7 +38,7 @@ namespace DeliveryService.Repositories
         /// <summary>
         /// Получить сущность по UserId.
         /// </summary>
-        /// <param name="id"> Id сущности. </param>
+        /// <param name="userId"> Id сущности. </param>
         /// <param name="cancellationToken"></param>
         /// <returns> Cущность. </returns>
         public async Task<Delivery> GetByUserIdAsync(Guid userId, CancellationToken cancellationToken)
@@ -67,9 +69,9 @@ namespace DeliveryService.Repositories
         /// </summary>
         /// <param name="entity"> Сущность для добавления. </param>
         /// <returns> Добавленная сущность. </returns>
-        public async Task<Delivery> AddAsync(Delivery entity, CancellationToken cancellationToken)
+        public async Task<Delivery> AddAsync(Delivery delivery, CancellationToken cancellationToken)
         {
-            return (await _entityDeliverySet.AddAsync(entity, cancellationToken)).Entity;
+            return (await _entityDeliverySet.AddAsync(delivery, cancellationToken)).Entity;
         }
 
         /// <summary>
@@ -113,11 +115,42 @@ namespace DeliveryService.Repositories
         /// </summary>
         /// <param name="entity"> Сущность для обновления. </param>
         /// <returns> Обновленная сущность. </returns>
-        public async Task<Delivery> UpdateAsync(Delivery entity, CancellationToken cancellationToken)
+        
+        //public async Task<Delivery> UpdateAsync(Delivery entity, CancellationToken cancellationToken)
+        //{
+        //    _entityDeliverySet.Update(entity);
+        //    return await _entityDeliverySet.FindAsync(entity.Id, cancellationToken);
+        //}
+        public async Task<OperationResult> UpdateAsync(Delivery delivery, bool isUpdateDeliveryStatus)
         {
-            _entityDeliverySet.Update(entity);
-            return await _entityDeliverySet.FindAsync(entity.Id, cancellationToken);
+            Delivery? deliveryToUpdate = await Context.Deliveries.FindAsync(delivery.Id);
+            if (deliveryToUpdate is null)
+            {
+                return OperationResult.NotEntityFound;
+            }
+
+            if (deliveryToUpdate.PaymentType == delivery.PaymentType &&
+            deliveryToUpdate.DeliveryStatus == delivery.DeliveryStatus &&
+                deliveryToUpdate.Items == delivery.Items)
+            {
+                return OperationResult.NotModified;
+            }
+
+            if (isUpdateDeliveryStatus)
+            {
+                deliveryToUpdate.PaymentType = delivery.PaymentType;
+            }
+
+            if (delivery.Shipping_Address is not null)
+            {
+                deliveryToUpdate.Shipping_Address = delivery.Shipping_Address;
+            }
+
+            int stateEntriesWritten = await Context.SaveChangesAsync();
+            return stateEntriesWritten > 0 ? OperationResult.Success : OperationResult.NotChangesApplied;
+
         }
+
 
         #endregion
 
@@ -177,25 +210,18 @@ namespace DeliveryService.Repositories
         /// <summary>
         /// Сохранить изменения.
         /// </summary>
+        /// 
         public async Task SaveChangesAsync(CancellationToken cancellationToken = default)
         {
             await Context.SaveChangesAsync(cancellationToken);
         }        
 
-        public Task<bool> AddAsync(Delivery delivery)
-        {
-            throw new NotImplementedException();
-        }
-
-        public Task<OperationResults> UpdateAsync(Delivery delivery)
-        {
-            throw new NotImplementedException();
-        }
-
         public Task<OperationResults> DeleteAsync(Guid guid)
         {
             throw new NotImplementedException();
         }
+
+       
 
         #endregion
     }

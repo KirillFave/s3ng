@@ -5,6 +5,7 @@ using DeliveryService.Data;
 using DeliveryService.DTO;
 using DeliveryService.Domain.Domain.Entities;
 using DeliveryService.Repositories;
+using System.Threading;
 
 namespace DeliveryService.Controllers
 {
@@ -30,18 +31,18 @@ namespace DeliveryService.Controllers
 
         [HttpPut]
         [ProducesResponseType(typeof(IEnumerable<CreateDeliveryDTO>), 200)]
-        public async Task<ActionResult> Create(Delivery delivery)
+        public async Task<ActionResult> Create(Delivery delivery, CancellationToken cancellationToken)
         {
-            bool result = await _deliveryRepository.AddAsync(delivery);
+            bool result = await _deliveryRepository.AddAsync(delivery, cancellationToken);
 
             return result ? NoContent() : Created();
         }
 
         [HttpPatch]
         [ProducesResponseType(typeof(IEnumerable<UpdateDeliveryDTO>), 200)]
-        public async Task<ActionResult> Update(Delivery delivery)
+        public async Task<ActionResult> Update(Delivery delivery, CancellationToken cancellationToken)
         {
-            OperationResults result = await _deliveryRepository.UpdateAsync(delivery);
+            OperationResults result = await _deliveryRepository.UpdateAsync(delivery,);
 
             return result switch
             {

@@ -3,7 +3,8 @@ using DeliveryService.Domain.Domain.Entities;
 
 namespace DeliveryService.Repositories;
 
-    public interface IDeliveryRepository //<Delivery>
+    public interface IDeliveryRepository<T>
+    where T : 
 {
     /// <summary>
     /// Запросить все сущности в базе.
@@ -33,7 +34,7 @@ namespace DeliveryService.Repositories;
     /// </summary>
     /// <param name="entity"> Сущность для добавления. </param>
     /// <returns> Добавленная сущность. </returns>
-    Task<Delivery> AddAsync(Delivery entity, CancellationToken cancellationToken);
+    Task<Delivery> AddAsync(T entity);
 
     /// <summary>
     /// Удалить сущность.
