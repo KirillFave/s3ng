@@ -3,6 +3,7 @@ using Google.Protobuf.WellKnownTypes;
 using DeliveryService.Abstractions;
 using DeliveryService.Domain.Domain.Entities;
 using DeliveryService.DTO;
+using DeliveryService.Models;
 
 namespace DeliveryService.Services.Mapping
 {
@@ -13,7 +14,8 @@ namespace DeliveryService.Services.Mapping
     {
         public DeliveryMappingProfile() 
         {
-            CreateMap<Delivery, CreateDeliveryDTO>();
+            CreateMap<CreateDeliveryModel, CreateDeliveryDTO>();
+            CreateMap<UpdateDeliveryModel, UpdateDeliveryDTO>();
         }
     }
 }
