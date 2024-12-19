@@ -1,6 +1,5 @@
 ﻿using Confluent.Kafka;
 using DeliveryService.Models;
-//using OrderService.Models;
 using Newtonsoft.Json;
 using DeliveryService.Data;
 
