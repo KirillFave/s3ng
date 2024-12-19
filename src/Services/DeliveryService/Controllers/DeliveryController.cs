@@ -6,22 +6,26 @@ using DeliveryService.DTO;
 using DeliveryService.Domain.Domain.Entities;
 using DeliveryService.Repositories;
 using System.Threading;
+using DeliveryService.Models;
+using AutoMapper;
 
 namespace DeliveryService.Controllers
 {
     [ApiController]
-    [Route("api/v1/[controller]")]
+    [Route("api/v2/[controller]")]
     public class DeliveryController : Controller
     {
-        private readonly DeliveryRepository _deliveryRepository;
+        private readonly IDeliveryRepository _deliveryRepository;
+        private readonly IMapper _mapper;
 
-        public DeliveryController(DeliveryRepository deliveryRepository)
+        public DeliveryController(IDeliveryRepository deliveryRepository, IMapper mapper)
         {
             _deliveryRepository = deliveryRepository;
+            _mapper = mapper;
         }
 
-        [HttpGet]
-        [ProducesResponseType(typeof(IEnumerable<GetDeliveryDTO>), 200)]
+        [HttpGet("GetDelivery")]
+        //[ProducesResponseType(typeof(IEnumerable<GetDeliveryDTO>), 200)]
         public async Task<ActionResult> Get(Guid guid, CancellationToken cancellationToken)
         {
             Delivery delivery = await _deliveryRepository.GetByIdAsync(guid, cancellationToken);
@@ -29,31 +33,27 @@ namespace DeliveryService.Controllers
             return delivery is null ? NotFound() : Ok(delivery);
         }
 
-        [HttpPut]
-        [ProducesResponseType(typeof(IEnumerable<CreateDeliveryDTO>), 200)]
-        public async Task<ActionResult> Create(Delivery delivery, CancellationToken cancellationToken)
+        [HttpPost ("CreateDelivery")]
+        //[ProducesResponseType(typeof(IEnumerable<CreateDeliveryDTO>), 200)]
+        public async Task<ActionResult> CreateAsync(CreateDeliveryModel createDeliveryModel)
         {
-            bool result = await _deliveryRepository.AddAsync(delivery, cancellationToken);
+            var createDeliveryDTO = _mapper.Map<CreateDeliveryDTO>(createDeliveryModel);
+            var createDeliveryGuid = await _deliveryRepository.CreateAsync(createDeliveryDTO);
 
-            return result ? NoContent() : Created();
+            return Created("", createDeliveryModel);
         }
 
-        [HttpPatch]
-        [ProducesResponseType(typeof(IEnumerable<UpdateDeliveryDTO>), 200)]
-        public async Task<ActionResult> Update(Delivery delivery, CancellationToken cancellationToken)
+        [HttpPut("UpdateDelivery")]
+        //[ProducesResponseType(typeof(IEnumerable<UpdateDeliveryDTO>), 200)]
+        public async Task<ActionResult> UpdateAsync(Guid id, UpdateDeliveryModel updateDeliveryModel)
         {
-            OperationResults result = await _deliveryRepository.UpdateAsync(delivery,);
+            var updateDeliveryDTO = _mapper.Map<UpdateDeliveryDTO>(updateDeliveryModel);
+            bool isUpdated = await _deliveryRepository.TryUpdateAsync(id, updateDeliveryDTO);
 
-            return result switch
-            {
-                OperationResults.NoEntityFound => NotFound(),
-                OperationResults.Success => NoContent(),
-                OperationResults.NoChangesApplied => StatusCode(500, $"Failed to save the {nameof(Delivery)} to the database."),
-                _ => throw new NotImplementedException(),
-            };
+            return isUpdated ? Ok() : NotFound($"Delivery with {id} not found");            
         }
 
-        [HttpDelete]
+        [HttpDelete("DeleteDelivery")]
         public async Task<ActionResult> Delete(Guid guid)
         {
             OperationResults result = await _deliveryRepository.DeleteAsync(guid);

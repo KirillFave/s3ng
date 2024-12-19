@@ -1,10 +1,16 @@
 ﻿using DeliveryService.Repositories;
 using DeliveryService.Domain.Domain.Entities;
+using DeliveryService.DTO;
 
 namespace DeliveryService.Repositories;
 
     public interface IDeliveryRepository    
 {
+    /// <summary>
+    /// Создать доставку.
+    /// </summary>
+    /// <param name="creatingProductDto"> ДТО создаваемого товара. </param>
+    public Task<Guid> CreateAsync(CreateDeliveryDTO creatingDeliveryDTO);
     /// <summary>
     /// Запросить все сущности в базе.
     /// </summary>
@@ -19,6 +25,12 @@ namespace DeliveryService.Repositories;
     /// <param name="cancellationToken"></param>
     /// <returns> Cущность. </returns>
     Task<Delivery> GetByIdAsync(Guid id, CancellationToken cancellationToken);
+    /// <summary>
+    /// Изменить товар по id.
+    /// </summary>
+    /// <param name="id"> Иентификатор товара. </param>
+    /// <param name="updatingProductDto"> ДТО редактируемого товара. </param>
+    public Task<bool> TryUpdateAsync(Guid id, UpdateDeliveryDTO updateDeliveryDTO);
 
     /// <summary>
     /// Получить сущность по AuthenticationId.
