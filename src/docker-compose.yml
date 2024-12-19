@@ -74,6 +74,33 @@ services:
     networks: 
       - app-network
 
+  deliveryservice:
+    image: ${DOCKER_REGISTRY-}deliveryservice
+    build:
+      context: .
+      dockerfile: Services/DeliveryService/Dockerfile
+    ports:
+      - "50055:50055"
+    networks:
+      - app-network
+    depends_on:
+      - deliverypostgres
+
+  deliverypostgres:
+    image: postgres:latest
+    environment:
+      POSTGRES_DB: ${DELIVERY_SERVICE_POSTGRES_DB}
+      POSTGRES_USER: ${DELIVERY_SERVICE_POSTGRES_USER}
+      POSTGRES_PASSWORD: ${DELIVERY_SERVICE_POSTGRES_PASSWORD}
+    expose:
+      - "5436"
+    ports:
+      - "5436:5436"
+    volumes:
+      - postgres_data:/var/lib/postgresql/data
+    networks:
+      - app-network 
+
 volumes:
   pg-data:
   pg-admin:
