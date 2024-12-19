@@ -3,17 +3,17 @@ FROM mcr.microsoft.com/dotnet/aspnet:8.0 AS base
 USER app
 WORKDIR /app
 EXPOSE 8090
-#EXPOSE 8091
+EXPOSE 8091
 
 
 # Этот этап используется для сборки проекта службы
 FROM mcr.microsoft.com/dotnet/sdk:8.0 AS build
 ARG BUILD_CONFIGURATION=Release
 WORKDIR /src
-COPY ["DeliveryService/DeliveryService.csproj", "DeliveryService/"]
-RUN dotnet restore "./DeliveryService/DeliveryService.csproj"
+COPY ["DeliveryService.csproj", "."]
+RUN dotnet restore "./DeliveryService.csproj"
 COPY . .
-WORKDIR "/src/DeliveryService"
+WORKDIR "/src/."
 RUN dotnet build "./DeliveryService.csproj" -c $BUILD_CONFIGURATION -o /app/build
 
 # Этот этап используется для публикации проекта службы, который будет скопирован на последний этап

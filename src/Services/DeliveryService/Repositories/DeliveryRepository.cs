@@ -157,7 +157,6 @@ namespace DeliveryService.Repositories
 
         }
 
-
         #endregion
 
         #region Delete
@@ -176,6 +175,7 @@ namespace DeliveryService.Repositories
             }
 
             _entityDeliverySet.Remove(deleteEntity);
+            int stateEntriesWritten = await Context.SaveChangesAsync();
             return true;
         }
 
