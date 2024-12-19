@@ -214,15 +214,8 @@ namespace DeliveryService.Repositories
         public async Task SaveChangesAsync(CancellationToken cancellationToken = default)
         {
             await Context.SaveChangesAsync(cancellationToken);
-        }        
-
-        public Task<OperationResults> DeleteAsync(Guid guid)
-        {
-            throw new NotImplementedException();
-        }
-
-       
-
+        }         
+      
         #endregion
     }
 }
