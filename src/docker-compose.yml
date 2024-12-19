@@ -23,7 +23,9 @@ services:
     image: ${DOCKER_REGISTRY-}userservice
     build:
       context: .
+
       dockerfile: Services/UserService/UserService.Application/Dockerfile
+
     ports:
       - "5005:5005"
     networks:
@@ -61,7 +63,7 @@ services:
     networks: 
       - app-network
     command: -p 5435
-
+  
   iam_service:
     image: ${DOCKER_REGISTRY-}iam_service
     environment:
@@ -73,6 +75,33 @@ services:
       - "50051:50051"
     networks: 
       - app-network
+      
+  deliveryservice:
+    image: ${DOCKER_REGISTRY-}deliveryservice
+    build:
+      context: .
+      dockerfile: Services/DeliveryService/Dockerfile
+    ports:
+      - "50055:50055"
+    networks:
+      - app-network
+    depends_on:
+      - deliverypostgres
+
+  deliverypostgres:
+    image: postgres:latest
+    environment:
+      POSTGRES_DB: ${DELIVERY_SERVICE_POSTGRES_DB}
+      POSTGRES_USER: ${DELIVERY_SERVICE_POSTGRES_USER}
+      POSTGRES_PASSWORD: ${DELIVERY_SERVICE_POSTGRES_PASSWORD}
+    expose:
+      - "5436"
+    ports:
+      - "5436:5436"
+    volumes:
+      - postgres_delivery_data:/var/lib/postgresql/data
+    networks:
+      - app-network 
 
   seq:
     image: datalust/seq:latest
@@ -90,5 +119,6 @@ volumes:
   pg-data:
   pg-admin:
     driver: local
-  postgres_data:
+  postgres_data: 
   seq-data:
+  postgres_delivery_data:
