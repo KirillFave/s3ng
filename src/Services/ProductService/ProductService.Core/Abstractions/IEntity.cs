@@ -1,4 +1,4 @@
-namespace s3ng.ProductService.Core.Abstractions
+namespace ProductService.Core.Abstractions
 {
     /// <summary>
     /// Интерфейс сущности с идентификатором.

@@ -1,6 +1,6 @@
-﻿using s3ng.ProductService.Core.Abstractions;
+using ProductService.Core.Abstractions;
 
-namespace s3ng.ProductService.Core.Domain.Managment
+namespace ProductService.Core.Domain.Managment
 {
     public class Product : IEntity<Guid>
     {

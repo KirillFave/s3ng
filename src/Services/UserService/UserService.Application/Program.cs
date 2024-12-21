@@ -29,9 +29,8 @@ builder.WebHost.ConfigureKestrel(options =>
 {   //TODO
     options.ListenAnyIP(5005, listenOptions => listenOptions.Protocols = HttpProtocols.Http2);
 });
-;
 
-builder.Host.UseSerilog(LogerHelper.AddLogger());
+builder.Host.UseSerilog(LoggerHelper.AddLogger(configuration));
 
 var app = builder.Build();
 

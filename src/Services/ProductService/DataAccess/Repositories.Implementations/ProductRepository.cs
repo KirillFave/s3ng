@@ -1,9 +1,9 @@
-﻿using Microsoft.EntityFrameworkCore;
-using s3ng.ProductService.Core.Domain.Managment;
-using s3ng.ProductService.DataAccess.EntityFramework;
-using s3ng.ProductService.Services.Repositories.Abstractions;
+using Microsoft.EntityFrameworkCore;
+using ProductService.Core.Domain.Managment;
+using ProductService.DataAccess.EntityFramework;
+using ProductService.Services.Repositories.Abstractions;
 
-namespace s3ng.ProductService.DataAccess.Repositories.Implementations
+namespace ProductService.DataAccess.Repositories.Implementations
 {
     public class ProductRepository : IProductRepository
     {

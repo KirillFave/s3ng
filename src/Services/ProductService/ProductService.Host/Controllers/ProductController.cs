@@ -1,8 +1,7 @@
 using AutoMapper;
 using Microsoft.AspNetCore.Mvc;
-using s3ng.ProductService.Services.Abstractions;
-using s3ng.ProductService.Services.Contracts.Product;
-using s3ng.ProductService.Host.Models.Product;
+using ProductService.Services.Abstractions;
+using SharedLibrary.ProductService.Models;
 
 namespace ProductService.Host.Controllers
 {
@@ -18,37 +17,31 @@ namespace ProductService.Host.Controllers
             _mapper = mapper;
         }
 
-        [HttpGet("GetProduct")]
+        [HttpGet("/api/product/{id}")]
         public async Task<IActionResult> GetAsync(Guid id)
         {
             var productModel = _mapper.Map<ProductModel>(await _productService.GetByIdAsync(id));
-
             return productModel is null ? NotFound() : Ok(productModel);
         }
 
-        [HttpPost("CreateProduct")]
+        [HttpPost("/api/create-product")]
         public async Task<IActionResult> CreateAsync(CreatingProductModel creatingProductModel)
         {
-            var creatingProductDto = _mapper.Map<CreatingProductDto>(creatingProductModel);
-            var createdProductGuid = await _productService.CreateAsync(creatingProductDto);
-
+            var createdProductGuid = await _productService.CreateAsync(creatingProductModel);
             return Created("", createdProductGuid);
         }
 
-        [HttpPut("UpdateProduct")]
+        [HttpPut("/api/update-product/{id}")]
         public async Task<IActionResult> UpdateAsync(Guid id, UpdatingProductModel updatingProductModel)
         {
-            var updatingProductDto = _mapper.Map<UpdatingProductDto>(updatingProductModel);
-            bool isUpdated = await _productService.TryUpdateAsync(id, updatingProductDto);
-
-            return isUpdated ? Ok() : NotFound($"Товар с идентфикатором {id} не найден");
+            bool isUpdated = await _productService.TryUpdateAsync(id, updatingProductModel);
+            return isUpdated ? Ok() : NotFound($"РџСЂРѕРґСѓРєС‚ СЃ {id} РЅРµ РЅР°Р№РґРµРЅ");
         }
 
-        [HttpDelete("DeleteProduct")]
+        [HttpDelete("/api/delete-product/{id}")]
         public async Task<IActionResult> DeleteAsync(Guid id)
         {
             bool isDeleted = await _productService.TryDeleteAsync(id);
-
             return isDeleted ? Ok() : NotFound();
         }
     }
