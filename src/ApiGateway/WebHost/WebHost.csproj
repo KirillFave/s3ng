@@ -5,7 +5,7 @@
     <Nullable>enable</Nullable>
     <ImplicitUsings>enable</ImplicitUsings>
     <DockerDefaultTargetOS>Linux</DockerDefaultTargetOS>
-    <DockerfileContext>.</DockerfileContext>
+    <DockerfileContext>..\..</DockerfileContext>
     <UserSecretsId>2937f3ce-7e97-4fdf-b652-2ad33042ee57</UserSecretsId>
   </PropertyGroup>
 
@@ -20,6 +20,10 @@
 	<PackageReference Include="Grpc.AspNetCore" Version="2.66.0" />
 	<PackageReference Include="Grpc.Net.Client" Version="2.66.0" />
 	<PackageReference Include="System.IdentityModel.Tokens.Jwt" Version="8.3.0" />
+  </ItemGroup>
+
+  <ItemGroup>
+    <ProjectReference Include="..\..\SharedLibrary\SharedLibrary\SharedLibrary.csproj" />
   </ItemGroup>
 
   <ItemGroup>

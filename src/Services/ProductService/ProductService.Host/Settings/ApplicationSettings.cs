@@ -1,4 +1,4 @@
-﻿namespace s3ng.ProductService.Host.Settings
+namespace ProductService.Host.Settings
 {
     public class ApplicationSettings
     {

@@ -2,7 +2,7 @@ using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
 
-namespace s3ng.ProductService.DataAccess.EntityFramework
+namespace ProductService.DataAccess.EntityFramework
 {
     public static class EntityFrameworkInstaller
     {

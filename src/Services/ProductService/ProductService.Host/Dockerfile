@@ -9,12 +9,12 @@ FROM mcr.microsoft.com/dotnet/sdk:8.0 AS build
 ARG BUILD_CONFIGURATION=Release
 WORKDIR /src
 COPY ["Services/ProductService/ProductService.Host/ProductService.Host.csproj", "Services/ProductService/ProductService.Host/"]
+COPY ["SharedLibrary/SharedLibrary/SharedLibrary.csproj", "SharedLibrary/SharedLibrary/"]
 COPY ["Services/ProductService/DataAccess/ProductService.EntityFramework/ProductService.EntityFramework.csproj", "Services/ProductService/DataAccess/ProductService.EntityFramework/"]
 COPY ["Services/ProductService/ProductService.Core/ProductService.Core.csproj", "Services/ProductService/ProductService.Core/"]
 COPY ["Services/ProductService/DataAccess/Repositories.Implementations/ProductService.Repositories.Implementstions.csproj", "Services/ProductService/DataAccess/Repositories.Implementations/"]
 COPY ["Services/ProductService/Services/Repositories.Abstractions/ProductService.Repositories.Abstractions.csproj", "Services/ProductService/Services/Repositories.Abstractions/"]
 COPY ["Services/ProductService/Services/ProductService/ProductService.ProductService.csproj", "Services/ProductService/Services/ProductService/"]
-COPY ["Services/ProductService/Services/Contracts/ProductService.Contracts.csproj", "Services/ProductService/Services/Contracts/"]
 COPY ["Services/ProductService/Services/Service.Abstractions/ProductService.Services.Abstractions.csproj", "Services/ProductService/Services/Service.Abstractions/"]
 RUN dotnet restore "./Services/ProductService/ProductService.Host/./ProductService.Host.csproj"
 COPY . .

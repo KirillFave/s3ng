@@ -3,7 +3,7 @@ using Serilog;
 using ILogger = Serilog.ILogger;
 using System.Text.Json;
 
-namespace s3ng.ProductService.Host;
+namespace ProductService.Host;
 
 public static class LoggerHelper
 {

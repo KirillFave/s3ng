@@ -1,14 +1,16 @@
-using s3ng.ProductService.DataAccess.Repositories.Implementations;
-using s3ng.ProductService.DataAccess.EntityFramework;
-using s3ng.ProductService.Services.Abstractions;
-using s3ng.ProductService.Services.Repositories.Abstractions;
-using s3ng.ProductService.Host.Settings;
-using s3ng.ProductService.Host;
+using ProductService.DataAccess.Repositories.Implementations;
+using ProductService.DataAccess.EntityFramework;
+using ProductService.Services.Abstractions;
+using ProductService.Services.Repositories.Abstractions;
+using ProductService.Host.Settings;
+using ProductService.Host;
 using AutoMapper;
 using Serilog;
 using DotNetEnv;
 using DotNetEnv.Configuration;
 using Microsoft.EntityFrameworkCore;
+using Microsoft.AspNetCore.Server.Kestrel.Core;
+using ProductService.ProductService.Mapping;
 
 public class Program
 {
@@ -18,17 +20,15 @@ public class Program
         var applicationSettings = builder.Configuration.Get<ApplicationSettings>();
 
         builder.Configuration.AddDotNetEnvMulti([".env"], LoadOptions.TraversePath());
-        // Add AutoMappers to the container
+
         builder.Services.AddSingleton<IMapper>(new Mapper(GetMapperConfiguration()));
 
-        // Add DbContexts to the container
         builder.Services.ConfigureContext(builder.Configuration);
 
-        // Add services to the container
         builder.Services.AddSingleton(applicationSettings);
         builder.Services.AddSingleton((IConfigurationRoot)builder.Configuration);
 
-        builder.Services.AddTransient<IProductService, s3ng.ProductService.Services.ProductService>();
+        builder.Services.AddTransient<IProductService, ProductService.Services.ProductService>();
         builder.Services.AddTransient<IProductRepository, ProductRepository>();
 
         builder.Services.AddControllers();
@@ -37,6 +37,11 @@ public class Program
         builder.Services.AddSwaggerGen();
 
         builder.Host.UseSerilog(LoggerHelper.AddLogger(builder.Configuration));
+
+        builder.WebHost.ConfigureKestrel(o =>
+        {
+            o.ListenAnyIP(50052, listenOptions => listenOptions.Protocols = HttpProtocols.Http1AndHttp2AndHttp3);
+        });
 
         var app = builder.Build();
 
@@ -73,8 +78,7 @@ public class Program
     {
         var configuration = new MapperConfiguration(config =>
         {
-            config.AddProfile<s3ng.ProductService.Host.Mapping.ProductMappingsProfile>();
-            config.AddProfile<s3ng.ProductService.ProductService.Mapping.ProductMappingsProfile>();
+            config.AddProfile<ProductMappingsProfile>();
         });
 
         configuration.AssertConfigurationIsValid();

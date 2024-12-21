@@ -1,4 +1,4 @@
-﻿namespace s3ng.ProductService.Host.Models.Product
+namespace SharedLibrary.ProductService.Models
 {
     public class UpdatingProductModel
     {

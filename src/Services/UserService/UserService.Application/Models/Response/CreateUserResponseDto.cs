@@ -1,9 +1,10 @@
-﻿using UserService.Application.Models.Results;
+using SharedLibrary.UserService.Models;
+using UserService.Application.Models.Results;
 
 namespace UserService.Application.Models.Response;
 
 public class CreateUserResponseDto
 {
-    public UserDto User { get; set; }
+    public UserModel User { get; set; }
     public CreateUserResultModel Result { get; set; }
 }

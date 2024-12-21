@@ -1,6 +1,6 @@
 using AutoMapper;
 using Microsoft.AspNetCore.Mvc;
-using WebHost.Dto.User;
+using SharedLibrary.UserService.Models;
 using static CreateUserResponse.Types;
 using static DeleteUserResponse.Types;
 using static GetUserResponse.Types;
@@ -28,7 +28,7 @@ public class UserController : ControllerBase
     /// Получение юзера по ID
     /// </summary>
     [HttpGet("get{id}")]
-    [ProducesResponseType<UserDto>(StatusCodes.Status200OK)]
+    [ProducesResponseType<UserModel>(StatusCodes.Status200OK)]
     [ProducesResponseType(StatusCodes.Status400BadRequest)]
     public async Task<IActionResult> GetUserAsync(string id)
     {
@@ -41,7 +41,7 @@ public class UserController : ControllerBase
         if (result.Result != GetUserResult.Success)
             return new BadRequestObjectResult(result.Result);
 
-        var userInfo = _mapper.Map<UserDto>(result.User);
+        var userInfo = _mapper.Map<UserModel>(result.User);
         return new OkObjectResult(userInfo);
     }
 
@@ -51,7 +51,7 @@ public class UserController : ControllerBase
     [HttpPost("create")]
     [ProducesResponseType<Guid>(StatusCodes.Status200OK)]
     [ProducesResponseType(StatusCodes.Status400BadRequest)]
-    public async Task<IActionResult> CreateUserAsync(CreateUserRequestDto request)
+    public async Task<IActionResult> CreateUserAsync(SharedLibrary.UserService.Models.CreateUserRequestModel request)
     {
         _logger.Information($"Api method CreateUserAsync was called with name: {request.FirstName}, {request.LastName}");
         var createUserRequest = _mapper.Map<CreateUserRequest>(request);
@@ -69,9 +69,9 @@ public class UserController : ControllerBase
     /// Редактирование информации о юзере
     /// </summary>
     [HttpPut("edit")]
-    [ProducesResponseType<UserDto>(StatusCodes.Status200OK)]
+    [ProducesResponseType<UserModel>(StatusCodes.Status200OK)]
     [ProducesResponseType(StatusCodes.Status400BadRequest)]
-    public async Task<IActionResult> UpdateUserAsync(UpdateUserRequestDto request)
+    public async Task<IActionResult> UpdateUserAsync(UpdateUserRequestModel request)
     {
         _logger.Information($"Api method UpdateUserAsync was called");
         var updateUserRequest = _mapper.Map<UpdateUserRequest>(request);
@@ -82,7 +82,7 @@ public class UserController : ControllerBase
         if (result.Result != UpdateUserResult.Success)
             return new BadRequestObjectResult(result.Result);
 
-        var userInfo = _mapper.Map<UserDto>(result.User);
+        var userInfo = _mapper.Map<UserModel>(result.User);
         return new OkObjectResult(userInfo);
     }
 

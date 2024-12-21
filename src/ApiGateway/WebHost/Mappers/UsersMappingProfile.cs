@@ -1,6 +1,6 @@
 using AutoMapper;
 using Google.Protobuf.WellKnownTypes;
-using WebHost.Dto.User;
+using SharedLibrary.UserService.Models;
 
 namespace WebHost.Mappers
 {
@@ -8,40 +8,40 @@ namespace WebHost.Mappers
     {
         public UsersMappingProfile()
         {
-            CreateMap<UpdateUserRequestDto, UpdateUserRequest>();
-            CreateMap<CreateUserRequestDto, CreateUserRequest>();
+            CreateMap<UpdateUserRequestModel, UpdateUserRequest>();
+            CreateMap<CreateUserRequestModel, CreateUserRequest>();
 
-            CreateMap<UserDto, UserInfo>().ReverseMap();
+            CreateMap<UserModel, UserInfo>().ReverseMap();
 
             CreateMap<Timestamp, DateTime>().ConvertUsing(src => src.ToDateTime());
             CreateMap<DateTime, Timestamp>().ConvertUsing(src => Timestamp.FromDateTime(src));
 
-            CreateMap<RoleDto, Role>().ConvertUsing(src => Converter.MapRoleDtoToRole(src));
-            CreateMap<Role, RoleDto>().ConvertUsing(src => Converter.MapRoleToRoleDto(src));
+            CreateMap<RoleModel, Role>().ConvertUsing(src => Converter.MapRoleDtoToRole(src));
+            CreateMap<Role, RoleModel>().ConvertUsing(src => Converter.MapRoleToRoleDto(src));
         }
     }
 
     public static class Converter
     {
-        public static Role MapRoleDtoToRole(RoleDto role)
+        public static Role MapRoleDtoToRole(RoleModel role)
         {
             return role switch
             {
-                RoleDto.Buyer => Role.Buyer,
-                RoleDto.Seller => Role.Seller,
-                RoleDto.Moderator => Role.Moderator,
+                RoleModel.Buyer => Role.Buyer,
+                RoleModel.Seller => Role.Seller,
+                RoleModel.Moderator => Role.Moderator,
                 _ => Role.Unspecified,
             };
         }
 
-        public static RoleDto MapRoleToRoleDto(Role role)
+        public static RoleModel MapRoleToRoleDto(Role role)
         {
             return role switch
             {
-                Role.Buyer => RoleDto.Buyer,
-                Role.Seller => RoleDto.Seller,
-                Role.Moderator => RoleDto.Moderator,
-                _ => RoleDto.Unspecified,
+                Role.Buyer => RoleModel.Buyer,
+                Role.Seller => RoleModel.Seller,
+                Role.Moderator => RoleModel.Moderator,
+                _ => RoleModel.Unspecified,
             };
         }
     }

@@ -1,4 +1,5 @@
-﻿using MediatR;
+using MediatR;
+using SharedLibrary.UserService.Models;
 using UserService.Application.Models.Response;
 
 namespace UserService.Application.Models.Requests;
@@ -10,5 +11,5 @@ public class CreateUserRequestDto : IRequest<CreateUserResponseDto>
     public required string LastName { get; set; }
     public long PhoneNumber { get; set; }
     public required string Address { get; set; }
-    public required RoleDto Role { get; set; }
+    public required RoleModel Role { get; set; }
 }

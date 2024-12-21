@@ -1,8 +1,8 @@
-﻿using Microsoft.EntityFrameworkCore;
+using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.Logging;
-using s3ng.ProductService.Core.Domain.Managment;
+using ProductService.Core.Domain.Managment;
 
-namespace s3ng.ProductService.DataAccess.EntityFramework
+namespace ProductService.DataAccess.EntityFramework
 {
     /// <summary>
     /// Контекст.

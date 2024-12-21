@@ -1,6 +1,6 @@
-﻿using s3ng.ProductService.Services.Contracts.Product;
+using SharedLibrary.ProductService.Models;
 
-namespace s3ng.ProductService.Services.Abstractions
+namespace ProductService.Services.Abstractions
 {
     public interface IProductService
     {
@@ -8,21 +8,21 @@ namespace s3ng.ProductService.Services.Abstractions
         /// Создать товар.
         /// </summary>
         /// <param name="creatingProductDto"> ДТО создаваемого товара. </param>
-        public Task<Guid> CreateAsync(CreatingProductDto creatingProductDto);
+        public Task<Guid> CreateAsync(CreatingProductModel creatingProductDto);
 
         /// <summary>
         /// Получить товар по id.
         /// </summary>
         /// <param name="id"> Идентификатор товара. </param>
         /// <returns> ДТО товара.</returns>
-        public Task<ProductDto> GetByIdAsync(Guid id);
+        public Task<ProductModel> GetByIdAsync(Guid id);
 
         /// <summary>
         /// Изменить товар по id.
         /// </summary>
         /// <param name="id"> Иентификатор товара. </param>
         /// <param name="updatingProductDto"> ДТО редактируемого товара. </param>
-        public Task<bool> TryUpdateAsync(Guid id, UpdatingProductDto updatingProductDto);
+        public Task<bool> TryUpdateAsync(Guid id, UpdatingProductModel updatingProductDto);
 
         /// <summary>
         /// Удалить товар.

@@ -2,8 +2,10 @@ using Microsoft.AspNetCore.Diagnostics;
 using Microsoft.AspNetCore.Server.Kestrel.Core;
 using Serilog;
 using WebHost;
+using WebHost.Controllers;
 using WebHost.IAMConfiguration;
 using WebHost.Mappers;
+using WebHost.ProductServiceClient;
 using WebHost.UserServiceClient;
 
 var builder = WebApplication.CreateBuilder(args);
@@ -28,11 +30,7 @@ builder.Services.AddJwtAuthentication(configuration);
 //Сервисы
 builder.Services.AddIAMServiceClient(configuration);
 builder.Services.AddUserServiceClient(configuration);
-
-builder.Services.AddHttpClient("ProductService", client =>
-{
-    client.BaseAddress = new Uri("http://product_service:50052");
-});
+builder.Services.AddProductServiceClient(configuration);
 
 builder.WebHost.ConfigureKestrel(o =>
 {
@@ -62,7 +60,7 @@ app.UseExceptionHandler(appBuilder =>
         {
             if (app.Services.GetService<Serilog.ILogger>() is { } logger)
             {
-                logger.Error(exceptionHandlerFeature.Error, "UseExceptionHandler поймал ошибку в UserService");
+                logger.Error(exceptionHandlerFeature.Error, "UseExceptionHandler поймал ошибку в WebHost");
             }
         }
         return Task.CompletedTask;
