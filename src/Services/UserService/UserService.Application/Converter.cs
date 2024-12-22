@@ -1,33 +1,34 @@
-﻿using UserService.Domain.Entities;
+using UserService.Domain.Entities;
 using UserService.Application.Models;
 using UserService.Application.Models.Results;
 using static CreateUserResponse.Types;
 using static DeleteUserResponse.Types;
 using static GetUserResponse.Types;
 using static UpdateUserResponse.Types;
+using SharedLibrary.UserService.Models;
 
 namespace UserService.Application;
 
 public static class Converter
 {
-    public static RoleDto ConvertRoleToModel(Role role)
+    public static RoleModel ConvertRoleToModel(Role role)
     {
         return role switch
         {
-            Role.Buyer => RoleDto.Buyer,
-            Role.Seller => RoleDto.Seller,
-            Role.Moderator => RoleDto.Moderator,
-            _ => RoleDto.Unspecified,
+            Role.Buyer => RoleModel.Buyer,
+            Role.Seller => RoleModel.Seller,
+            Role.Moderator => RoleModel.Moderator,
+            _ => RoleModel.Unspecified,
         };
     }
 
-    public static Role ConvertRoleToProto(RoleDto role)
+    public static Role ConvertRoleToProto(RoleModel role)
     {
         return role switch
         {
-            RoleDto.Buyer => Role.Buyer,
-            RoleDto.Seller => Role.Seller,
-            RoleDto.Moderator => Role.Moderator,
+            RoleModel.Buyer => Role.Buyer,
+            RoleModel.Seller => Role.Seller,
+            RoleModel.Moderator => Role.Moderator,
             _ => Role.Unspecified,
         };
     }
@@ -75,13 +76,13 @@ public static class Converter
         };
     }
 
-    public static RoleEntity ConvertRoleToEntity(RoleDto role)
+    public static RoleEntity ConvertRoleToEntity(RoleModel role)
     {
         return role switch
         {
-            RoleDto.Buyer => RoleEntity.Buyer,
-            RoleDto.Seller => RoleEntity.Seller,
-            RoleDto.Moderator => RoleEntity.Moderator,
+            RoleModel.Buyer => RoleEntity.Buyer,
+            RoleModel.Seller => RoleEntity.Seller,
+            RoleModel.Moderator => RoleEntity.Moderator,
             _ => RoleEntity.Unspecified,
         };
     }

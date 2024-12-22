@@ -1,8 +1,8 @@
 using AutoMapper;
-using s3ng.ProductService.Services.Contracts.Product;
-using s3ng.ProductService.Core.Domain.Managment;
+using ProductService.Core.Domain.Managment;
+using SharedLibrary.ProductService.Models;
 
-namespace s3ng.ProductService.ProductService.Mapping
+namespace ProductService.ProductService.Mapping
 {
     /// <summary>
     /// Профиль автомаппера для сущности товара.
@@ -11,15 +11,15 @@ namespace s3ng.ProductService.ProductService.Mapping
     {
         public ProductMappingsProfile()
         {
-            CreateMap<Product, ProductDto>();
+            CreateMap<Product, ProductModel>();
 
-            CreateMap<CreatingProductDto, Product>()
+            CreateMap<CreatingProductModel, Product>()
                 .ForMember(product => product.Id, map => map.Ignore())
                 .ForMember(product => product.TimeCreated, map => map.Ignore())
                 .ForMember(product => product.TimeModified, map => map.Ignore())
                 .ForMember(product => product.IsDeleted, map => map.Ignore());
 
-            CreateMap<UpdatingProductDto, Product>()
+            CreateMap<UpdatingProductModel, Product>()
                 .ForMember(product => product.Id, map => map.Ignore())
                 .ForMember(product => product.Name, map => map.Ignore())
                 .ForMember(product => product.TimeCreated, map => map.Ignore())

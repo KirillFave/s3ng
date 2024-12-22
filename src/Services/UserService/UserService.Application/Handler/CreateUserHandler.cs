@@ -2,11 +2,12 @@ using AutoMapper;
 using MediatR;
 using UserService.Domain.Entities;
 using UserService.Infrastructure.Repository;
-using UserService.Application.Models;
 using UserService.Application.Models.Requests;
 using UserService.Application.Models.Response;
 using UserService.Application.Models.Results;
 using ILogger = Serilog.ILogger;
+using SharedLibrary.UserService.Models;
+using Serilog;
 
 namespace UserService.Application.Handler;
 
@@ -20,7 +21,7 @@ public class CreateUserHandler : IRequestHandler<CreateUserRequestDto, CreateUse
     {
         _repository = repository;
         _mapper = mapper;
-        _logger = logger;
+        _logger = logger.ForContext<CreateUserHandler>();
     }
 
     public async Task<CreateUserResponseDto> Handle(CreateUserRequestDto request, CancellationToken cancellationToken)
@@ -45,7 +46,7 @@ public class CreateUserHandler : IRequestHandler<CreateUserRequestDto, CreateUse
             await _repository.SaveChangesAsync(cancellationToken);
             _logger.Information("Успешно отработали запрос CreateUserRequest");
 
-            var userDto = _mapper.Map<UserDto>(newUser);
+            var userDto = _mapper.Map<UserModel>(newUser);
             createUserResponseDto.User = userDto;
             createUserResponseDto.Result = CreateUserResultModel.Success;
             return createUserResponseDto;

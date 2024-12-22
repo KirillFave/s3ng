@@ -11,16 +11,18 @@ namespace WebHost.IAMConfiguration
     {
         public static void AddJwtAuthentication(this IServiceCollection services, IConfiguration configuration)
         {
-            var jwtSection = configuration.GetSection(JwtOptions.Jwt);
-            var jwtOptions = jwtSection.Get<JwtOptions>();
-            if (jwtOptions is null)
-                throw new ArgumentNullException(nameof(jwtOptions));
-
-            services.AddAuthentication(x =>
+            try
             {
-                x.DefaultAuthenticateScheme = JwtBearerDefaults.AuthenticationScheme;
-                x.DefaultChallengeScheme = JwtBearerDefaults.AuthenticationScheme;
-            })
+                var jwtSection = configuration.GetSection(JwtOptions.Jwt);
+                var jwtOptions = jwtSection.Get<JwtOptions>();
+                if (jwtOptions is null)
+                    return;
+
+                services.AddAuthentication(x =>
+                {
+                    x.DefaultAuthenticateScheme = JwtBearerDefaults.AuthenticationScheme;
+                    x.DefaultChallengeScheme = JwtBearerDefaults.AuthenticationScheme;
+                })
             .AddJwtBearer(x =>
             {
                 x.RequireHttpsMetadata = false;
@@ -44,7 +46,12 @@ namespace WebHost.IAMConfiguration
                 };
             });
 
-            services.AddAuthorization();
+                services.AddAuthorization();
+            }
+            catch
+            {
+
+            }
         }
     }
 }

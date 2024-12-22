@@ -1,4 +1,4 @@
-﻿using MediatR;
+using MediatR;
 using UserService.Application.Models.Response;
 
 namespace UserService.Application.Models.Requests
@@ -9,6 +9,6 @@ namespace UserService.Application.Models.Requests
         public string FirstName { get; set; }
         public string LastName { get; set; }
         public string Address { get; set; }
-        public long PhoneNumber { get; set; }
+        public long Phone { get; set; }
     }
 }

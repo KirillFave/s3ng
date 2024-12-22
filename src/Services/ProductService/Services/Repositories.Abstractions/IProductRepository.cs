@@ -1,6 +1,6 @@
-﻿using s3ng.ProductService.Core.Domain.Managment;
+using ProductService.Core.Domain.Managment;
 
-namespace s3ng.ProductService.Services.Repositories.Abstractions
+namespace ProductService.Services.Repositories.Abstractions
 {
     public interface IProductRepository
     {

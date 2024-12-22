@@ -107,7 +107,7 @@ public class UpdateUserHandlerTests : IClassFixture<UserTestFixture>
         result.User!.Address.Should().Be(newUserEntity.Address);
         result.User!.FirstName.Should().Be(newUserEntity.FirstName);
         result.User!.LastName.Should().Be(newUserEntity.LastName);
-        result.User!.PhoneNumber.Should().Be(newUserEntity.Phone);
+        result.User!.Phone.Should().Be(newUserEntity.Phone);
         result.Result.Should().Be(UpdateUserResultModel.Success);
     }
 
@@ -116,7 +116,7 @@ public class UpdateUserHandlerTests : IClassFixture<UserTestFixture>
         user.FirstName = string.IsNullOrEmpty(dto.FirstName) ? user.FirstName : dto.FirstName;
         user.LastName = string.IsNullOrEmpty(dto.LastName) ? user.LastName : dto.LastName;
         user.Address = string.IsNullOrEmpty(dto.Address) ? user.Address : dto.Address;
-        user.Phone = dto.PhoneNumber > 0 ? dto.PhoneNumber : user.Phone;
+        user.Phone = dto.Phone > 0 ? dto.Phone : user.Phone;
 
         return user;
     }
