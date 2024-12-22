@@ -19,7 +19,7 @@ public class GetUserByIdHandler : IRequestHandler<GetUserByIdRequestDto, GetUser
     {
         _repository = repository;
         _mapper = mapper;
-        _logger = logger;
+        _logger = logger.ForContext<GetUserByIdHandler>();
     }
 
     public async Task<GetUserResponseDto> Handle(GetUserByIdRequestDto request, CancellationToken cancellationToken)

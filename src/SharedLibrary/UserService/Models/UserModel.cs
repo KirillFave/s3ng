@@ -2,8 +2,8 @@ namespace SharedLibrary.UserService.Models
 {
     public class UserModel
     {
-        public required string Id { get; set; }
-        public required string AuthenticationId { get; set; }
+        public required Guid Id { get; set; }
+        public required Guid AuthenticationId { get; set; }
         public required string FirstName { get; set; }
         public required string LastName { get; set; }
         public long Phone { get; set; }

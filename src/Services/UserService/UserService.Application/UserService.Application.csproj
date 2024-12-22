@@ -32,7 +32,7 @@
   </ItemGroup>
 
   <ItemGroup>
-    <ProjectReference Include="..\..\..\SharedLibrary\SharedLibrary\SharedLibrary.csproj" />
+    <ProjectReference Include="..\..\..\SharedLibrary\SharedLibrary.csproj" />
     <ProjectReference Include="..\UserService.Domain\UserService.Domain.csproj" />
     <ProjectReference Include="..\UserService.Infrastructure\UserService.Infrastructure.csproj" />
   </ItemGroup>

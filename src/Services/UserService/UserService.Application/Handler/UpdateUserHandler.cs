@@ -20,7 +20,7 @@ public class UpdateUserHandler : IRequestHandler<UpdateUserRequestDto, UpdateUse
     {
         _repository = repository;
         _mapper = mapper;
-        _logger = logger;
+        _logger = logger.ForContext<UpdateUserHandler>();
     }
 
     public async Task<UpdateUserResponseDto> Handle(UpdateUserRequestDto request, CancellationToken cancellationToken)

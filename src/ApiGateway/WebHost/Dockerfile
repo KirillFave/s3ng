@@ -7,7 +7,7 @@ FROM mcr.microsoft.com/dotnet/sdk:8.0 AS build
 ARG BUILD_CONFIGURATION=Release
 WORKDIR /src
 COPY ["ApiGateway/WebHost/WebHost.csproj", "ApiGateway/WebHost/"]
-COPY ["SharedLibrary/SharedLibrary/SharedLibrary.csproj", "SharedLibrary/SharedLibrary/"]
+COPY ["SharedLibrary/SharedLibrary.csproj", "SharedLibrary/"]
 RUN dotnet restore "./ApiGateway/WebHost/./WebHost.csproj"
 COPY . .
 WORKDIR "/src/ApiGateway/WebHost"

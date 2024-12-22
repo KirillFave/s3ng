@@ -7,6 +7,7 @@ using UserService.Application.Models.Response;
 using UserService.Application.Models.Results;
 using ILogger = Serilog.ILogger;
 using SharedLibrary.UserService.Models;
+using Serilog;
 
 namespace UserService.Application.Handler;
 
@@ -20,7 +21,7 @@ public class CreateUserHandler : IRequestHandler<CreateUserRequestDto, CreateUse
     {
         _repository = repository;
         _mapper = mapper;
-        _logger = logger;
+        _logger = logger.ForContext<CreateUserHandler>();
     }
 
     public async Task<CreateUserResponseDto> Handle(CreateUserRequestDto request, CancellationToken cancellationToken)

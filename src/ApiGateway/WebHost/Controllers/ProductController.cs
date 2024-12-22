@@ -2,23 +2,27 @@ using Microsoft.AspNetCore.Mvc;
 using SharedLibrary.ProductService.Models;
 using System.Text;
 using System.Text.Json;
+using ILogger = Serilog.ILogger;
 
 namespace WebHost.Controllers
 {
     [ApiController]
-    [Route("api/[controller]")]
+    [Route("[controller]")]
     public class ProductController : ControllerBase
     {
         private readonly HttpClient _httpClient;
+        private readonly ILogger _logger;
 
-        public ProductController(IHttpClientFactory httpClientFactory)
+        public ProductController(IHttpClientFactory httpClientFactory, ILogger logger)
         {
             _httpClient = httpClientFactory.CreateClient("ProductService");
+            _logger = logger.ForContext<ProductController>();
         }
 
         [HttpGet("get/{id}")]
         public async Task<IActionResult> GetAsync(Guid id)
         {
+            _logger.Information($"Api method GetAsync was called with parameters {id}");
             var response = await _httpClient.GetAsync($"/api/product/{id}");
 
             if (response.IsSuccessStatusCode)
@@ -32,6 +36,7 @@ namespace WebHost.Controllers
         [HttpPost("create")]
         public async Task<IActionResult> CreateAsync(CreatingProductModel creatingProductModel)
         {
+            _logger.Information($"Api method CreateAsync was called with creatingProductModel: {creatingProductModel}");
             var content = new StringContent(JsonSerializer.Serialize(creatingProductModel), Encoding.UTF8, "application/json");
             var response = await _httpClient.PostAsync($"/api/create-product", content);
 
@@ -46,6 +51,7 @@ namespace WebHost.Controllers
         [HttpPut("update/{id}")]
         public async Task<IActionResult> UpdateAsync(Guid id, UpdatingProductModel updatingProductModel)
         {
+            _logger.Information($"Api method UpdateAsync was called");
             var content = new StringContent(JsonSerializer.Serialize(updatingProductModel), Encoding.UTF8, "application/json");
             var response = await _httpClient.PutAsync($"/api/update-product/{id}", content);
 
@@ -59,6 +65,7 @@ namespace WebHost.Controllers
         [HttpDelete("delete/{id}")]
         public async Task<IActionResult> DeleteAsync(Guid id)
         {
+            _logger.Information($"Api method DeleteAsync was called with parameters {id}");
             var response = await _httpClient.DeleteAsync($"/api/delete-product/{id}");
 
             if (response.IsSuccessStatusCode)

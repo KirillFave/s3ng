@@ -19,7 +19,7 @@ namespace IAM.Services
             , IHashCalculator hashCalculator) 
         {
             _databaseContext = dbContext;
-            _logger = logger;
+            _logger = logger.ForContext<RegistrationService>();
             _hashCalculator = hashCalculator;
         }
 

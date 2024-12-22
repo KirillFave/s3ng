@@ -59,8 +59,8 @@ public class UserServiceMappingProfile : Profile
             .ForMember(dest => dest.Result, opt => opt.MapFrom(src => Converter.ConvertDeleteUserResult(src.Result)));
 
         CreateMap<UserModel, User>()
-            .ForMember(dest => dest.Id, opt => opt.MapFrom(src => Guid.Parse(src.Id)))
-            .ForMember(dest => dest.AuthenticationId, opt => opt.MapFrom(src => Guid.Parse(src.AuthenticationId)))
+            .ForMember(dest => dest.Id, opt => opt.MapFrom(src => src.Id))
+            .ForMember(dest => dest.AuthenticationId, opt => opt.MapFrom(src => src.AuthenticationId))
             .ForMember(dest => dest.FirstName, opt => opt.MapFrom(src => src.FirstName))
             .ForMember(dest => dest.LastName, opt => opt.MapFrom(src => src.LastName))
             .ForMember(dest => dest.Phone, opt => opt.MapFrom(src => src.Phone))

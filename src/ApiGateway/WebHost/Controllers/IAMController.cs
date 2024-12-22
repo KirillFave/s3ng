@@ -21,10 +21,10 @@ namespace WebHost.Controllers
             , Authentication.AuthenticationClient authenticationClient
             , IMapper mapper)
         {
-            _logger = logger;
             _registrationClient = registrationClient;
             _authenticationClient = authenticationClient;
             _mapper = mapper;
+            _logger = logger.ForContext<IAMController>();
         }
 
         /// <summary>

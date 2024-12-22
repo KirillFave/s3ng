@@ -20,7 +20,7 @@ namespace IAM.Services
             , ITokenProvider tokenProvider)
         {
             _dbContext = dbContext;
-            _logger = logger;
+            _logger = logger.ForContext<AuthenticationService>();
             _hashCalculator = hashCalculator;
             _tokenProvider = tokenProvider;
         }

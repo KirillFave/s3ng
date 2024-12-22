@@ -20,7 +20,7 @@ public class UserController : ControllerBase
     public UserController(UserManager.UserManagerClient client, ILogger logger, IMapper mapper)
     {
         _client = client;
-        _logger = logger;
+        _logger = logger.ForContext<UserController>();
         _mapper = mapper;
     }
 

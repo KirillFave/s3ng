@@ -9,7 +9,7 @@ FROM mcr.microsoft.com/dotnet/sdk:8.0 AS build
 ARG BUILD_CONFIGURATION=Release
 WORKDIR /src
 COPY ["Services/ProductService/ProductService.Host/ProductService.Host.csproj", "Services/ProductService/ProductService.Host/"]
-COPY ["SharedLibrary/SharedLibrary/SharedLibrary.csproj", "SharedLibrary/SharedLibrary/"]
+COPY ["SharedLibrary/SharedLibrary.csproj", "SharedLibrary/"]
 COPY ["Services/ProductService/DataAccess/ProductService.EntityFramework/ProductService.EntityFramework.csproj", "Services/ProductService/DataAccess/ProductService.EntityFramework/"]
 COPY ["Services/ProductService/ProductService.Core/ProductService.Core.csproj", "Services/ProductService/ProductService.Core/"]
 COPY ["Services/ProductService/DataAccess/Repositories.Implementations/ProductService.Repositories.Implementstions.csproj", "Services/ProductService/DataAccess/Repositories.Implementations/"]
