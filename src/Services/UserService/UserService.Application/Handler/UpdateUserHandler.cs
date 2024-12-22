@@ -69,7 +69,7 @@ public class UpdateUserHandler : IRequestHandler<UpdateUserRequestDto, UpdateUse
         user.FirstName = string.IsNullOrEmpty(dto.FirstName) ? user.FirstName : dto.FirstName;
         user.LastName = string.IsNullOrEmpty(dto.LastName) ? user.LastName : dto.LastName;
         user.Address = string.IsNullOrEmpty(dto.Address) ? user.Address : dto.Address;
-        user.Phone = dto.PhoneNumber > 0 ? dto.PhoneNumber : user.Phone;
+        user.Phone = dto.Phone > 0 ? dto.Phone : user.Phone;
 
         return user;
     }

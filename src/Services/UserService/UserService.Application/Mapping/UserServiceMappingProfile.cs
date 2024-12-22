@@ -22,7 +22,7 @@ public class UserServiceMappingProfile : Profile
             .ForMember(dest => dest.AuthenticationId, opt => opt.MapFrom(src => src.AuthenticationId))
             .ForMember(dest => dest.FirstName, opt => opt.MapFrom(src => src.FirstName))
             .ForMember(dest => dest.LastName, opt => opt.MapFrom(src => src.LastName))
-            .ForMember(dest => dest.PhoneNumber, opt => opt.MapFrom(src => src.Phone))
+            .ForMember(dest => dest.Phone, opt => opt.MapFrom(src => src.Phone))
             .ForMember(dest => dest.Address, opt => opt.MapFrom(src => src.Address))
             .ForMember(dest => dest.Role, opt => opt.MapFrom(src => Converter.ConvertRoleToModel(src.Role)));
 
@@ -30,7 +30,7 @@ public class UserServiceMappingProfile : Profile
             .ForMember(dest => dest.Id, opt => opt.MapFrom(src => Guid.Parse(src.Id)))
             .ForMember(dest => dest.FirstName, opt => opt.MapFrom(src => src.FirstName))
             .ForMember(dest => dest.LastName, opt => opt.MapFrom(src => src.LastName))
-            .ForMember(dest => dest.PhoneNumber, opt => opt.MapFrom(src => src.Phone))
+            .ForMember(dest => dest.Phone, opt => opt.MapFrom(src => src.Phone))
             .ForMember(dest => dest.Address, opt => opt.MapFrom(src => src.Address));
 
         CreateMap<UserModel, UserInfo>()
@@ -73,7 +73,7 @@ public class UserServiceMappingProfile : Profile
             .ForMember(dest => dest.AuthenticationId, opt => opt.MapFrom(src => Guid.Parse(src.AuthenticationId)))
             .ForMember(dest => dest.FirstName, opt => opt.MapFrom(src => src.FirstName))
             .ForMember(dest => dest.LastName, opt => opt.MapFrom(src => src.LastName))
-            .ForMember(dest => dest.Phone, opt => opt.MapFrom(src => src.PhoneNumber))
+            .ForMember(dest => dest.Phone, opt => opt.MapFrom(src => src.Phone))
             .ForMember(dest => dest.Address, opt => opt.MapFrom(src => src.Address))
             .ForMember(dest => dest.Role, opt => opt.MapFrom(src => Converter.ConvertRoleToEntity(src.Role)))
             .ForMember(dest => dest.CreatedAt, opt => opt.MapFrom(_ => DateTime.UtcNow))
