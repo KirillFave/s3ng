@@ -1,0 +1,30 @@
+<Project Sdk="Microsoft.NET.Sdk.Web">
+
+  <PropertyGroup>
+    <TargetFramework>net8.0</TargetFramework>
+    <Nullable>enable</Nullable>
+    <ImplicitUsings>enable</ImplicitUsings>
+    <UserSecretsId>684ab5ac-d1a1-4869-a927-71e7f8893b31</UserSecretsId>
+    <DockerDefaultTargetOS>Linux</DockerDefaultTargetOS>
+    <DockerfileContext>..\..</DockerfileContext>
+  </PropertyGroup>
+
+  <ItemGroup>
+    <PackageReference Include="AutoMapper" Version="13.0.1" />
+    <PackageReference Include="Microsoft.EntityFrameworkCore.Design" Version="8.0.8">
+      <PrivateAssets>all</PrivateAssets>
+      <IncludeAssets>runtime; build; native; contentfiles; analyzers; buildtransitive</IncludeAssets>
+    </PackageReference>
+    <PackageReference Include="Microsoft.VisualStudio.Azure.Containers.Tools.Targets" Version="1.19.6" />
+    <PackageReference Include="Swashbuckle.AspNetCore" Version="6.4.0" />
+  </ItemGroup>
+
+  <ItemGroup>
+    <ProjectReference Include="..\DataAccess\ProductService.EntityFramework\ProductService.EntityFramework.csproj" />
+    <ProjectReference Include="..\DataAccess\Repositories.Implementations\ProductService.Repositories.Implementstions.csproj" />
+    <ProjectReference Include="..\Services\ProductService\ProductService.ProductService.csproj" />
+    <ProjectReference Include="..\Services\Repositories.Abstractions\ProductService.Repositories.Abstractions.csproj" />
+    <ProjectReference Include="..\Services\Service.Abstractions\ProductService.Services.Abstractions.csproj" />
+  </ItemGroup>
+
+</Project>

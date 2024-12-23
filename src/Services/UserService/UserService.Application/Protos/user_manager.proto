@@ -1,0 +1,114 @@
+syntax = "proto3";
+
+import "google/protobuf/timestamp.proto";
+
+service UserManager {
+  /**
+   * Возвращает user в соответвии с переденным идентификатором
+   */
+  rpc GetUserById (GetUserByIdRequest) returns (GetUserResponse);
+
+  /**
+   * Создает нового user
+   */
+  rpc CreateUser (CreateUserRequest) returns (CreateUserResponse);
+
+  /**
+   * Изменяет user в соответвии с request
+   */
+  rpc UpdateUser (UpdateUserRequest) returns (UpdateUserResponse);
+
+  /**
+   * Удаляет user
+   */
+  rpc DeleteUser (DeleteUserRequest) returns (DeleteUserResponse);
+}
+
+message GetUserByIdRequest {
+  string id = 1;
+}
+
+message GetUserResponse {
+  UserInfo user = 1;
+  GetUserResult result = 2;
+
+  enum GetUserResult {
+    GET_USER_RESULT_UNSPECIFIED = 0;
+    GET_USER_RESULT_FAIL = 1;
+    GET_USER_RESULT_SUCCESS = 2;
+    GET_USER_RESULT_NOT_FOUND = 3;
+  }
+}
+
+message CreateUserRequest {
+  string authentication_id = 1;
+  string first_name = 2;
+  string last_name = 3;
+  int64 phone = 4;
+  string address = 5;
+  Role role = 6;
+}
+
+message CreateUserResponse {
+  UserInfo user = 1;
+  CreateUserResult result = 2;
+
+  enum CreateUserResult {
+    CREATE_USER_RESULT_UNSPECIFIED = 0;
+    CREATE_USER_RESULT_FAIL = 1;
+    CREATE_USER_RESULT_SUCCESS = 2;
+  }
+}
+
+message UpdateUserRequest {
+  string id = 1;
+  string first_name = 2;
+  string last_name = 3;
+  string address = 4;
+  int64 phone = 5;
+}
+
+message UpdateUserResponse {
+  UserInfo user = 1;
+  UpdateUserResult result = 2;
+
+  enum UpdateUserResult {
+    UPDATE_USER_RESULT_UNSPECIFIED = 0;
+    UPDATE_USER_RESULT_FAIL = 1;
+    UPDATE_USER_RESULT_SUCCESS = 2;
+    UPDATE_USER_RESULT_NOT_FOUND = 3;
+  }
+}
+
+message DeleteUserRequest {
+  string id = 1;
+}
+
+message DeleteUserResponse {
+  DeleteUserResult result = 1;
+
+  enum DeleteUserResult {
+    DELETE_USER_RESULT_UNSPECIFIED = 0;
+    DELETE_USER_RESULT_FAIL = 1;
+    DELETE_USER_RESULT_SUCCESS = 2;
+    DELETE_USER_RESULT_NOT_FOUND = 3;
+  }
+}
+
+message UserInfo {
+  string id = 1;
+  string authentication_id = 2;
+  string first_name = 3;
+  string last_name = 4;
+  int64 phone = 5;
+  string address = 6;
+  google.protobuf.Timestamp created_at = 7;
+  Role role = 8;
+}
+
+enum Role {
+  ROLE_UNSPECIFIED = 0;
+  ROLE_BUYER = 1;
+  ROLE_SELLER = 2;
+  ROLE_MODERATOR = 3;
+}
