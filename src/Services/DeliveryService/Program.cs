@@ -1,11 +1,15 @@
 using DeliveryService.Data;
+using DeliveryService.Models;
 using DeliveryService.Repositories;
+using DeliveryService.Services.Swagger;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Design;
 using Microsoft.Extensions.Configuration;
-//using OrderService;
+using Microsoft.Extensions.Options;
+using System.Text.Json.Serialization;
+using System.Text.Json;
 
-            var builder = WebApplication.CreateBuilder(args);
+var builder = WebApplication.CreateBuilder(args);
 
             // Add services to the container.
 
@@ -13,8 +17,11 @@ using Microsoft.Extensions.Configuration;
             // Learn more about configuring Swagger/OpenAPI at https://aka.ms/aspnetcore/swashbuckle
             builder.Services.AddEndpointsApiExplorer();
             builder.Services.AddSwaggerGen();
+            builder.Services.AddControllers();
 
-            builder.Services.AddDbContext<DeliveryDBContext>(options =>
+builder.Services.AddControllersWithViews();
+
+builder.Services.AddDbContext<DeliveryDBContext>(options =>
             {
                 options.UseNpgsql(builder.Configuration.GetConnectionString("DefaultConnection"));
             });
@@ -26,6 +33,16 @@ using Microsoft.Extensions.Configuration;
 //builder.AddProject<Projects.ApiGateway("webfrontend")
 //    .WithReference(apiDeliveryService)
 //    .WithReference(apiOrderService);
+
+builder.Services.AddControllers()
+    .AddJsonOptions(options =>
+    {
+        options.JsonSerializerOptions.Converters.Add(new JsonStringEnumConverter());
+        options.JsonSerializerOptions.PropertyNamingPolicy = JsonNamingPolicy.CamelCase;
+        options.JsonSerializerOptions.ReferenceHandler = ReferenceHandler.Preserve;
+    });
+
+builder.Services.AddAutoMapper(typeof(Program));
 
 var app = builder.Build();
 

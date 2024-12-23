@@ -2,10 +2,10 @@
 {
     public enum DeliveryStatus
     {
-        Created,
-        Postponed,
-        Dispatched,
-        Delivered,
-        Canceled
+        Created = 0,
+        Postponed = 1,
+        Dispatched = 2,
+        Delivered = 3,
+        Canceled = 4
     }
 }

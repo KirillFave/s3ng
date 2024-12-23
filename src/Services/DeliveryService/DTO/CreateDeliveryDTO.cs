@@ -9,7 +9,7 @@ namespace DeliveryService.DTO
         public Guid Id { get; set; }
         public Guid Order_Id { get; set; }
         public required Guid UserGuid { get; set; }
-        public OrderStatus OrderStatus { get; set; }
+        public DeliveryStatus DeliveryStatus { get; set; }
         public List<OrderItem> ? Items { get; set; }        
         public required int Total_Quantity { get; set; }
         public required decimal Total_Price { get; set; }
