@@ -1,10 +1,11 @@
-﻿using DeliveryService.Enums;
+using DeliveryService.Enums;
 
 namespace DeliveryService.Models
 {
     public class UpdateDeliveryModel
     {       
         public Guid Order_Id { get; set; }
+        public OrderStatus OrderStatus { get; set; }
         public DeliveryStatus DeliveryStatus { get; set; }
         public int Total_Quantity { get; set; }
         public decimal Total_Price { get; set; }

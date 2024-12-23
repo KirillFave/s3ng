@@ -77,7 +77,7 @@ Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "IAM", "Services\IAM\IAM.csp
 EndProject
 Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "UserService.Test", "UserService.Test", "{03842583-454C-4116-949F-DFD62E0CCD76}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "UserService.Application.Test", "Tests\UserService.Test\Application\UserService.Application.Test\UserService.Application.Test.csproj", "{1D3D1FB2-64DC-4E45-ADFA-AC8AC22E1E0C}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "UserService.Application.Test", "Tests\UserService.Test\Application\UserService.Application.Test\UserService.Application.Test.csproj", "{1D3D1FB2-64DC-4E45-ADFA-AC8AC22E1E0C}"
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
@@ -93,10 +93,6 @@ Global
 		{B24FEF86-86D6-4ADE-8CBE-FA7F126E274F}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{B24FEF86-86D6-4ADE-8CBE-FA7F126E274F}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{B24FEF86-86D6-4ADE-8CBE-FA7F126E274F}.Release|Any CPU.Build.0 = Release|Any CPU
-		{16DBFA3F-5800-4256-A7B1-865256848363}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
-		{16DBFA3F-5800-4256-A7B1-865256848363}.Debug|Any CPU.Build.0 = Debug|Any CPU
-		{16DBFA3F-5800-4256-A7B1-865256848363}.Release|Any CPU.ActiveCfg = Release|Any CPU
-		{16DBFA3F-5800-4256-A7B1-865256848363}.Release|Any CPU.Build.0 = Release|Any CPU
 		{7C9F83B5-9D7C-46A1-8D1E-9EA51FE1BDFA}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
 		{7C9F83B5-9D7C-46A1-8D1E-9EA51FE1BDFA}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{7C9F83B5-9D7C-46A1-8D1E-9EA51FE1BDFA}.Release|Any CPU.ActiveCfg = Release|Any CPU
@@ -153,7 +149,6 @@ Global
 		{7A3EBCC0-D7C2-48E7-8F74-D0D568FA01AA}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{7A3EBCC0-D7C2-48E7-8F74-D0D568FA01AA}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{7A3EBCC0-D7C2-48E7-8F74-D0D568FA01AA}.Release|Any CPU.Build.0 = Release|Any CPU
-  EndGlobalSection
 		{1D3D1FB2-64DC-4E45-ADFA-AC8AC22E1E0C}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
 		{1D3D1FB2-64DC-4E45-ADFA-AC8AC22E1E0C}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{1D3D1FB2-64DC-4E45-ADFA-AC8AC22E1E0C}.Release|Any CPU.ActiveCfg = Release|Any CPU

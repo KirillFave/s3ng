@@ -1,4 +1,4 @@
-﻿using DeliveryService.Domain.Domain.Entities;
+using DeliveryService.Domain.Domain.Entities;
 using DeliveryService.Domain.External.Entities;
 using DeliveryService.Enums;
 using Newtonsoft.Json;
@@ -11,9 +11,7 @@ namespace DeliveryService.Models
     {
         public required Guid UserGuid { get; set; }
         public Guid Order_Id { get; set; }
-        [Required]
-        [EnumDataType(typeof(DeliveryStatus))]
-        [JsonConverter(typeof(StringEnumConverter))]
+        public OrderStatus orderStatus { get; set; }
         public DeliveryStatus DeliveryStatus { get; set; }
         public required int Total_Quantity { get; set; }
         public required decimal Total_Price { get; set; }
