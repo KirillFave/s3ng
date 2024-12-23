@@ -1,7 +1,6 @@
 using DeliveryService.Data;
 using DeliveryService.Models;
 using DeliveryService.Repositories;
-using DeliveryService.Services.Swagger;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Design;
 using Microsoft.Extensions.Configuration;
@@ -61,4 +60,3 @@ var app = builder.Build();
             app.MapControllers();
 
             app.Run();
-        
