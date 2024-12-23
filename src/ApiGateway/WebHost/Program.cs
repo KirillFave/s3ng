@@ -1,13 +1,13 @@
 using Microsoft.AspNetCore.Server.Kestrel.Core;
+using WebHost.IAMConfiguration;
 using WebHost.Mappers;
-using WebHost.RegisterServiceClient;
 using WebHost.UserServiceClient;
 
 var builder = WebApplication.CreateBuilder(args);
 
 // Add services to the container.
 //automapper
-builder.Services.AddAutoMapper(typeof(RegistrationProfile));
+builder.Services.AddAutoMapper(typeof(IAMProfile));
 
 //general
 builder.Services.AddControllers();
@@ -18,7 +18,11 @@ builder.Services.AddGrpc();
 
 var configuration = builder.Configuration;
 
-builder.Services.AddRegistrationServiceClient(configuration);
+//Авторизация аутентификация
+builder.Services.AddJwtAuthentication(configuration);
+
+//Сервисы
+builder.Services.AddIAMServiceClient(configuration);
 builder.Services.AddUserServiceClient(configuration);
 
 builder.WebHost.ConfigureKestrel(o =>
@@ -27,6 +31,9 @@ builder.WebHost.ConfigureKestrel(o =>
 });
 
 var app = builder.Build();
+
+app.UseAuthentication();
+app.UseAuthorization();
 
 // Configure the HTTP request pipeline.
 if (app.Environment.IsDevelopment())
