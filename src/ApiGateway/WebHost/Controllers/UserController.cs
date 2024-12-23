@@ -1,4 +1,5 @@
-﻿using Microsoft.AspNetCore.Mvc;
+using Microsoft.AspNetCore.Authorization;
+using Microsoft.AspNetCore.Mvc;
 
 namespace WebHost.Controllers;
 
@@ -17,6 +18,7 @@ public class UserController : ControllerBase
     /// Получение юзера по ID
     /// </summary>
     [HttpGet("{id}")]
+    //[Authorize]
     public async Task<GetUserResponse> GetUserAsync(string id)
     {
         var request = new GetUserByIdRequest { Id = id };
