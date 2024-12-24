@@ -42,7 +42,7 @@ namespace WebHost.Controllers
             {
                 _logger.Information($"Api method {nameof(RegisterUser)} was called with parameters {requestDto.Login}, {requestDto.Password}");
                 var serviceRequest = _mapper.Map<RegisterRequest>(requestDto);
-                var result = await _registrationClient.RegisterUserAsync(serviceRequest);
+                var result = await _registrationClient.RegisterUserAsync(serviceRequest, cancellationToken: ct);
                 _logger.Information($"end call registration with result {result.Result}, {result.Message}");
                 return result.Result == RegisterResult.Success ? new OkObjectResult(result.Message) : new BadRequestObjectResult(result.Message);
             }
@@ -68,7 +68,7 @@ namespace WebHost.Controllers
         {
             _logger.Information($"Api method {nameof(AuthenticationUser)} was called with parameters {requestDto.Login}, {requestDto.Password}");
             var serviceRequest = _mapper.Map<AuthenticationRequest>(requestDto);
-            var result = await _authenticationClient.AuthenticateUserAsync(serviceRequest);
+            var result = await _authenticationClient.AuthenticateUserAsync(serviceRequest, cancellationToken: ct);
             _logger.Information($"end call registration with result {result.Result}, {result.Token}");
             switch (result.Result)
             {
