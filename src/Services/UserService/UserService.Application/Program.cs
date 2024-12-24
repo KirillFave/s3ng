@@ -34,6 +34,21 @@ builder.Host.UseSerilog(LoggerHelper.AddLogger(configuration));
 
 var app = builder.Build();
 
+using (var scope = app.Services.CreateScope())
+{
+    var services = scope.ServiceProvider;
+    var context = services.GetRequiredService<UserServiceContext>();
+
+    try
+    {
+        context.Database.Migrate();
+    }
+    catch (Exception ex)
+    {
+        Console.WriteLine($"Ошибка применения миграций: {ex.Message}");
+    }
+}
+
 app.UseExceptionHandler(appBuilder =>
 {
     appBuilder.Run(context =>
