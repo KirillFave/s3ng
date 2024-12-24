@@ -1,7 +1,9 @@
+using AutoMapper;
 using Grpc.Core;
 using IAM.DAL;
 using IAM.Entities;
-using IAM.Seedwork.Abstractions;
+using IAM.Models;
+using Microsoft.AspNetCore.Identity;
 using Microsoft.EntityFrameworkCore;
 using s3ng.Contracts.IAM;
 using ILogger = Serilog.ILogger;
@@ -12,15 +14,13 @@ namespace IAM.Services
     {
         private readonly ILogger _logger;
         private readonly DatabaseContext _databaseContext;
-        private readonly IHashCalculator _hashCalculator;
+        private readonly IMapper _mapper;
 
-        public RegistrationService(DatabaseContext dbContext
-            , ILogger logger
-            , IHashCalculator hashCalculator) 
+        public RegistrationService(DatabaseContext dbContext, ILogger logger, IMapper mapper) 
         {
             _databaseContext = dbContext;
             _logger = logger.ForContext<RegistrationService>();
-            _hashCalculator = hashCalculator;
+            _mapper = mapper;
         }
 
         public override async Task<RegisterResponse> RegisterUser(RegisterRequest request, ServerCallContext context)
@@ -54,12 +54,23 @@ namespace IAM.Services
             }
             else
             {
-                _logger.Information($"Успешно отработали запрос на регистрацию юзера Login:{request.Login}");
-                var passwordHash = _hashCalculator.Compute(request.Password);
                 var newId = Guid.NewGuid();
-                var newUser = new User { Id = newId, Login = request.Login, PasswordHash = passwordHash };
+                var newAccount = new AccountModel()
+                { 
+                    Id = newId,
+                    Login = request.Login,
+                };
+
+                var passwordHash = new PasswordHasher<AccountModel>().HashPassword(newAccount, request.Password);
+                newAccount.PasswordHash = passwordHash;
+
+                var newUser = _mapper.Map<User>(newAccount);
+
+                //TODO нужен отдельный класс для работы с BD
                 await _databaseContext.Users.AddAsync(newUser, cancellationToken: context.CancellationToken);
                 await _databaseContext.SaveChangesAsync();
+
+                _logger.Information($"Успешно отработали запрос на регистрацию юзера Login:{request.Login}");
                 return new RegisterResponse() { Message = newId.ToString(), Result = RegisterResult.Success };
             }
         }

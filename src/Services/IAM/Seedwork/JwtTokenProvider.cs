@@ -5,6 +5,7 @@ using IAM.Entities;
 using IAM.Seedwork.Abstractions;
 using Microsoft.Extensions.Options;
 using Microsoft.IdentityModel.Tokens;
+using SharedLibrary.IAM.JWT;
 
 namespace IAM.Seedwork
 {
@@ -24,20 +25,24 @@ namespace IAM.Seedwork
             if (user is null)
                 throw new ArgumentNullException(nameof(user));
 
-            var claims = new Claim[] { new("userId", user.Id.ToString()) };
+            var claims = new List<Claim>
+            {
+                new Claim("login", user.Login),
+                new Claim("id", user.Id.ToString()),
+            };
+
             var key = new SymmetricSecurityKey(Encoding.UTF8.GetBytes(_options.SecretKey));
             var signingCredentials = new SigningCredentials(key, SecurityAlgorithms.HmacSha256);
 
-            var token = new JwtSecurityToken(
+            var jwtToken = new JwtSecurityToken(
+                issuer: _options.Issuer,
+                audience: _options.Audience,
+                notBefore: DateTime.UtcNow,
                 signingCredentials: signingCredentials, 
                 claims: claims, 
-                audience: _options.Audience,
-                issuer: _options.Issuer,
-                expires: DateTime.Now.AddHours(_options.ExpireHours));  
+                expires: DateTime.UtcNow.Add(_options.Expires));
 
-            var tokenValue = new JwtSecurityTokenHandler().WriteToken(token);
-
-            return tokenValue.ToString();
+            return new JwtSecurityTokenHandler().WriteToken(jwtToken);
         }
     }
 }

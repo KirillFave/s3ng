@@ -51,7 +51,7 @@ public class UserController : ControllerBase
     [HttpPost("create")]
     [ProducesResponseType<Guid>(StatusCodes.Status200OK)]
     [ProducesResponseType(StatusCodes.Status400BadRequest)]
-    public async Task<IActionResult> CreateUserAsync(SharedLibrary.UserService.Models.CreateUserRequestModel request)
+    public async Task<IActionResult> CreateUserAsync(CreateUserRequestModel request)
     {
         _logger.Information($"Api method CreateUserAsync was called with name: {request.FirstName}, {request.LastName}");
         var createUserRequest = _mapper.Map<CreateUserRequest>(request);
