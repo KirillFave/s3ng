@@ -1,4 +1,4 @@
-﻿using Microsoft.EntityFrameworkCore;
+using Microsoft.EntityFrameworkCore;
 using DeliveryService.Domain.Domain.Entities;
 using DeliveryService.Domain.External.Entities;
 

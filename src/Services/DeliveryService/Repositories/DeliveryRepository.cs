@@ -1,4 +1,4 @@
-﻿using Microsoft.EntityFrameworkCore;
+using Microsoft.EntityFrameworkCore;
 using DeliveryService.Data;
 using DeliveryService.Domain.Domain.Entities;
 using DeliveryService.Enums;
@@ -11,7 +11,7 @@ namespace DeliveryService.Repositories
     /// </summary>
     /// <typeparam name="T"> Тип сущности. </typeparam>
     /// <typeparam name="TPrimaryKey"> Тип первичного ключа. </typeparam>
-    public class DeliveryRepository 
+    public class DeliveryRepository : IDeliveryRepository
     {
         protected readonly DeliveryDBContext Context;
         private readonly DbSet<Delivery> ?_entityDeliverySet;

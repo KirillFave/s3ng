@@ -1,12 +1,11 @@
-# Этот этап используется при запуске из VS в быстром режиме (по умолчанию для конфигурации отладки)
+# This stage is used when running from VS in fast mode (Default for Debug configuration)
 FROM mcr.microsoft.com/dotnet/aspnet:8.0 AS base
 USER app
 WORKDIR /app
 EXPOSE 8090
 EXPOSE 8091
 
-
-# Этот этап используется для сборки проекта службы
+# This stage is used to build the service project
 FROM mcr.microsoft.com/dotnet/sdk:8.0 AS build
 ARG BUILD_CONFIGURATION=Release
 WORKDIR /src
@@ -14,14 +13,14 @@ COPY ["DeliveryService.csproj", "."]
 RUN dotnet restore "./DeliveryService.csproj"
 COPY . .
 WORKDIR "/src/."
-RUN dotnet build "./DeliveryService.csproj" -c $BUILD_CONFIGURATION -o /app/build
+RUN dotnet build "./DeliveryService.csproj" -c %BUILD_CONFIGURATION% -o /app/build
 
-# Этот этап используется для публикации проекта службы, который будет скопирован на последний этап
+# This stage is used to publish the service project to be copied to the final stage
 FROM build AS publish
 ARG BUILD_CONFIGURATION=Release
-RUN dotnet publish "./DeliveryService.csproj" -c $BUILD_CONFIGURATION -o /app/publish /p:UseAppHost=false
+RUN dotnet publish "./DeliveryService.csproj" -c %BUILD_CONFIGURATION% -o /app/publish /p:UseAppHost=false
 
-# Этот этап используется в рабочей среде или при запуске из VS в обычном режиме (по умолчанию, когда конфигурация отладки не используется)
+# This stage is used in production or when running from VS in regular mode (Default when not using the Debug configuration)
 FROM base AS final
 WORKDIR /app
 COPY --from=publish /app/publish .

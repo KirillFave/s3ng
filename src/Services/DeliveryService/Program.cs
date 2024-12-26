@@ -25,6 +25,10 @@ builder.Services.AddDbContext<DeliveryDBContext>(options =>
                 options.UseNpgsql(builder.Configuration.GetConnectionString("DefaultConnection"));
             });
 
+builder.Services.AddScoped<IDeliveryRepository, DeliveryRepository>();  
+            
+    
+
 //var apiProductService = builder.AddProject<Projects.DeliveryService>("apiservice-delivery");
 
 //var apiOrderService = builder.AddProject<Projects.OrderSErvice>("apiservice-order");
