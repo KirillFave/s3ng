@@ -1,9 +1,10 @@
-﻿using Microsoft.AspNetCore.Mvc;
+using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.Http;
 using Microsoft.EntityFrameworkCore;
 using DeliveryService.Data;
 using DeliveryService.DTO;
 using DeliveryService.Domain.Domain.Entities;
+using DeliveryService.Abstractions;
 using DeliveryService.Repositories;
 using System.Threading;
 using DeliveryService.Models;
@@ -17,16 +18,18 @@ namespace DeliveryService.Controllers
     {
         private readonly IDeliveryRepository _deliveryRepository;
         private readonly IMapper _mapper;
+        private readonly ILogger<DeliveryController> _logger;
 
-        public DeliveryController(IDeliveryRepository deliveryRepository, IMapper mapper)
+        public DeliveryController(IDeliveryRepository deliveryRepository, IMapper mapper, ILogger<DeliveryController> logger)
         {
             _deliveryRepository = deliveryRepository;
             _mapper = mapper;
+            _logger = logger;
         }
 
         [HttpGet("GetDelivery")]
         //[ProducesResponseType(typeof(IEnumerable<GetDeliveryDTO>), 200)]
-        public async Task<ActionResult> Get(Guid guid, CancellationToken cancellationToken)
+        public async Task<ActionResult> GetByIdAsync(Guid guid, CancellationToken cancellationToken)
         {
             Delivery delivery = await _deliveryRepository.GetByIdAsync(guid, cancellationToken);
 
@@ -35,10 +38,10 @@ namespace DeliveryService.Controllers
 
         [HttpPost ("CreateDelivery")]
         //[ProducesResponseType(typeof(IEnumerable<CreateDeliveryDTO>), 200)]
-        public async Task<ActionResult> CreateAsync(CreateDeliveryModel createDeliveryModel)
+        public async Task<ActionResult> AddAsync(CreateDeliveryModel createDeliveryModel)
         {
             var createDeliveryDTO = _mapper.Map<CreateDeliveryDTO>(createDeliveryModel);
-            var createDeliveryGuid = await _deliveryRepository.CreateAsync(createDeliveryDTO);
+            var createDeliveryGuid = await _deliveryRepository.AddAsync(createDeliveryDTO);
 
             return Created("", createDeliveryModel);
         }
@@ -54,9 +57,9 @@ namespace DeliveryService.Controllers
         }
 
         [HttpDelete("DeleteDelivery")]
-        public async Task<ActionResult> Delete(Guid guid)
+        public async Task<ActionResult> DeleteAsync(Guid id, CancellationToken cancellationToken)
         {
-            OperationResults result = await _deliveryRepository.DeleteAsync(guid);
+            OperationResults result = await _deliveryRepository.DeleteAsync(id, cancellationToken);
 
             return result switch
             {

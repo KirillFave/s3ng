@@ -69,19 +69,9 @@ namespace DeliveryService.Repositories
         /// </summary>
         /// <param name="entity"> Сущность для добавления. </param>
         /// <returns> Добавленная сущность. </returns>
-        public async Task<Delivery> AddAsync(Delivery delivery, CancellationToken cancellationToken)
+        public async Task<Delivery> AddAsync(Delivery entity, CancellationToken cancellationToken)
         {
-            return (await _entityDeliverySet.AddAsync(delivery, cancellationToken)).Entity;
-        }
-
-        /// <summary>
-        /// Добавить в базу массив сущностей.
-        /// </summary>
-        /// <param name="entities"> Массив сущностей. </param>
-        public virtual void AddRange(List<Delivery> entities)
-        {
-            var enumerable = entities as IList<Delivery> ?? entities.ToList();
-            _entityDeliverySet.AddRange(enumerable);
+            return (await _entityDeliverySet.AddAsync(entity, cancellationToken)).Entity;
         }
 
         /// <summary>
@@ -115,46 +105,50 @@ namespace DeliveryService.Repositories
         /// </summary>
         /// <param name="entity"> Сущность для обновления. </param>
         /// <returns> Обновленная сущность. </returns>
-        
+
         //public async Task<Delivery> UpdateAsync(Delivery entity, CancellationToken cancellationToken)
         //{
         //    _entityDeliverySet.Update(entity);
         //    return await _entityDeliverySet.FindAsync(entity.Id, cancellationToken);
         //}
-        public async Task<OperationResult> UpdateAsync(Delivery delivery, bool isUpdateDeliveryStatus)
+        //public async Task<OperationResult> UpdateAsync(Delivery delivery, bool isUpdateDeliveryStatus)
+        //{
+        //    Delivery? deliveryToUpdate = await Context.Deliveries.FindAsync(delivery.Id);
+        //    if (deliveryToUpdate is null)
+        //    {
+        //        return OperationResult.NotEntityFound;
+        //    }
+
+        //    if (deliveryToUpdate.PaymentType == delivery.PaymentType &&
+        //        deliveryToUpdate.DeliveryStatus == delivery.DeliveryStatus &&
+        //        deliveryToUpdate.Items == delivery.Items &&
+        //        deliveryToUpdate.CourierId == delivery.CourierId &&
+        //        deliveryToUpdate.Shipping_Address == delivery.Shipping_Address &&
+        //        deliveryToUpdate.Total_Quantity == delivery.Total_Quantity &&
+        //        deliveryToUpdate.Total_Price == delivery.Total_Price &&
+        //        deliveryToUpdate.Estimated_Delivery_Time == delivery.Estimated_Delivery_Time                
+        //        )
+        //    {
+        //        return OperationResult.NotModified;
+        //    }
+
+        //    if (isUpdateDeliveryStatus)
+        //    {
+        //        deliveryToUpdate.PaymentType = delivery.PaymentType;
+        //    }
+
+        //    if (delivery.Shipping_Address is not null)
+        //    {
+        //        deliveryToUpdate.Shipping_Address = delivery.Shipping_Address;
+        //    }
+
+        //    int stateEntriesWritten = await Context.SaveChangesAsync();
+        //    return stateEntriesWritten > 0 ? OperationResult.Success : OperationResult.NotChangesApplied;
+        //}
+        public async Task<Delivery> UpdateAsync(Delivery entity, CancellationToken cancellationToken)
         {
-            Delivery? deliveryToUpdate = await Context.Deliveries.FindAsync(delivery.Id);
-            if (deliveryToUpdate is null)
-            {
-                return OperationResult.NotEntityFound;
-            }
-
-            if (deliveryToUpdate.PaymentType == delivery.PaymentType &&
-                deliveryToUpdate.DeliveryStatus == delivery.DeliveryStatus &&
-                deliveryToUpdate.Items == delivery.Items &&
-                deliveryToUpdate.CourierId == delivery.CourierId &&
-                deliveryToUpdate.Shipping_Address == delivery.Shipping_Address &&
-                deliveryToUpdate.Total_Quantity == delivery.Total_Quantity &&
-                deliveryToUpdate.Total_Price == delivery.Total_Price &&
-                deliveryToUpdate.Estimated_Delivery_Time == delivery.Estimated_Delivery_Time                
-                )
-            {
-                return OperationResult.NotModified;
-            }
-
-            if (isUpdateDeliveryStatus)
-            {
-                deliveryToUpdate.PaymentType = delivery.PaymentType;
-            }
-
-            if (delivery.Shipping_Address is not null)
-            {
-                deliveryToUpdate.Shipping_Address = delivery.Shipping_Address;
-            }
-
-            int stateEntriesWritten = await Context.SaveChangesAsync();
-            return stateEntriesWritten > 0 ? OperationResult.Success : OperationResult.NotChangesApplied;
-
+            _entityDeliverySet.Update(entity);
+            return await _entityDeliverySet.FindAsync(entity.Id, cancellationToken);
         }
 
         #endregion
