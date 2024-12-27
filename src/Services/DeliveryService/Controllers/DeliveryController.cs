@@ -29,45 +29,32 @@ namespace DeliveryService.Controllers
 
         [HttpGet("GetDelivery")]
         //[ProducesResponseType(typeof(IEnumerable<GetDeliveryDTO>), 200)]
-        public async Task<ActionResult> GetByIdAsync(Guid guid, CancellationToken cancellationToken)
+        public async Task<ActionResult> GetByIdAsync(Guid id)
         {
-            Delivery delivery = await _deliveryRepository.GetByIdAsync(guid, cancellationToken);
-
-            return delivery is null ? NotFound() : Ok(delivery);
+            return Ok(_mapper.Map<DeliveryDBContext>(await _deliveryRepository.GetByIdAsync(id)));
         }
 
         [HttpPost ("CreateDelivery")]
         //[ProducesResponseType(typeof(IEnumerable<CreateDeliveryDTO>), 200)]
-        public async Task<ActionResult> AddAsync(CreateDeliveryModel createDeliveryModel)
+        public async Task<ActionResult> AddAsyncCreateAsyn(CreateDeliveryDTO createDeliveryModel)
         {
-            var createDeliveryDTO = _mapper.Map<CreateDeliveryDTO>(createDeliveryModel);
-            var createDeliveryGuid = await _deliveryRepository.AddAsync(createDeliveryDTO);
-
-            return Created("", createDeliveryModel);
+            return Ok(await _deliveryRepository.CreateAsync(_mapper.Map<CreateDeliveryDTO>(createDeliveryModel)));
         }
 
         [HttpPut("UpdateDelivery")]
         //[ProducesResponseType(typeof(IEnumerable<UpdateDeliveryDTO>), 200)]
-        public async Task<ActionResult> UpdateAsync(Guid id, UpdateDeliveryModel updateDeliveryModel)
+        public async Task<ActionResult> UpdateAsync(Guid id, UpdateDeliveryDTO updateDeliveryModel)
         {
-            var updateDeliveryDTO = _mapper.Map<UpdateDeliveryDTO>(updateDeliveryModel);
-            bool isUpdated = await _deliveryRepository.TryUpdateAsync(id, updateDeliveryDTO);
-
-            return isUpdated ? Ok() : NotFound($"Delivery with {id} not found");            
+            await _deliveryRepository.TryUpdateAsync(id, _mapper.Map<UpdateDeliveryDTO, UpdateDeliveryDTO>(updateDeliveryModel));
+            return Ok();
         }
 
         [HttpDelete("DeleteDelivery")]
-        public async Task<ActionResult> DeleteAsync(Guid id, CancellationToken cancellationToken)
+        public async Task<ActionResult> TryDeleteAsync(Guid id)
         {
-            OperationResults result = await _deliveryRepository.DeleteAsync(id, cancellationToken);
+            await _deliveryRepository.TryDeleteAsync(id);
 
-            return result switch
-            {
-                OperationResults.NoEntityFound => NotFound(),
-                OperationResults.Success => NoContent(),
-                OperationResults.NoChangesApplied => StatusCode(500, $"Failed to delete the {nameof(Delivery)} to the database."),
-                _ => throw new NotImplementedException(),
-            };
+            return Ok();            
         }
     }
 }
