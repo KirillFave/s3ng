@@ -1,16 +1,15 @@
 using DeliveryService.Domain.Domain.Entities;
-using DeliveryService.Domain.Domain.Entities;
 using DeliveryService.Models;
 
 namespace DeliveryService.Abstractions
-{    
+{
     /// <summary>
     /// Описания общих методов для всех репозиториев.
     /// </summary>
     /// <typeparam name="T"> Тип Entity для репозитория. </typeparam>
     /// <typeparam name="TPrimaryKey"> Тип первичного ключа. </typeparam>
-    public interface IRepository<T>
-        where T : BaseEntity
+    public interface IRepository<T, TPrimaryKey>
+        where T : IEntity<TPrimaryKey>
     {
         /// <summary>
         /// Запросить все сущности в базе.
