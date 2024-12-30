@@ -37,7 +37,9 @@ namespace DeliveryService.Repositories
         /// <returns> Добавленная сущность. </returns>
         public async Task<Delivery> AddAsync(Delivery entity)
         {
-            return (await _entityDeliverySet.AddAsync(entity)).Entity;
+            await Context.Deliveries.AddAsync(entity);
+            await Context.SaveChangesAsync();
+            return entity;
         }
 
         ///// <summary>
@@ -49,7 +51,7 @@ namespace DeliveryService.Repositories
         //    return await _entityDeliverySet.AddAsync(createDeliveryDTO);
         //}
 
-        Task<CreateDeliveryDTO> IDeliveryRepository.AddAsync(CreateDeliveryDTO createDeliveryDTO) => throw new NotImplementedException();
+        //Task<CreateDeliveryDTO> IDeliveryRepository.AddAsync(CreateDeliveryDTO createDeliveryDTO) => throw new NotImplementedException();
 
     }
 }
