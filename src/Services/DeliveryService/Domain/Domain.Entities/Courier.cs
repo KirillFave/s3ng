@@ -1,8 +1,8 @@
-﻿using System.ComponentModel.DataAnnotations;
+using System.ComponentModel.DataAnnotations;
 
 namespace DeliveryService.Domain.Domain.Entities
 {
-    public class Courier : IEntity<Guid>
+    public class Courier 
     {
         [Key]
         public Guid Id { get; set; }

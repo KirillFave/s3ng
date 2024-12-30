@@ -1,11 +1,11 @@
-﻿using System.ComponentModel.DataAnnotations;
+using System.ComponentModel.DataAnnotations;
 using System.Runtime.InteropServices;
 using DeliveryService.Domain.External.Entities;
 using DeliveryService.Enums;
 
 namespace DeliveryService.Domain.Domain.Entities
 {
-    public class Delivery : IEntity<Guid>
+    public class Delivery 
     {
         [Key]
         public Guid Id { get; set; }

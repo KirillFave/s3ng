@@ -1,9 +1,9 @@
-﻿using DeliveryService.Domain.Domain.Entities;
+using DeliveryService.Domain.Domain.Entities;
 using DeliveryService.Enums;
 
 namespace DeliveryService.Domain.External.Entities
 {
-    public class Order : IEntity<Guid>
+    public class Order
     {
         public Guid Id { get; set; }
         public List<OrderItem> Items { get; set; }

@@ -27,35 +27,35 @@ namespace DeliveryService.Controllers
             _logger = logger;
         }
 
-        [HttpGet("GetDelivery")]
-        //[ProducesResponseType(typeof(IEnumerable<GetDeliveryDTO>), 200)]
-        public async Task<ActionResult> GetByIdAsync(Guid id)
-        {
-            return Ok(_mapper.Map<DeliveryDBContext>(await _deliveryRepository.GetByIdAsync(id)));
-        }
+        //[HttpGet("GetDelivery")]
+        ////[ProducesResponseType(typeof(IEnumerable<GetDeliveryDTO>), 200)]
+        //public async Task<ActionResult> GetByIdAsync(Guid id)
+        //{
+        //    return Ok(_mapper.Map<DeliveryDBContext>(await _deliveryRepository.GetByIdAsync(id)));
+        //}
 
         [HttpPost ("CreateDelivery")]
         //[ProducesResponseType(typeof(IEnumerable<CreateDeliveryDTO>), 200)]
-        public async Task<ActionResult> AddAsyncCreateAsyn(CreateDeliveryDTO createDeliveryModel)
+        public async Task<ActionResult> AddAsync(CreateDeliveryDTO createDeliveryModel)
         {
-            return Ok(await _deliveryRepository.CreateAsync(_mapper.Map<CreateDeliveryDTO>(createDeliveryModel)));
+            return Ok(await _deliveryRepository.AddAsync(_mapper.Map<CreateDeliveryDTO>(createDeliveryModel)));
         }
 
-        [HttpPut("UpdateDelivery")]
-        //[ProducesResponseType(typeof(IEnumerable<UpdateDeliveryDTO>), 200)]
-        public async Task<ActionResult> UpdateAsync(Guid id, UpdateDeliveryDTO updateDeliveryModel)
-        {
-            await _deliveryRepository.TryUpdateAsync(id, _mapper.Map<UpdateDeliveryDTO, UpdateDeliveryDTO>(updateDeliveryModel));
-            return Ok();
-        }
+        //[HttpPut("UpdateDelivery")]
+        ////[ProducesResponseType(typeof(IEnumerable<UpdateDeliveryDTO>), 200)]
+        //public async Task<ActionResult> UpdateAsync(Guid id, UpdateDeliveryDTO updateDeliveryModel)
+        //{
+        //    await _deliveryRepository.TryUpdateAsync(id, _mapper.Map<UpdateDeliveryDTO, UpdateDeliveryDTO>(updateDeliveryModel));
+        //    return Ok();
+        //}
 
-        [HttpDelete("DeleteDelivery")]
-        public async Task<ActionResult> TryDeleteAsync(Guid id)
-        {
-            await _deliveryRepository.TryDeleteAsync(id);
+        //[HttpDelete("DeleteDelivery")]
+        //public async Task<ActionResult> TryDeleteAsync(Guid id)
+        //{
+        //    await _deliveryRepository.TryDeleteAsync(id);
 
-            return Ok();            
-        }
+        //    return Ok();            
+        //}
     }
 }
 

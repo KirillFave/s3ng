@@ -1,4 +1,4 @@
-﻿using DeliveryService.Domain.Domain.Entities;
+using DeliveryService.Domain.Domain.Entities;
 
 namespace DeliveryService.Domain.External.Entities
 {
@@ -10,16 +10,7 @@ namespace DeliveryService.Domain.External.Entities
         public int Qnty { get; }
 
         public Order ? Order { get; set; }
-        public Decimal TotalPrice { get; }
+        public Decimal TotalPrice { get; } 
        
-        public bool IsPricePerUnitActual()
-        {
-            throw new NotImplementedException();
-        }
-        
-        public bool ActualizePricePerUnit()
-        {
-            throw new NotImplementedException();
-        }
     }
 }
