@@ -1,8 +1,8 @@
 using AutoMapper;
 using Microsoft.AspNetCore.Mvc;
-using s3ng.ProductService.Services.Abstractions;
-using s3ng.ProductService.Services.Contracts.Product;
-using s3ng.ProductService.Host.Models.Product;
+using ProductService.Services.Abstractions;
+using SharedLibrary.ProductService.Models;
+using ILogger = Serilog.ILogger;
 
 namespace ProductService.Host.Controllers
 {
@@ -12,43 +12,44 @@ namespace ProductService.Host.Controllers
     {
         private readonly IProductService _productService;
         private readonly IMapper _mapper;
-        public ProductController(IProductService service, IMapper mapper)
+        private readonly ILogger _logger;
+
+        public ProductController(IProductService service, IMapper mapper, ILogger logger)
         {
             _productService = service;
             _mapper = mapper;
+            _logger = logger.ForContext<ProductController>();
         }
 
-        [HttpGet("GetProduct")]
+        [HttpGet("/api/product/{id}")]
         public async Task<IActionResult> GetAsync(Guid id)
         {
+            _logger.Information($"Пришёл http запрос GetAsync для id={id}");
             var productModel = _mapper.Map<ProductModel>(await _productService.GetByIdAsync(id));
-
             return productModel is null ? NotFound() : Ok(productModel);
         }
 
-        [HttpPost("CreateProduct")]
+        [HttpPost("/api/create-product")]
         public async Task<IActionResult> CreateAsync(CreatingProductModel creatingProductModel)
         {
-            var creatingProductDto = _mapper.Map<CreatingProductDto>(creatingProductModel);
-            var createdProductGuid = await _productService.CreateAsync(creatingProductDto);
-
+            _logger.Information($"Пришёл http запрос CreateAsync для creatingProductModel={creatingProductModel}");
+            var createdProductGuid = await _productService.CreateAsync(creatingProductModel);
             return Created("", createdProductGuid);
         }
 
-        [HttpPut("UpdateProduct")]
+        [HttpPut("/api/update-product/{id}")]
         public async Task<IActionResult> UpdateAsync(Guid id, UpdatingProductModel updatingProductModel)
         {
-            var updatingProductDto = _mapper.Map<UpdatingProductDto>(updatingProductModel);
-            bool isUpdated = await _productService.TryUpdateAsync(id, updatingProductDto);
-
-            return isUpdated ? Ok() : NotFound($"����� � �������������� {id} �� ������");
+            _logger.Information($"Пришёл http запрос UpdateAsync для updatingProductModel={updatingProductModel}");
+            bool isUpdated = await _productService.TryUpdateAsync(id, updatingProductModel);
+            return isUpdated ? Ok() : NotFound($"Продукт с {id} не найден");
         }
 
-        [HttpDelete("DeleteProduct")]
+        [HttpDelete("/api/delete-product/{id}")]
         public async Task<IActionResult> DeleteAsync(Guid id)
         {
+            _logger.Information($"Пришёл http запрос DeleteAsync для id={id}");
             bool isDeleted = await _productService.TryDeleteAsync(id);
-
             return isDeleted ? Ok() : NotFound();
         }
     }

@@ -15,7 +15,7 @@ public class DeleteUserHandler : IRequestHandler<DeleteUserRequestDto, DeleteUse
     public DeleteUserHandler(IUserRepository repository, ILogger logger)
     {
         _repository = repository;
-        _logger = logger;
+        _logger = logger.ForContext<DeleteUserHandler>();
     }
 
     public async Task<DeleteUserResponseDto> Handle(DeleteUserRequestDto request, CancellationToken cancellationToken)

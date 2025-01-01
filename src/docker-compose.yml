@@ -13,6 +13,7 @@ services:
     environment:
       USER_SERVICE_URI: ${USER_SERVICE_URI}
       IAM_SERVICE_URI: ${IAM_SERVICE_URI}
+      PRODUCT_SERVICE_URI: ${PRODUCT_SERVICE_URI}
       DOTNET_ENVIRONMENT: "Development"
     ports:
       - "8080:8080"
@@ -86,9 +87,45 @@ services:
     volumes:
       - seq-data:/data
 
+  product_service:
+    image: ${DOCKER_REGISTRY-}product_service
+    build:
+      context: .
+      dockerfile: Services/ProductService/ProductService.Host/Dockerfile
+    environment:
+      DOTNET_ENVIRONMENT: "Development"
+      PRODUCT_POSTGRES_HOST: ${PRODUCT_POSTGRES_HOST}
+      PRODUCT_POSTGRES_PORT: ${PRODUCT_POSTGRES_PORT}
+      PRODUCT_POSTGRES_DB: ${PRODUCT_POSTGRES_DB}
+      PRODUCT_POSTGRES_USER: ${PRODUCT_POSTGRES_USER}
+      PRODUCT_POSTGRES_PASSWORD: ${PRODUCT_POSTGRES_PASSWORD}
+    ports:
+      - "50052:50052"
+    networks:
+      - app-network
+    depends_on:
+      - product_bd
+
+  product_bd:
+    image: postgres:latest
+    environment:
+      POSTGRES_DB: ${PRODUCT_POSTGRES_DB}
+      POSTGRES_USER: ${PRODUCT_POSTGRES_USER}
+      POSTGRES_PASSWORD: ${PRODUCT_POSTGRES_PASSWORD}
+    expose:
+      - "5433"
+    ports:
+      - "5433:5433"
+    volumes:
+      - product-data:/var/lib/postgresql/data
+    networks:
+      - app-network
+    command: -p 5433
+
 volumes:
   pg-data:
   pg-admin:
     driver: local
   postgres_data:
   seq-data:
+  product-data:

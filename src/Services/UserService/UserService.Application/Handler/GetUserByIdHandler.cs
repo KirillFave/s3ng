@@ -1,11 +1,11 @@
 using AutoMapper;
 using MediatR;
 using UserService.Infrastructure.Repository;
-using UserService.Application.Models;
 using UserService.Application.Models.Requests;
 using UserService.Application.Models.Response;
 using UserService.Application.Models.Results;
 using ILogger = Serilog.ILogger;
+using SharedLibrary.UserService.Models;
 
 namespace UserService.Application.Handler;
 
@@ -19,7 +19,7 @@ public class GetUserByIdHandler : IRequestHandler<GetUserByIdRequestDto, GetUser
     {
         _repository = repository;
         _mapper = mapper;
-        _logger = logger;
+        _logger = logger.ForContext<GetUserByIdHandler>();
     }
 
     public async Task<GetUserResponseDto> Handle(GetUserByIdRequestDto request, CancellationToken cancellationToken)
@@ -40,7 +40,7 @@ public class GetUserByIdHandler : IRequestHandler<GetUserByIdRequestDto, GetUser
 
             _logger.Information("Успешно отработали запрос GetUserByIdRequest");
 
-            var userDto = _mapper.Map<UserDto>(user);
+            var userDto = _mapper.Map<UserModel>(user);
             getUserResponseDto.Result = GetUserResultModel.Success;
             getUserResponseDto.User = userDto;
             return getUserResponseDto;

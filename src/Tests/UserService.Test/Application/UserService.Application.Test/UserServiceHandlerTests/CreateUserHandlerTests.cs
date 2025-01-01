@@ -70,7 +70,7 @@ public class CreateUserHandlerTests : IClassFixture<UserTestFixture>
         result.User!.FirstName.Should().Be(createUserReq.FirstName);
         result.User!.LastName.Should().Be(createUserReq.LastName);
         result.User!.Role.Should().Be(createUserReq.Role);
-        result.User!.PhoneNumber.Should().Be(createUserReq.PhoneNumber);
+        result.User!.Phone.Should().Be(createUserReq.Phone);
         result.User!.AuthenticationId.Should().Be(createUserReq.AuthenticationId);
         result.Result.Should().Be(CreateUserResultModel.Success);
     }

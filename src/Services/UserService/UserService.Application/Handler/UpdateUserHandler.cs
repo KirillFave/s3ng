@@ -2,11 +2,11 @@ using MediatR;
 using AutoMapper;
 using UserService.Domain.Entities;
 using UserService.Infrastructure.Repository;
-using UserService.Application.Models;
 using UserService.Application.Models.Requests;
 using UserService.Application.Models.Response;
 using UserService.Application.Models.Results;
 using ILogger = Serilog.ILogger;
+using SharedLibrary.UserService.Models;
 
 namespace UserService.Application.Handler;
 
@@ -20,7 +20,7 @@ public class UpdateUserHandler : IRequestHandler<UpdateUserRequestDto, UpdateUse
     {
         _repository = repository;
         _mapper = mapper;
-        _logger = logger;
+        _logger = logger.ForContext<UpdateUserHandler>();
     }
 
     public async Task<UpdateUserResponseDto> Handle(UpdateUserRequestDto request, CancellationToken cancellationToken)
@@ -51,7 +51,7 @@ public class UpdateUserHandler : IRequestHandler<UpdateUserRequestDto, UpdateUse
             await _repository.SaveChangesAsync(cancellationToken);
             _logger.Information("Успешно отработали запрос UpdateUserRequest");
 
-            var userDto = _mapper.Map<UserDto>(updateUser);
+            var userDto = _mapper.Map<UserModel>(updateUser);
             updateUserResponseDto.User = userDto;
             updateUserResponseDto.Result = UpdateUserResultModel.Success;
             return updateUserResponseDto;
@@ -69,7 +69,7 @@ public class UpdateUserHandler : IRequestHandler<UpdateUserRequestDto, UpdateUse
         user.FirstName = string.IsNullOrEmpty(dto.FirstName) ? user.FirstName : dto.FirstName;
         user.LastName = string.IsNullOrEmpty(dto.LastName) ? user.LastName : dto.LastName;
         user.Address = string.IsNullOrEmpty(dto.Address) ? user.Address : dto.Address;
-        user.Phone = dto.PhoneNumber > 0 ? dto.PhoneNumber : user.Phone;
+        user.Phone = dto.Phone > 0 ? dto.Phone : user.Phone;
 
         return user;
     }

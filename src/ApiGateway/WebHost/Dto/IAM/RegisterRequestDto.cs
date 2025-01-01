@@ -1,9 +1,9 @@
-namespace WebHost.Dto
+namespace WebHost.Dto.IAM
 {
     /// <summary>
-    /// Запрос на авторизацию
+    /// Запрос на регистрацию
     /// </summary>
-    public class AuthenticationRequestDto
+    public sealed class RegistrationRequestDto
     {
         /// <summary>
         /// Логин

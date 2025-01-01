@@ -1,10 +1,10 @@
-﻿using AutoMapper;
-using s3ng.ProductService.Services.Abstractions;
-using s3ng.ProductService.Services.Contracts.Product;
-using s3ng.ProductService.Services.Repositories.Abstractions;
-using s3ng.ProductService.Core.Domain.Managment;
+using AutoMapper;
+using ProductService.Services.Abstractions;
+using ProductService.Services.Repositories.Abstractions;
+using ProductService.Core.Domain.Managment;
+using SharedLibrary.ProductService.Models;
 
-namespace s3ng.ProductService.Services
+namespace ProductService.Services
 {
     public class ProductService : IProductService
     {
@@ -21,7 +21,7 @@ namespace s3ng.ProductService.Services
         /// Создать товар.
         /// </summary>
         /// <param name="creatingProductDto"> ДТО создаваемого товара. </param>
-        public async Task<Guid> CreateAsync(CreatingProductDto creatingProductDto)
+        public async Task<Guid> CreateAsync(CreatingProductModel creatingProductDto)
         {
             var product = _mapper.Map<Product>(creatingProductDto);
             var createdProduct = await _productRepository.AddAsync(product);
@@ -35,10 +35,10 @@ namespace s3ng.ProductService.Services
         /// </summary>
         /// <param name="id"> Идентификатор товара. </param>
         /// <returns> ДТО товара.</returns>
-        public async Task<ProductDto> GetByIdAsync(Guid id)
+        public async Task<ProductModel> GetByIdAsync(Guid id)
         {
             var product = await _productRepository.GetAsync(id, CancellationToken.None);
-            var productDto = _mapper.Map<ProductDto>(product);
+            var productDto = _mapper.Map<ProductModel>(product);
 
             return productDto;
         }
@@ -48,7 +48,7 @@ namespace s3ng.ProductService.Services
         /// </summary>
         /// <param name="id"> Иентификатор товара. </param>
         /// <param name="updatingProductDto"> ДТО редактируемого товара. </param>
-        public async Task<bool> TryUpdateAsync(Guid id, UpdatingProductDto updatingProductDto)
+        public async Task<bool> TryUpdateAsync(Guid id, UpdatingProductModel updatingProductDto)
         {
             var product = await _productRepository.GetAsync(id, CancellationToken.None);
 

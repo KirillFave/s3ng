@@ -1,9 +1,11 @@
 using DotNetEnv;
 using DotNetEnv.Configuration;
+using IAM;
 using IAM.DAL;
 using IAM.Seedwork;
 using IAM.Seedwork.Abstractions;
 using IAM.Services;
+using Serilog;
 
 var builder = WebApplication.CreateBuilder(args);
 
@@ -17,6 +19,8 @@ builder.WebHost.ConfigureListen(builder.Configuration);
 
 var jwtSection = builder.Configuration.GetSection(JwtOptions.Jwt);
 builder.Services.Configure<JwtOptions>(jwtSection);
+
+builder.Host.UseSerilog(LoggerHelper.AddLogger(builder.Configuration));
 
 var app = builder.Build();
 

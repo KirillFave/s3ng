@@ -1,9 +1,16 @@
-using s3ng.ProductService.DataAccess.Repositories.Implementations;
-using s3ng.ProductService.DataAccess.EntityFramework;
-using s3ng.ProductService.Services.Abstractions;
-using s3ng.ProductService.Services.Repositories.Abstractions;
-using s3ng.ProductService.Host.Settings;
+using ProductService.DataAccess.Repositories.Implementations;
+using ProductService.DataAccess.EntityFramework;
+using ProductService.Services.Abstractions;
+using ProductService.Services.Repositories.Abstractions;
+using ProductService.Host.Settings;
+using ProductService.Host;
 using AutoMapper;
+using Serilog;
+using DotNetEnv;
+using DotNetEnv.Configuration;
+using Microsoft.EntityFrameworkCore;
+using Microsoft.AspNetCore.Server.Kestrel.Core;
+using ProductService.ProductService.Mapping;
 
 public class Program
 {
@@ -12,29 +19,29 @@ public class Program
         var builder = WebApplication.CreateBuilder(args);
         var applicationSettings = builder.Configuration.Get<ApplicationSettings>();
 
-        // Add AutoMappers to the container
+        builder.Configuration.AddDotNetEnvMulti([".env"], LoadOptions.TraversePath());
+
         builder.Services.AddSingleton<IMapper>(new Mapper(GetMapperConfiguration()));
 
-        // Add DbContexts to the container
-        builder.Services.ConfigureContext(applicationSettings.ConnectionString);
+        builder.Services.ConfigureContext(builder.Configuration);
 
-        // Add services to the container
         builder.Services.AddSingleton(applicationSettings);
         builder.Services.AddSingleton((IConfigurationRoot)builder.Configuration);
 
-        #region Подключение сервиса товаров
-        builder.Services.AddTransient<IProductService, s3ng.ProductService.Services.ProductService>();
-        #endregion Подключение сервиса товаров
-
-        // Add repositories to the container
-        #region Подключение репозитория товаров
+        builder.Services.AddTransient<IProductService, ProductService.Services.ProductService>();
         builder.Services.AddTransient<IProductRepository, ProductRepository>();
-        #endregion Подключение репозитория товаров
 
         builder.Services.AddControllers();
         // Learn more about configuring Swagger/OpenAPI at https://aka.ms/aspnetcore/swashbuckle
         builder.Services.AddEndpointsApiExplorer();
         builder.Services.AddSwaggerGen();
+
+        builder.Host.UseSerilog(LoggerHelper.AddLogger(builder.Configuration));
+
+        builder.WebHost.ConfigureKestrel(o =>
+        {
+            o.ListenAnyIP(50052, listenOptions => listenOptions.Protocols = HttpProtocols.Http1AndHttp2AndHttp3);
+        });
 
         var app = builder.Build();
 
@@ -49,6 +56,21 @@ public class Program
 
         app.MapControllers();
 
+        using (var scope = app.Services.CreateScope())
+        {
+            var services = scope.ServiceProvider;
+            var context = services.GetRequiredService<DatabaseContext>();
+
+            try
+            {
+                context.Database.Migrate();
+            }
+            catch (Exception ex)
+            {
+                Console.WriteLine($"РћС€РёР±РєР° РїСЂРёРјРµРЅРµРЅРёСЏ РјРёРіСЂР°С†РёР№: {ex.Message}");
+            }
+        }
+
         app.Run();
     }
 
@@ -56,8 +78,7 @@ public class Program
     {
         var configuration = new MapperConfiguration(config =>
         {
-            config.AddProfile<s3ng.ProductService.Host.Mapping.ProductMappingsProfile>();
-            config.AddProfile<s3ng.ProductService.ProductService.Mapping.ProductMappingsProfile>();
+            config.AddProfile<ProductMappingsProfile>();
         });
 
         configuration.AssertConfigurationIsValid();
