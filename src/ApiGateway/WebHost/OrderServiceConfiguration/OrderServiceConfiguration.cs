@@ -1,8 +1,3 @@
-using OrderService.Database;
-using OrderService.Repositories;
-
-using Microsoft.EntityFrameworkCore;
-
 namespace WebHost.OrderServiceConfiguration;
 
 public static class OrderServiceConfiguration

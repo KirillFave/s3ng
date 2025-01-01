@@ -1,9 +1,9 @@
-﻿using Microsoft.AspNetCore.Mvc;
+using Microsoft.AspNetCore.Mvc;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.ChangeTracking;
 using Microsoft.Net.Http.Headers;
 using OrderService.Database;
-using OrderService.Models;
+using SharedLibrary.OrderService.Models;
 using System.Reflection;
 
 namespace OrderService.Repositories;

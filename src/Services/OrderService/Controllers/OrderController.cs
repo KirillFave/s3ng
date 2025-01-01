@@ -1,6 +1,6 @@
 using Microsoft.AspNetCore.Mvc;
-using OrderService.Models;
 using OrderService.Repositories;
+using SharedLibrary.OrderService.Models;
 
 namespace OrderService.Controllers;
 

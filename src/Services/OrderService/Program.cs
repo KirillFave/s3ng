@@ -1,5 +1,5 @@
 using OrderService.Database;
-using OrderService.Models;
+using SharedLibrary.OrderService.Models;
 using OrderService.Repositories;
 
 using Microsoft.EntityFrameworkCore;
@@ -74,7 +74,7 @@ using (var scope = app.Services.CreateScope())
     }
     catch (Exception ex)
     {
-        Console.WriteLine($"Ошибка применения миграций: {ex.Message}");
+        Console.WriteLine($"РћС€РёР±РєР° РїСЂРёРјРµРЅРµРЅРёСЏ РјРёРіСЂР°С†РёР№: {ex.Message}");
     }
 }
 

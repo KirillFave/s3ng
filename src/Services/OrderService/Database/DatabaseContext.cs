@@ -1,5 +1,5 @@
-﻿using Microsoft.EntityFrameworkCore;
-using OrderService.Models;
+using Microsoft.EntityFrameworkCore;
+using SharedLibrary.OrderService.Models;
 
 namespace OrderService.Database;
 

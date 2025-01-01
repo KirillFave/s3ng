@@ -11,8 +11,8 @@ using WebHost.UserServiceClient;
 
 var builder = WebApplication.CreateBuilder(args);
 
-builder.Configuration.Sources.Clear();
-builder.Configuration.AddJsonFile("appsettings.json");
+//builder.Configuration.Sources.Clear();
+//builder.Configuration.AddJsonFile("appsettings.json");
 // Add services to the container.
 //automapper
 builder.Services.AddAutoMapper(typeof(IAMProfile));

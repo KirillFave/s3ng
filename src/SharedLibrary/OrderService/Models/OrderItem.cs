@@ -1,13 +1,13 @@
-﻿namespace OrderService.Models;
+namespace SharedLibrary.OrderService.Models;
 
 public class OrderItem : BaseEntity
 {
     public Order Order { get; set; }
     public Guid OrderGuid { get; }
     public Guid ProductGuid { get; }
-    public Decimal PricePerUnit { get; private set; }
+    public decimal PricePerUnit { get; private set; }
     public int Count { get; }
-    public Decimal TotalPrice { get; }
+    public decimal TotalPrice { get; }
 
     public OrderItem(
         //Order order,

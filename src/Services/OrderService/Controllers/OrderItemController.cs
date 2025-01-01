@@ -1,7 +1,7 @@
 using AutoMapper;
 using Microsoft.AspNetCore.Mvc;
 using OrderService.Dto;
-using OrderService.Models;
+using SharedLibrary.OrderService.Models;
 using OrderService.Repositories;
 
 namespace OrderService.Controllers;

@@ -1,4 +1,4 @@
-﻿namespace OrderService.Models;
+namespace SharedLibrary.OrderService.Models;
 
 public class BaseEntity
 {
