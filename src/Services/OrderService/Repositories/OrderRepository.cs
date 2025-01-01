@@ -1,7 +1,7 @@
-﻿using Microsoft.EntityFrameworkCore;
+using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.ChangeTracking;
 using OrderService.Database;
-using OrderService.Models;
+using SharedLibrary.OrderService.Models;
 
 namespace OrderService.Repositories;
 
