@@ -7,11 +7,18 @@ namespace DeliveryService.Repositories;
 
 public interface IDeliveryRepository //: IRepository<Delivery, Guid>
 {
+    ///// <summary>
+    ///// Создать доставку.
+    ///// </summary>
+    ///// <param name="createDeliveryDTO"> ДТО создаваемой перевозки. </param>
+    //public Task<CreateDeliveryDTO> AddAsync(CreateDeliveryDTO createDeliveryDTO);
+
     /// <summary>
-    /// Создать доставку.
+    /// Добавить в базу одну сущность.
     /// </summary>
-    /// <param name="createDeliveryDTO"> ДТО создаваемой перевозки. </param>
-    public Task<CreateDeliveryDTO> AddAsync(CreateDeliveryDTO createDeliveryDTO);
+    /// <param name="entity"> Сущность для добавления. </param>
+    /// <returns> Добавленная сущность. </returns>
+    Task<Delivery> AddAsync(Delivery entity);
 
     ///// <summary>
     ///// Получить доставку по id.
