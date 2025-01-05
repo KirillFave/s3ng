@@ -1,5 +1,5 @@
-﻿using OrderService.Dto;
-using OrderService.Models;
+using OrderService.Dto;
+using SharedLibrary.OrderService.Models;
 
 using AutoMapper;
 namespace OrderService.Mapping;

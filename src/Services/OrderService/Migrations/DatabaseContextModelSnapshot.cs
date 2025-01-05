@@ -79,11 +79,13 @@ namespace OrderService.Migrations
 
             modelBuilder.Entity("OrderService.Models.OrderItem", b =>
                 {
-                    b.HasOne("OrderService.Models.Order", null)
+                    b.HasOne("OrderService.Models.Order", "Order")
                         .WithMany("Items")
                         .HasForeignKey("OrderGuid")
                         .OnDelete(DeleteBehavior.Cascade)
                         .IsRequired();
+
+                    b.Navigation("Order");
                 });
 
             modelBuilder.Entity("OrderService.Models.Order", b =>
