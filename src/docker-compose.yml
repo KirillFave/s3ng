@@ -13,6 +13,7 @@ services:
     environment:
       USER_SERVICE_URI: ${USER_SERVICE_URI}
       IAM_SERVICE_URI: ${IAM_SERVICE_URI}
+      ORDER_SERVICE_URI: ${ORDER_SERVICE_URI}
       PRODUCT_SERVICE_URI: ${PRODUCT_SERVICE_URI}
       DOTNET_ENVIRONMENT: "Development"
     ports:
