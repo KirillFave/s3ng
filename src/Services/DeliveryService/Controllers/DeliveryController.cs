@@ -27,12 +27,12 @@ namespace DeliveryService.Controllers
             _logger = logger;
         }
 
-        //[HttpGet("GetDelivery")]
-        ////[ProducesResponseType(typeof(IEnumerable<GetDeliveryDTO>), 200)]
-        //public async Task<ActionResult> GetByIdAsync(Guid id)
-        //{
-        //    return Ok(_mapper.Map<DeliveryDBContext>(await _deliveryRepository.GetByIdAsync(id)));
-        //}
+        [HttpGet("GetDelivery")]
+        //[ProducesResponseType(typeof(IEnumerable<GetDeliveryDTO>), 200)]
+        public async Task<IActionResult> GetAsync(Guid id, CancellationToken cancellationToken)
+        {
+            return Ok(_mapper.Map<DeliveryDBContext>(await _deliveryRepository.GetAsync(id, cancellationToken)));
+        }
 
         [HttpPost ("CreateDelivery")]
         //[ProducesResponseType(typeof(IEnumerable<CreateDeliveryDTO>), 200)]
@@ -47,18 +47,20 @@ namespace DeliveryService.Controllers
 
         //[HttpPut("UpdateDelivery")]
         ////[ProducesResponseType(typeof(IEnumerable<UpdateDeliveryDTO>), 200)]
-        //public async Task<ActionResult> UpdateAsync(Guid id, UpdateDeliveryDTO updateDeliveryModel)
+        //public async Task<IActionResult> UpdateAsync(Delivery delivery, UpdateDeliveryModel updateDeliveryModel)
         //{
-        //    await _deliveryRepository.TryUpdateAsync(id, _mapper.Map<UpdateDeliveryDTO, UpdateDeliveryDTO>(updateDeliveryModel));
-        //    return Ok();
+        //    var updateDeliveryDTO = _mapper.Map<UpdateDeliveryDTO>(updateDeliveryModel);
+        //     bool isUpdated = await _deliveryRepository.UpdateAsync(delivery, updateDeliveryDTO);
+            
+        //    return isUpdated ? Ok() : NotFound($"Доставка с идентфикатором {delivery} не найдена");            
         //}
 
         //[HttpDelete("DeleteDelivery")]
-        //public async Task<ActionResult> TryDeleteAsync(Guid id)
+        //public async Task<IActionResult> Delete(Delivery delivery)
         //{
-        //    await _deliveryRepository.TryDeleteAsync(id);
+        //    bool isDeleted = await _deliveryRepository.DeleteAsync(delivery);
 
-        //    return Ok();            
+        //    return isDeleted ? Ok() : NotFound();
         //}
     }
 }

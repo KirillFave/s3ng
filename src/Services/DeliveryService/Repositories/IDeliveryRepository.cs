@@ -3,10 +3,11 @@ using DeliveryService.Domain.Domain.Entities;
 using DeliveryService.DTO;
 using DeliveryService.Abstractions;
 using DeliveryService.Enums;
+using DeliveryService.Models;
 
 namespace DeliveryService.Repositories;
 
-public interface IDeliveryRepository //: IRepository<Delivery, Guid>
+public interface IDeliveryRepository 
 {
     /// <summary>
     /// Получить сущность по Id.
@@ -54,7 +55,7 @@ public interface IDeliveryRepository //: IRepository<Delivery, Guid>
     /// Изменение сущности.
     /// </summary>
     /// <param name="entity"> Сущность для изменения. </param>
-    Task<OperationResult> UpdateAsync(Delivery entity, bool isUpdateDeliveryStatus);
+    Task<OperationResult> UpdateAsync(Delivery entity, bool isUpdateDeliveryStatus);    
     /// <summary>
     /// Удалить сущность.
     /// </summary>
@@ -68,5 +69,10 @@ public interface IDeliveryRepository //: IRepository<Delivery, Guid>
     /// <param name="entity"> Cущность для удаления. </param>
     /// <returns> Была ли сущность удалена. </returns>
     bool Delete(Delivery entity);
-
+    /// <summary>
+    /// Удалить сущность.
+    /// </summary>
+    /// <param name="entity"> Cущность для удаления. </param>
+    /// <returns> Была ли сущность удалена. </returns>
+    bool DeleteAsync(Delivery entity, CancellationToken cancellationToken);
 }

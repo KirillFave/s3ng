@@ -159,9 +159,26 @@ namespace DeliveryService.Repositories
             return Delete(product);
         }
         /// <summary>
-        /// Сохранить изменения.
+        /// Удалить сущность.
         /// </summary>
-        public void SaveChanges()
+        /// <param name="id"> Id удалённой сущности. </param>
+        /// <returns> Была ли сущность удалена. </returns> public bool Delete(Product product)
+        public bool DeleteAsync(Delivery delivery, CancellationToken cancellationToken)
+        {
+            if (delivery is null)
+            {
+                return false;
+            }
+            _entityDeliverySet.Remove(delivery);
+            _entityDeliverySet.Entry(delivery).State = EntityState.Deleted;
+
+            return true;
+        }
+
+    /// <summary>
+    /// Сохранить изменения.
+    /// </summary>
+    public void SaveChanges()
         {
             _context.SaveChanges();
         }
