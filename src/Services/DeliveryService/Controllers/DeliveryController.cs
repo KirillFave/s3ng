@@ -36,9 +36,13 @@ namespace DeliveryService.Controllers
 
         [HttpPost ("CreateDelivery")]
         //[ProducesResponseType(typeof(IEnumerable<CreateDeliveryDTO>), 200)]
-        public async Task<ActionResult> AddAsync(CreateDeliveryDTO createDeliveryModel)
+        public async Task<IActionResult> CreateAsync(CreateDeliveryModel createDeliveryModel)
         {
-            return Ok(await _deliveryRepository.AddAsync(_mapper.Map<CreateDeliveryDTO>(createDeliveryModel)));
+            var createDeliveryDTO = _mapper.Map<CreateDeliveryDTO>(createDeliveryModel);
+            //var createDeliveryGuid = await _deliveryRepository.AddAsync(createDeliveryDTO);   
+                        
+            //return Created("", createDeliveryGuid);
+            return Ok();
         }
 
         //[HttpPut("UpdateDelivery")]

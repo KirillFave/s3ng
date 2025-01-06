@@ -21,10 +21,10 @@ namespace DeliveryService.Migrations
                     
                     
                     _Id = table.Column<Guid>(type: "uuid", nullable: false),
-                    UserGuid = table.Column<Guid>(type: "uuid", nullable: false),
-                    Total_Quantity = table.Column<int>(type: "integer", nullable: false),
-                    Total_Price = table.Column<decimal>(type: "numeric", nullable: false),
-                    Shipping_Address = table.Column<string>(type: "character varying(200)", maxLength: 200, nullable: false),
+                    UserId = table.Column<Guid>(type: "uuid", nullable: false),
+                    TotalQuantity = table.Column<int>(type: "integer", nullable: false),
+                    TotalPrice = table.Column<decimal>(type: "numeric", nullable: false),
+                    ShippingAddress = table.Column<string>(type: "character varying(200)", maxLength: 200, nullable: false),
                     Courer_Id = table.Column<Guid>(type: "uuid", nullable: false),
                     Delivery_Time = table.Column<DateTime>(type: "timestamp with time zone", nullable: false),
                     CreateTimeestamp = table.Column<DateTime>(type: "timestamp with time zone", nullable: false),

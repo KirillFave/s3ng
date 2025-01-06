@@ -9,15 +9,15 @@ namespace DeliveryService.Models
 {
     public class CreateDeliveryModel
     {
-        public required Guid UserGuid { get; set; }
-        public Guid Order_Id { get; set; }
+        public required Guid UserId { get; set; }
+        public Guid OrderId { get; set; }
         public OrderStatus orderStatus { get; set; }
         public DeliveryStatus DeliveryStatus { get; set; }
-        public required int Total_Quantity { get; set; }
-        public required decimal Total_Price { get; set; }
+        public required int TotalQuantity { get; set; }
+        public required decimal TotalPrice { get; set; }
         public PaymentType PaymentType { get; set; }        
-        public required string Shipping_Address { get; set; }
+        public required string ShippingAddress { get; set; }
         public Guid Courier_Id { get; set; }        
-        public required DateTime Estimated_Delivery_Time { get; set; }                  
+        public required DateTime EstimatedDeliveryTime { get; set; }                  
     }
 }

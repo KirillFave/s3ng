@@ -35,10 +35,10 @@ namespace DeliveryService.Kafka
                 using var scope = scopeFactory.CreateScope();
                 var dbContext = scope.ServiceProvider.GetRequiredService<DeliveryDBContext>();
 
-                var product = await dbContext.Deliveries.FindAsync(order.Total_Quantity);
+                var product = await dbContext.Deliveries.FindAsync(order.TotalQuantity);
                 if (order != null)
                 {
-                    order.Total_Quantity -= order.Total_Quantity;
+                    order.TotalQuantity -= order.TotalQuantity;
                     await dbContext.SaveChangesAsync();
                 }
             }

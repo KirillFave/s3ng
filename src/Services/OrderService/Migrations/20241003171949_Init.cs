@@ -16,7 +16,7 @@ namespace OrderService.Migrations
                 columns: table => new
                 {
                     Guid = table.Column<Guid>(type: "TEXT", nullable: false),
-                    UserGuid = table.Column<Guid>(type: "TEXT", nullable: false),
+                    UserId = table.Column<Guid>(type: "TEXT", nullable: false),
                     Status = table.Column<string>(type: "TEXT", nullable: false),
                     PaymentType = table.Column<string>(type: "TEXT", nullable: false),
                     ShipAddress = table.Column<string>(type: "TEXT", maxLength: 255, nullable: false),

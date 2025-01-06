@@ -49,7 +49,7 @@ namespace DeliveryService.Migrations
                         .ValueGeneratedOnAdd()
                         .HasColumnType("uuid");
 
-                    b.Property<DateTime>("Actual_Delivery_Time")
+                    b.Property<DateTime>("ActualDeliveryTime")
                         .HasColumnType("timestamp with time zone");
 
                     b.Property<Guid>("CourierId")
@@ -61,7 +61,7 @@ namespace DeliveryService.Migrations
                     b.Property<int>("DeliveryStatus")
                         .HasColumnType("integer");
 
-                    b.Property<DateTime>("Estimated_Delivery_Time")
+                    b.Property<DateTime>("EstimatedDeliveryTime")
                         .HasColumnType("timestamp with time zone");
 
                     b.Property<bool>("IsDeleted")
@@ -70,24 +70,24 @@ namespace DeliveryService.Migrations
                     b.Property<int>("OrderStatus")
                         .HasColumnType("integer");
 
-                    b.Property<Guid>("Order_Id")
+                    b.Property<Guid>("OrderId")
                         .HasColumnType("uuid");
 
                     b.Property<int>("PaymentType")
                         .HasColumnType("integer");
 
-                    b.Property<string>("Shipping_Address")
+                    b.Property<string>("ShippingAddress")
                         .IsRequired()
                         .HasMaxLength(200)
                         .HasColumnType("character varying(200)");
 
-                    b.Property<decimal>("Total_Price")
+                    b.Property<decimal>("TotalPrice")
                         .HasColumnType("numeric");
 
-                    b.Property<int>("Total_Quantity")
+                    b.Property<int>("TotalQuantity")
                         .HasColumnType("integer");
 
-                    b.Property<Guid>("UserGuid")
+                    b.Property<Guid>("UserId")
                         .HasColumnType("uuid");
 
                     b.HasKey("Id");
@@ -107,17 +107,17 @@ namespace DeliveryService.Migrations
                     b.Property<int>("PaymentType")
                         .HasColumnType("integer");
 
-                    b.Property<string>("Shipping_Address")
+                    b.Property<string>("ShippingAddress")
                         .IsRequired()
                         .HasColumnType("text");
 
                     b.Property<int>("Status")
                         .HasColumnType("integer");
 
-                    b.Property<decimal>("Total_Price")
+                    b.Property<decimal>("TotalPrice")
                         .HasColumnType("numeric");
 
-                    b.Property<int>("Total_Quantity")
+                    b.Property<int>("TotalQuantity")
                         .HasColumnType("integer");
 
                     b.HasKey("Id");

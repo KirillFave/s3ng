@@ -6,13 +6,13 @@ namespace DeliveryService.Models
 {
     public class OrderMessage
     {
-        public Guid Order_Id { get; set; }
+        public Guid OrderId { get; set; }
         public List<OrderItem> Items { get; set; }
-        public int Total_Quantity { get; set; }
-        public decimal Total_Price { get; set; }
+        public int TotalQuantity { get; set; }
+        public decimal TotalPrice { get; set; }
         public OrderStatus Status { get; set; }
         public PaymentType PaymentType { get; set; }
-        public string Shipping_Address { get; set; }
+        public string ShippingAddress { get; set; }
         public DateTime CreatedTimestamp { get; set; }
     }
 }

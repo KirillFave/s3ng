@@ -43,21 +43,21 @@ namespace DeliveryService.Migrations
                     b.Property<bool>("IsDeleted")
                         .HasColumnType("boolean");
 
-                    b.Property<Guid>("Order_Id")
+                    b.Property<Guid>("OrderId")
                         .HasColumnType("uuid");
 
-                    b.Property<string>("Shipping_Address")
+                    b.Property<string>("ShippingAddress")
                         .IsRequired()
                         .HasMaxLength(200)
                         .HasColumnType("character varying(200)");
 
-                    b.Property<decimal>("Total_Price")
+                    b.Property<decimal>("TotalPrice")
                         .HasColumnType("numeric");
 
-                    b.Property<int>("Total_Quantity")
+                    b.Property<int>("TotalQuantity")
                         .HasColumnType("integer");
 
-                    b.Property<Guid>("UserGuid")
+                    b.Property<Guid>("UserId")
                         .HasColumnType("uuid");
 
                     b.HasKey("Id");

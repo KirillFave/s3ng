@@ -14,7 +14,7 @@ namespace DeliveryService.Migrations
             migrationBuilder.RenameColumn(
                 name: "Delivery_Time",
                 table: "Deliveries",
-                newName: "Estimated_Delivery_Time");
+                newName: "EstimatedDeliveryTime");
 
             migrationBuilder.RenameColumn(
                 name: "CreateTimeestamp",
@@ -27,7 +27,7 @@ namespace DeliveryService.Migrations
                 newName: "CourierId");
 
             migrationBuilder.AddColumn<DateTime>(
-                name: "Actual_Delivery_Time",
+                name: "ActualDeliveryTime",
                 table: "Deliveries",
                 type: "timestamp with time zone",
                 nullable: false,
@@ -78,11 +78,11 @@ namespace DeliveryService.Migrations
                 columns: table => new
                 {
                     Id = table.Column<Guid>(type: "uuid", nullable: false),
-                    Total_Quantity = table.Column<int>(type: "integer", nullable: false),
-                    Total_Price = table.Column<decimal>(type: "numeric", nullable: false),
+                    TotalQuantity = table.Column<int>(type: "integer", nullable: false),
+                    TotalPrice = table.Column<decimal>(type: "numeric", nullable: false),
                     Status = table.Column<int>(type: "integer", nullable: false),
                     PaymentType = table.Column<int>(type: "integer", nullable: false),
-                    Shipping_Address = table.Column<string>(type: "text", nullable: false),
+                    ShippingAddress = table.Column<string>(type: "text", nullable: false),
                     CreatedTimestamp = table.Column<DateTime>(type: "timestamp with time zone", nullable: false)
                 },
                 constraints: table =>
@@ -143,7 +143,7 @@ namespace DeliveryService.Migrations
                 name: "Order");
 
             migrationBuilder.DropColumn(
-                name: "Actual_Delivery_Time",
+                name: "ActualDeliveryTime",
                 table: "Deliveries");
 
             migrationBuilder.DropColumn(
@@ -159,7 +159,7 @@ namespace DeliveryService.Migrations
                 table: "Deliveries");
 
             migrationBuilder.RenameColumn(
-                name: "Estimated_Delivery_Time",
+                name: "EstimatedDeliveryTime",
                 table: "Deliveries",
                 newName: "Delivery_Time");
 

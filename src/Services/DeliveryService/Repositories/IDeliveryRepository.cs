@@ -2,16 +2,41 @@ using DeliveryService.Repositories;
 using DeliveryService.Domain.Domain.Entities;
 using DeliveryService.DTO;
 using DeliveryService.Abstractions;
+using DeliveryService.Enums;
 
 namespace DeliveryService.Repositories;
 
 public interface IDeliveryRepository //: IRepository<Delivery, Guid>
 {
-    ///// <summary>
-    ///// Создать доставку.
-    ///// </summary>
-    ///// <param name="createDeliveryDTO"> ДТО создаваемой перевозки. </param>
-    //public Task<CreateDeliveryDTO> AddAsync(CreateDeliveryDTO createDeliveryDTO);
+    /// <summary>
+    /// Получить сущность по Id.
+    /// </summary>
+    /// <param name="id"> Id сущности. </param>
+    /// <returns> Cущность. </returns>
+    Delivery Get(Guid id);
+
+    /// <summary>
+    /// Получить сущность по Id.
+    /// </summary>
+    /// <param name="id"> Id сущности. </param>
+    /// <returns> Cущность. </returns>
+    Delivery GetUserId(Guid UserId);
+
+    /// <summary>
+    /// Получить сущность по Id.
+    /// </summary>
+    /// <param name="id"> Id сущности. </param>
+    /// <param name="cancellationToken"></param>
+    /// <returns> Cущность. </returns>
+    Task<Delivery> GetAsync(Guid id, CancellationToken cancellationToken);
+
+    /// <summary>
+    /// Запросить все сущности в базе.
+    /// </summary>
+    /// <param name="cancellationToken"> Токен отмены. </param>
+    /// <param name="asNoTracking"> Вызвать с AsNoTracking. </param>
+    /// <returns> Список сущностей. </returns>
+    Task<List<Delivery>> GetAllAsync(CancellationToken cancellationToken, bool asNoTracking = false);
 
     /// <summary>
     /// Добавить в базу одну сущность.
@@ -20,23 +45,28 @@ public interface IDeliveryRepository //: IRepository<Delivery, Guid>
     /// <returns> Добавленная сущность. </returns>
     Task<Delivery> AddAsync(Delivery entity);
 
-    ///// <summary>
-    ///// Получить доставку по id.
-    ///// </summary>
-    ///// <param name="id"> Идентификатор доставки. </param>
-    ///// <returns> ДТО товара.</returns>
-    //public Task<Guid> GetByIdAsync(Guid id);
+    /// <summary>
+    /// Для сущности определить состояние - то что она изменена.
+    /// </summary>
+    /// <param name="entity"> Сущность для изменения. </param>
+    void Update(Delivery entity);
+    /// <summary>
+    /// Изменение сущности.
+    /// </summary>
+    /// <param name="entity"> Сущность для изменения. </param>
+    Task<OperationResult> UpdateAsync(Delivery entity, bool isUpdateDeliveryStatus);
+    /// <summary>
+    /// Удалить сущность.
+    /// </summary>
+    /// <param name="id"> Id удалённой сущности. </param>
+    /// <returns> Была ли сущность удалена. </returns>
+    bool Delete(Guid id);
 
-    ///// <summary>
-    ///// Изменить доставку по id.
-    ///// </summary>
-    ///// <param name="id"> Идентификатор доставки. </param>
-    ///// <param name="updateDeliveryDTO"> ДТО редактируемого товара. </param>
-    //public Task<bool> TryUpdateAsync(Guid id, UpdateDeliveryDTO updateProductDTO);
+    /// <summary>
+    /// Удалить сущность.
+    /// </summary>
+    /// <param name="entity"> Cущность для удаления. </param>
+    /// <returns> Была ли сущность удалена. </returns>
+    bool Delete(Delivery entity);
 
-    ///// <summary>
-    ///// Удалить доставку.
-    ///// </summary>
-    ///// <param name="id"> Идентификатор доставки. </param>
-    //public Task<bool> TryDeleteAsync(Guid id);    
 }

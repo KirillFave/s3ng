@@ -7,11 +7,11 @@ namespace DeliveryService.Domain.External.Entities
     {
         public Guid Id { get; set; }
         public List<OrderItem> Items { get; set; }
-        public int Total_Quantity { get; set; }
-        public decimal Total_Price { get; set; }
+        public int TotalQuantity { get; set; }
+        public decimal TotalPrice { get; set; }
         public OrderStatus Status { get; set; }
         public PaymentType PaymentType { get; set; }
-        public required string Shipping_Address { get; set; }
+        public required string ShippingAddress { get; set; }
         public DateTime CreatedTimestamp { get; set; }
     }
 }

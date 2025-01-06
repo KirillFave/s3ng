@@ -27,7 +27,7 @@ public class DatabaseContext : DbContext
             //    .WithOne()
             //    .HasForeignKey(orderItem => orderItem.OrderGuid);
 
-            entity.Property(order => order.UserGuid)
+            entity.Property(order => order.UserId)
                 .IsRequired();
             entity.Property(order => order.Status)
                 .HasConversion(status => 

@@ -2,7 +2,7 @@
 
 public class Order : BaseEntity
 {
-    public Guid UserGuid { get; }
+    public Guid UserId { get; }
     public List<OrderItem> Items { get; set; }
     public OrderStatus Status { get; set; }
     public PaymentType PaymentType { get; set; }

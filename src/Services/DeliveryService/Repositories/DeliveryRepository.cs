@@ -7,29 +7,70 @@ using DeliveryService.Repositories;
 using DeliveryService.DTO;
 using AutoMapper;
 using DeliveryService.Abstractions;
+using DeliveryService.Models;
 
 namespace DeliveryService.Repositories
 {
-    ///// <summary>
-    ///// Репозиторий.
-    ///// </summary>
-    ///// <typeparam name="T"> Тип сущности. </typeparam>
-    ///// <typeparam name="TPrimaryKey"> Тип первичного ключа. </typeparam>
-    //public class DeliveryRepository : Repository<Delivery, Guid>, IDeliveryRepository
-    //{
-    //    public DeliveryRepository(DeliveryDBContext context): base(context) { }
 
     public class DeliveryRepository : IDeliveryRepository
     {
-        protected readonly DeliveryDBContext Context;
+        protected readonly DeliveryDBContext _context;
         private readonly DbSet<Delivery>? _entityDeliverySet;
 
         public DeliveryRepository(DeliveryDBContext context)
         {
-            Context = context;
-            _entityDeliverySet = Context.Set<Delivery>();
+            _context = context;
+            _entityDeliverySet = _context.Set<Delivery>();
+        }
+        /// <summary>
+        /// Получить сущность по Id.
+        /// </summary>
+        /// <param name="id"> Id сущности. </param>        
+        /// <returns> Cущность. </returns>
+        public Delivery Get(Guid id)
+        {
+            return _entityDeliverySet.Find(id);
+        }
+        /// <summary>
+        /// Получить сущность по Id.
+        /// </summary>
+        /// <param name="id"> Id сущности. </param>        
+        /// <returns> Cущность. </returns>
+        public Delivery GetUserId(Guid UserId)
+        {
+            return _entityDeliverySet.Find(UserId);
+        }
+        /// <summary>
+        /// Получить сущность по Id.
+        /// </summary>
+        /// <param name="id"> Id сущности. </param>
+        /// <param name="cancellationToken"></param>
+        /// <returns> Cущность. </returns>
+        public async Task<Delivery> GetAsync(Guid id, CancellationToken cancellationToken = default)
+        {
+            if (_entityDeliverySet == null)
+            {
+                return await _entityDeliverySet.FindAsync(id);
+            }
+            else
+            {
+                return _entityDeliverySet.Find(id);
+            }
+        }
+        /// <summary>
+        /// Запросить все сущности в базе.
+        /// </summary>
+        /// <param name="cancellationToken"> Токен отмены </param>
+        /// <returns> Список сущностей. </returns>
+        public IQueryable<Delivery> GetAll(bool asNoTracking = false)
+        {
+            return asNoTracking ? _entityDeliverySet.AsNoTracking() : _entityDeliverySet;
         }
 
+        public async Task<List<Delivery>> GetAllAsync(CancellationToken cancellationToken = default, bool asNoTracking = false)
+        {
+            return await GetAll().ToListAsync(cancellationToken);
+        }
         /// <summary>
         /// Добавить в базу одну сущность.
         /// </summary>
@@ -37,252 +78,99 @@ namespace DeliveryService.Repositories
         /// <returns> Добавленная сущность. </returns>
         public async Task<Delivery> AddAsync(Delivery entity)
         {
-            await Context.Deliveries.AddAsync(entity);
-            await Context.SaveChangesAsync();
+            await _context.Deliveries.AddAsync(entity);
+            await _context.SaveChangesAsync();
             return entity;
         }
+        /// <summary>
+        /// Обновить в базе сущность.
+        /// </summary>
+        /// <param name="entity"> Сущность для обновления. </param>
+        /// <returns> Обновленная сущность. </returns>
+        public void Update(Delivery delivery)
+        {
+            delivery.TimeModified = DateTime.Now;
+            _entityDeliverySet.Entry(delivery).State = EntityState.Modified;
+        }
+        /// <summary>
+        /// Обновить в базе сущность.
+        /// </summary>
+        /// <param name="entity"> Сущность для обновления. </param>
+        /// <returns> Обновленная сущность. </returns>
+        public async Task<OperationResult> UpdateAsync(Delivery delivery, bool isUpdateDeliveryStatus)
+        {
+            Delivery? deliveryToUpdate = await _context.Deliveries.FindAsync(delivery.Id);
+            if (deliveryToUpdate is null)
+            {
+                return OperationResult.NotEntityFound;
+            }
 
-        ///// <summary>
-        ///// Создать перевозку.
-        ///// </summary>
-        ///// <param name="creatDeliveryDTO"> ДТО создаваемой перевозки. </param>
-        //public async Task<CreateDeliveryDTO> AddAsync(CreateDeliveryDTO createDeliveryDTO)
-        //{
-        //    return await _entityDeliverySet.AddAsync(createDeliveryDTO);
-        //}
+              if (deliveryToUpdate.PaymentType == delivery.PaymentType &&
+                deliveryToUpdate.DeliveryStatus == delivery.DeliveryStatus &&
+                deliveryToUpdate.Items == delivery.Items &&
+                deliveryToUpdate.CourierId == delivery.CourierId &&                             // ?is required
+                deliveryToUpdate.ShippingAddress == delivery.ShippingAddress &&
+                deliveryToUpdate.TotalQuantity == delivery.TotalQuantity &&                   // ?is required
+                deliveryToUpdate.TotalPrice == delivery.TotalPrice &&                         // ?is required
+                deliveryToUpdate.EstimatedDeliveryTime == delivery.EstimatedDeliveryTime    // ?is required
+                )
+              if (isUpdateDeliveryStatus)
+                {
+                    deliveryToUpdate.PaymentType = delivery.PaymentType;
+                }
 
-        //Task<CreateDeliveryDTO> IDeliveryRepository.AddAsync(CreateDeliveryDTO createDeliveryDTO) => throw new NotImplementedException();
+              if (delivery.ShippingAddress is not null)
+                {
+                    deliveryToUpdate.ShippingAddress = delivery.ShippingAddress;
+                }
+              if (delivery.Items is not null)
+                {
+                    deliveryToUpdate.Items = delivery.Items;
+                }          
 
+            int stateEntriesWritten = await _context.SaveChangesAsync();
+            return stateEntriesWritten > 0 ? OperationResult.Success : OperationResult.NotChangesApplied;
+        }
+        /// <summary>
+        /// Удалить сущность.
+        /// </summary>
+        /// <param name="entity"> Cущность для удаления. </param>
+        /// <returns> Была ли сущность удалена. </returns>
+        public bool Delete(Delivery product)
+        {
+            if (product is null)
+            {
+                return false;
+            }
+            _entityDeliverySet.Remove(product);
+            _entityDeliverySet.Entry(product).State = EntityState.Deleted;
+
+            return true;
+        }
+        /// <summary>
+        /// Удалить сущность.
+        /// </summary>
+        /// <param name="id"> Id удалённой сущности. </param>
+        /// <returns> Была ли сущность удалена. </returns>
+        public bool Delete(Guid id)
+        {
+            Delivery product = Get(id);
+
+            return Delete(product);
+        }
+        /// <summary>
+        /// Сохранить изменения.
+        /// </summary>
+        public void SaveChanges()
+        {
+            _context.SaveChanges();
+        }
+        /// <summary>
+        /// Сохранить изменения.
+        /// </summary>
+        public async Task SaveChangesAsync(CancellationToken cancellationToken = default)
+        {
+            await _context.SaveChangesAsync(cancellationToken);
+        }
     }
 }
-
-
-//}
-
-//        /// <summary>
-//        /// Добавить в базу одну сущность.
-//        /// </summary>
-//        /// <param name="entity"> Сущность для добавления. </param>
-//        /// <returns> Добавленная сущность. </returns>
-//        public async Task<Guid> AddAsync(CreateDeliveryDTO createDeliveryDTO)
-//        {
-//            return (await _entityDeliverySet)
-//        }
-
-
-
-//        public Task<bool> TryDeleteAsync(Guid id) => throw new NotImplementedException();
-//        public Task<bool> TryUpdateAsync(Guid id, UpdateDeliveryDTO updateProductDTO) => throw new NotImplementedException();
-//        Task<Guid> IDeliveryRepository.GetByIdAsync(Guid id) => throw new NotImplementedException();
-//    }
-//}
-
-
-
-
-//protected readonly DeliveryDBContext Context;
-//private readonly DbSet<Delivery> ?_entityDeliverySet;
-
-//public DeliveryRepository(DeliveryDBContext context)
-//{
-//    Context = context;
-//    _entityDeliverySet = Context.Set<Delivery>();
-//}
-
-//#region Get     
-
-///// <summary>
-///// Получить сущность по Id.
-///// </summary>
-///// <param name="id"> Id сущности. </param>
-///// <param name="cancellationToken"></param>
-///// <returns> Cущность. </returns>
-//public async Task<Delivery> GetByIdAsync(Guid id, CancellationToken cancellationToken)
-//{
-//    return await _entityDeliverySet.FindAsync(id, cancellationToken);
-//}
-
-///// <summary>
-///// Получить сущность по UserId.
-///// </summary>
-///// <param name="userId"> Id сущности. </param>
-///// <param name="cancellationToken"></param>
-///// <returns> Cущность. </returns>
-//public async Task<Delivery> GetByUserIdAsync(Guid userId, CancellationToken cancellationToken)
-//{
-//    return await _entityDeliverySet.FindAsync(userId, cancellationToken);
-//}
-
-//#endregion
-
-//#region GetAll
-
-///// <summary>
-///// Запросить все сущности в базе.
-///// </summary>
-///// <param name="cancellationToken"> Токен отмены </param>
-///// <returns> Список сущностей. </returns>
-//public async Task<List<Delivery>> GetAllAsync(CancellationToken cancellationToken)
-//{
-//    return await _entityDeliverySet.ToListAsync(cancellationToken);
-//}
-
-//#endregion
-
-//#region Create 
-
-///// <summary>
-///// Добавить в базу одну сущность.
-///// </summary>
-///// <param name="entity"> Сущность для добавления. </param>
-///// <returns> Добавленная сущность. </returns>
-//public async Task<Delivery> AddAsync(Delivery entity, CancellationToken cancellationToken)
-//{
-//    return (await _entityDeliverySet.AddAsync(entity, cancellationToken)).Entity;
-//}
-
-///// <summary>
-///// Добавить в базу массив сущностей.
-///// </summary>
-///// <param name="entities"> Массив сущностей. </param>
-//public virtual async Task AddRangeAsync(ICollection<Delivery> entities)
-//{
-//    if (entities == null || !entities.Any())
-//    {
-//        return;
-//    }
-//    await _entityDeliverySet.AddRangeAsync(entities);
-//}
-
-//#endregion
-
-//#region Update
-
-///// <summary>
-///// Для сущности определить состояние - на кое она изменена.
-///// </summary>
-///// <param name="entity"> Сущность для изменения. </param>
-//public virtual void Update(Delivery entity)
-//{
-//    Context.Entry(entity).State = EntityState.Modified;
-//}
-
-///// <summary>
-///// Обновить в базе сущность.
-///// </summary>
-///// <param name="entity"> Сущность для обновления. </param>
-///// <returns> Обновленная сущность. </returns>
-
-////public async Task<Delivery> UpdateAsync(Delivery entity, CancellationToken cancellationToken)
-////{
-////    _entityDeliverySet.Update(entity);
-////    return await _entityDeliverySet.FindAsync(entity.Id, cancellationToken);
-////}
-////public async Task<OperationResult> UpdateAsync(Delivery delivery, bool isUpdateDeliveryStatus)
-////{
-////    Delivery? deliveryToUpdate = await Context.Deliveries.FindAsync(delivery.Id);
-////    if (deliveryToUpdate is null)
-////    {
-////        return OperationResult.NotEntityFound;
-////    }
-
-////    if (deliveryToUpdate.PaymentType == delivery.PaymentType &&
-////        deliveryToUpdate.DeliveryStatus == delivery.DeliveryStatus &&
-////        deliveryToUpdate.Items == delivery.Items &&
-////        deliveryToUpdate.CourierId == delivery.CourierId &&
-////        deliveryToUpdate.Shipping_Address == delivery.Shipping_Address &&
-////        deliveryToUpdate.Total_Quantity == delivery.Total_Quantity &&
-////        deliveryToUpdate.Total_Price == delivery.Total_Price &&
-////        deliveryToUpdate.Estimated_Delivery_Time == delivery.Estimated_Delivery_Time                
-////        )
-////    {
-////        return OperationResult.NotModified;
-////    }
-
-////    if (isUpdateDeliveryStatus)
-////    {
-////        deliveryToUpdate.PaymentType = delivery.PaymentType;
-////    }
-
-////    if (delivery.Shipping_Address is not null)
-////    {
-////        deliveryToUpdate.Shipping_Address = delivery.Shipping_Address;
-////    }
-
-////    int stateEntriesWritten = await Context.SaveChangesAsync();
-////    return stateEntriesWritten > 0 ? OperationResult.Success : OperationResult.NotChangesApplied;
-////}
-//public async Task<Delivery> UpdateAsync(Delivery entity, CancellationToken cancellationToken)
-//{
-//    _entityDeliverySet.Update(entity);
-//    return await _entityDeliverySet.FindAsync(entity.Id, cancellationToken);
-//}
-
-//#endregion
-
-//#region Delete
-
-///// <summary>
-///// Удалить сущность.
-///// </summary>
-///// <param name="id"> Id удаляемой сущности. </param>
-///// <returns> Была ли сущность удалена. </returns>
-//public async Task<bool> DeleteAsync(Guid id, CancellationToken cancellationToken)
-//{
-//    var deleteEntity = await _entityDeliverySet.FindAsync(id, cancellationToken);
-//    if (deleteEntity == null)
-//    {
-//        return false;
-//    }
-
-//    _entityDeliverySet.Remove(deleteEntity);
-//    int stateEntriesWritten = await Context.SaveChangesAsync();
-//    return true;
-//}
-
-///// <summary>
-///// Удалить сущность.
-///// </summary>
-///// <param name="entity"> Сущность для удаления. </param>
-///// <returns> Была ли сущность удалена. </returns>
-//public virtual bool Delete(Delivery entity)
-//{
-//    if (entity == null)
-//    {
-//        return false;
-//    }
-//    Context.Entry(entity).State = EntityState.Deleted;
-//    return true;
-//}
-
-///// <summary>
-///// Удалить сущности.
-///// </summary>
-///// <param name="entities"> Коллекция сущностей для удаления. </param>
-///// <returns> Была ли операция завершена успешно. </returns>
-//public virtual bool DeleteRange(ICollection<Delivery> entities)
-//{
-//    if (entities == null || !entities.Any())
-//    {
-//        return false;
-//    }
-//    _entityDeliverySet.RemoveRange(entities);
-//    return true;
-//}
-
-//#endregion
-
-//#region SaveChanges
-
-///// <summary>
-///// Сохранить изменения.
-///// </summary>
-///// 
-//public async Task SaveChangesAsync(CancellationToken cancellationToken = default)
-//{
-//    await Context.SaveChangesAsync(cancellationToken);
-//}         
-
-//        #endregion
-//    }
-//}
