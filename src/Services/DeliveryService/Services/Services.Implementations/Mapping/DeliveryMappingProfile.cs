@@ -1,6 +1,6 @@
 using AutoMapper;
 using Google.Protobuf.WellKnownTypes;
-using DeliveryService.Abstractions;
+using DeliveryService.Services.Services.Abstractions;
 using DeliveryService.Domain.Domain.Entities;
 using DeliveryService.Models;
 using DeliveryService.Services.Services.Contracts.DTO;

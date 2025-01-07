@@ -5,7 +5,7 @@ using DeliveryService.Enums;
 using DeliveryService.Domain.External.Entities;
 using DeliveryService.Services.Services.Contracts.DTO;
 using AutoMapper;
-using DeliveryService.Abstractions;
+using DeliveryService.Services.Services.Abstractions;
 using DeliveryService.Models;
 
 namespace DeliveryService.Services.Services.Repositories

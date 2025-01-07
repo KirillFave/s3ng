@@ -7,6 +7,7 @@ using Microsoft.Extensions.Options;
 using System.Text.Json.Serialization;
 using System.Text.Json;
 using DeliveryService.Services.Services.Repositories;
+using DeliveryService.Services.Services.Abstractions;
 
 var builder = WebApplication.CreateBuilder(args);
 
@@ -25,9 +26,10 @@ builder.Services.AddDbContext<DeliveryDBContext>(options =>
                 options.UseNpgsql(builder.Configuration.GetConnectionString("DefaultConnection"));
             });
 
-builder.Services.AddScoped<IDeliveryRepository, DeliveryRepository>();  
-            
-    
+builder.Services.AddScoped<IDeliveryRepository, DeliveryRepository>();
+builder.Services.AddScoped<IDeliveryService, Delivery>();
+
+
 
 //var apiProductService = builder.AddProject<Projects.DeliveryService>("apiservice-delivery");
 

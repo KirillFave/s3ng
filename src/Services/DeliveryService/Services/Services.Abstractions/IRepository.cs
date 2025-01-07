@@ -1,7 +1,7 @@
 using DeliveryService.Domain.Domain.Entities;
 using DeliveryService.Models;
 
-namespace DeliveryService.Abstractions
+namespace DeliveryService.Services.Services.Abstractions
 {
     /// <summary>
     /// Описания общих методов для всех репозиториев.

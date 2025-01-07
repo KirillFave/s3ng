@@ -1,6 +1,6 @@
 using DeliveryService.Domain.Domain.Entities;
 using DeliveryService.Services.Services.Contracts.DTO;
-using DeliveryService.Abstractions;
+using DeliveryService.Services.Services.Abstractions;
 using DeliveryService.Enums;
 using DeliveryService.Models;
 
