@@ -1,12 +1,12 @@
 using DeliveryService.Data;
 using DeliveryService.Models;
-using DeliveryService.Repositories;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Design;
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.Options;
 using System.Text.Json.Serialization;
 using System.Text.Json;
+using DeliveryService.Services.Services.Repositories;
 
 var builder = WebApplication.CreateBuilder(args);
 

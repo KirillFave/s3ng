@@ -1,4 +1,4 @@
-﻿using Microsoft.EntityFrameworkCore;
+using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.Logging;
 using s3ng.ProductService.Core.Domain.Managment;
 
@@ -14,7 +14,7 @@ namespace s3ng.ProductService.DataAccess.EntityFramework
         }
 
         /// <summary>
-        ///  Товары.
+        ///  Доставки.
         /// </summary>
         public DbSet<Product> Products { get; set; }
 

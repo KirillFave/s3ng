@@ -3,13 +3,12 @@ using DeliveryService.Data;
 using DeliveryService.Domain.Domain.Entities;
 using DeliveryService.Enums;
 using DeliveryService.Domain.External.Entities;
-using DeliveryService.Repositories;
-using DeliveryService.DTO;
+using DeliveryService.Services.Services.Contracts.DTO;
 using AutoMapper;
 using DeliveryService.Abstractions;
 using DeliveryService.Models;
 
-namespace DeliveryService.Repositories
+namespace DeliveryService.Services.Services.Repositories
 {
 
     public class DeliveryRepository : IDeliveryRepository
@@ -105,28 +104,28 @@ namespace DeliveryService.Repositories
                 return OperationResult.NotEntityFound;
             }
 
-              if (deliveryToUpdate.PaymentType == delivery.PaymentType &&
-                deliveryToUpdate.DeliveryStatus == delivery.DeliveryStatus &&
-                deliveryToUpdate.Items == delivery.Items &&
-                deliveryToUpdate.CourierId == delivery.CourierId &&                             // ?is required
-                deliveryToUpdate.ShippingAddress == delivery.ShippingAddress &&
-                deliveryToUpdate.TotalQuantity == delivery.TotalQuantity &&                   // ?is required
-                deliveryToUpdate.TotalPrice == delivery.TotalPrice &&                         // ?is required
-                deliveryToUpdate.EstimatedDeliveryTime == delivery.EstimatedDeliveryTime    // ?is required
-                )
-              if (isUpdateDeliveryStatus)
+            if (deliveryToUpdate.PaymentType == delivery.PaymentType &&
+              deliveryToUpdate.DeliveryStatus == delivery.DeliveryStatus &&
+              deliveryToUpdate.Items == delivery.Items &&
+              deliveryToUpdate.CourierId == delivery.CourierId &&                             // ?is required
+              deliveryToUpdate.ShippingAddress == delivery.ShippingAddress &&
+              deliveryToUpdate.TotalQuantity == delivery.TotalQuantity &&                   // ?is required
+              deliveryToUpdate.TotalPrice == delivery.TotalPrice &&                         // ?is required
+              deliveryToUpdate.EstimatedDeliveryTime == delivery.EstimatedDeliveryTime    // ?is required
+              )
+                if (isUpdateDeliveryStatus)
                 {
                     deliveryToUpdate.PaymentType = delivery.PaymentType;
                 }
 
-              if (delivery.ShippingAddress is not null)
-                {
-                    deliveryToUpdate.ShippingAddress = delivery.ShippingAddress;
-                }
-              if (delivery.Items is not null)
-                {
-                    deliveryToUpdate.Items = delivery.Items;
-                }          
+            if (delivery.ShippingAddress is not null)
+            {
+                deliveryToUpdate.ShippingAddress = delivery.ShippingAddress;
+            }
+            if (delivery.Items is not null)
+            {
+                deliveryToUpdate.Items = delivery.Items;
+            }
 
             int stateEntriesWritten = await _context.SaveChangesAsync();
             return stateEntriesWritten > 0 ? OperationResult.Success : OperationResult.NotChangesApplied;
@@ -175,10 +174,10 @@ namespace DeliveryService.Repositories
             return true;
         }
 
-    /// <summary>
-    /// Сохранить изменения.
-    /// </summary>
-    public void SaveChanges()
+        /// <summary>
+        /// Сохранить изменения.
+        /// </summary>
+        public void SaveChanges()
         {
             _context.SaveChanges();
         }

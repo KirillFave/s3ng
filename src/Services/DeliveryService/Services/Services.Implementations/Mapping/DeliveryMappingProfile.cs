@@ -2,21 +2,21 @@ using AutoMapper;
 using Google.Protobuf.WellKnownTypes;
 using DeliveryService.Abstractions;
 using DeliveryService.Domain.Domain.Entities;
-using DeliveryService.DTO;
 using DeliveryService.Models;
+using DeliveryService.Services.Services.Contracts.DTO;
 
-namespace DeliveryService.Services.Mapping
+namespace DeliveryService.Services.Services.Implementations.Mapping
 {
     /// <summary>
     /// Automapper Profile for Delivery Entities 
     /// </summary>
     public class DeliveryMappingProfile : Profile
     {
-        public DeliveryMappingProfile() 
+        public DeliveryMappingProfile()
         {
             CreateMap<DeliveryModel, DeliveryDTO>();
             CreateMap<CreateDeliveryModel, CreateDeliveryDTO>();
-            CreateMap < UpdateDeliveryModel, UpdateDeliveryDTO>();
+            CreateMap<UpdateDeliveryModel, UpdateDeliveryDTO>();
         }
     }
 }

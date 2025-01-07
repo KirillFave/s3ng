@@ -1,13 +1,12 @@
-using DeliveryService.Repositories;
 using DeliveryService.Domain.Domain.Entities;
-using DeliveryService.DTO;
+using DeliveryService.Services.Services.Contracts.DTO;
 using DeliveryService.Abstractions;
 using DeliveryService.Enums;
 using DeliveryService.Models;
 
-namespace DeliveryService.Repositories;
+namespace DeliveryService.Services.Services.Repositories;
 
-public interface IDeliveryRepository 
+public interface IDeliveryRepository
 {
     /// <summary>
     /// Получить сущность по Id.
@@ -55,7 +54,7 @@ public interface IDeliveryRepository
     /// Изменение сущности.
     /// </summary>
     /// <param name="entity"> Сущность для изменения. </param>
-    Task<OperationResult> UpdateAsync(Delivery entity, bool isUpdateDeliveryStatus);    
+    Task<OperationResult> UpdateAsync(Delivery entity, bool isUpdateDeliveryStatus);
     /// <summary>
     /// Удалить сущность.
     /// </summary>
