@@ -27,11 +27,11 @@ builder.Services.AddDbContext<DeliveryDBContext>(options =>
             });
 
 builder.Services.AddScoped<IDeliveryRepository, DeliveryRepository>();
-builder.Services.AddScoped<IDeliveryService, Delivery>();
+//builder.Services.AddScoped<IDeliveryService, Delivery>();
 
 
 
-//var apiProductService = builder.AddProject<Projects.DeliveryService>("apiservice-delivery");
+//var apiDeliveryService = builder.AddProject<Projects.DeliveryService>("apiservice-delivery");
 
 //var apiOrderService = builder.AddProject<Projects.OrderSErvice>("apiservice-order");
 

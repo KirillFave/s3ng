@@ -74,4 +74,12 @@ public interface IDeliveryRepository
     /// <param name="entity"> Cущность для удаления. </param>
     /// <returns> Была ли сущность удалена. </returns>
     bool DeleteAsync(Delivery entity, CancellationToken cancellationToken);
+    /// <summary>
+    /// Сохранить изменения.
+    /// </summary>
+    void SaveChanges();
+    /// <summary>
+    /// Сохранить изменения.
+    /// </summary>
+    Task SaveChangesAsync(CancellationToken cancellationToken = default);
 }
