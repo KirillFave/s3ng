@@ -10,7 +10,7 @@ namespace DeliveryService.Services.Services.Abstractions
         /// <param name="createDeliveryDTO"> DTO создаваемой доставки. </param>
         public Task<Guid> CreateAsync(CreateDeliveryDTO createDeliveryDTO);
 
-        /// <summary>
+        /// <summary>   
         /// Получить доставку по id.
         /// </summary>
         /// <param name="id"> Идентификатор доставки. </param>

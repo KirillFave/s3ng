@@ -2,19 +2,21 @@ using AutoMapper;
 using DeliveryService.Services.Services.Repositories;
 using DeliveryService.Services.Services.Abstractions;
 using DeliveryService.Services.Services.Contracts.DTO;
+using DeliveryService.Models;
 using DeliveryService.Domain.Domain.Entities;
+using Microsoft.AspNetCore.Http.HttpResults;
 
 namespace DeliveryService.Services.DeliveryService
 {
-    public class DeliveryService : IDeliveryService
+    public class DeliveryServices : IDeliveryService
     {
         private readonly IDeliveryRepository _deliveryRepository;
-        private readonly IMapper _mapper;
+        private readonly IMapper _mapper;       
 
-        public DeliveryService(IDeliveryRepository deliveryRepository, IMapper mapper)
+        public DeliveryServices(IDeliveryRepository deliveryRepository, IMapper mapper)
         {
             _deliveryRepository = deliveryRepository;
-            _mapper = mapper;
+            _mapper = mapper;               
         }
 
         /// <summary>
@@ -28,7 +30,7 @@ namespace DeliveryService.Services.DeliveryService
             await _deliveryRepository.SaveChangesAsync();
 
             return createDelivery.Id;
-        }
+        }      
 
         /// <summary>
         /// Получить доставку по id.
@@ -59,12 +61,12 @@ namespace DeliveryService.Services.DeliveryService
 
             delivery.PaymentType = updateDeliveryDTO.PaymentType;
             delivery.DeliveryStatus = updateDeliveryDTO.DeliveryStatus;
-            delivery.Items = updateDeliveryDTO.Items;
-            delivery.CourierId = updateDeliveryDTO.CourierId;
+            //delivery.Items = updateDeliveryDTO.Items;
+            //delivery.CourierId = updateDeliveryDTO.CourierId;
             delivery.ShippingAddress = updateDeliveryDTO.ShippingAddress;
             delivery.TotalQuantity = updateDeliveryDTO.TotalQuantity;
             delivery.TotalPrice = updateDeliveryDTO.TotalPrice;
-            delivery.UserId = updateDeliveryDTO.UserId;
+            //delivery.UserId = updateDeliveryDTO.UserId;
             delivery.EstimatedDeliveryTime = updateDeliveryDTO.EstimatedDeliveryTime;            
 
             _deliveryRepository.Update(delivery);

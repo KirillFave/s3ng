@@ -1,4 +1,4 @@
-﻿using System.ComponentModel.DataAnnotations;
+using System.ComponentModel.DataAnnotations;
 using DeliveryService.Domain.External.Entities;
 using DeliveryService.Enums;
 
@@ -16,6 +16,6 @@ namespace DeliveryService.Services.Services.Contracts.DTO
         public required string ShippingAddress { get; set; }
         public required Guid Courer_Id { get; set; }
         public required DateTime EstimatedDeliveryTime { get; set; }
-        public DateTime ActualDeliveryTime { get; set; }
+        //public DateTime ActualDeliveryTime { get; set; }
     }
 }

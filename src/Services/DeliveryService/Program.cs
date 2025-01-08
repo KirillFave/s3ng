@@ -1,13 +1,15 @@
-using DeliveryService.Data;
-using DeliveryService.Models;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Design;
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.Options;
 using System.Text.Json.Serialization;
 using System.Text.Json;
+using DeliveryService.Data;
+using DeliveryService.Models;
 using DeliveryService.Services.Services.Repositories;
 using DeliveryService.Services.Services.Abstractions;
+using DeliveryService.Services.DeliveryService;
+using AutoMapper;
 
 var builder = WebApplication.CreateBuilder(args);
 
@@ -27,8 +29,7 @@ builder.Services.AddDbContext<DeliveryDBContext>(options =>
             });
 
 builder.Services.AddScoped<IDeliveryRepository, DeliveryRepository>();
-//builder.Services.AddScoped<IDeliveryService, Delivery>();
-
+builder.Services.AddTransient<IDeliveryService, DeliveryServices>();
 
 
 //var apiDeliveryService = builder.AddProject<Projects.DeliveryService>("apiservice-delivery");
