@@ -1,6 +1,9 @@
+using AutoMapper;
 using Grpc.Core;
 using IAM.DAL;
+using IAM.Models;
 using IAM.Seedwork.Abstractions;
+using Microsoft.AspNetCore.Identity;
 using Microsoft.EntityFrameworkCore;
 using s3ng.Contracts.IAM;
 using ILogger = Serilog.ILogger;
@@ -11,18 +14,18 @@ namespace IAM.Services
     {
         private readonly DatabaseContext _dbContext;
         private readonly ILogger _logger;
-        private readonly IHashCalculator _hashCalculator;
         private readonly ITokenProvider _tokenProvider;
+        private readonly IMapper _mapper;
 
-        public AuthenticationService(DatabaseContext dbContext
-            , ILogger logger
-            , IHashCalculator hashCalculator
-            , ITokenProvider tokenProvider)
+        public AuthenticationService(DatabaseContext dbContext,
+            ILogger logger,
+            ITokenProvider tokenProvider,
+            IMapper mapper)
         {
             _dbContext = dbContext;
             _logger = logger.ForContext<AuthenticationService>();
-            _hashCalculator = hashCalculator;
             _tokenProvider = tokenProvider;
+            _mapper = mapper;
         }
 
         public override async Task<AuthenticationResponse> AuthenticateUser(AuthenticationRequest request, ServerCallContext context)
@@ -39,11 +42,12 @@ namespace IAM.Services
                     _logger.Error($"Invalid userName {request.Login}");
                     return new AuthenticationResponse() { Result = AuthenticationResult.UserNotFound };
                 }
-                //Сравниваем хэш
-                var passwordHash = _hashCalculator.Compute(request.Password);
-                if (!passwordHash.Equals(user.PasswordHash, StringComparison.OrdinalIgnoreCase))
+
+                var account = _mapper.Map<AccountModel>(user);
+                var verifyResult = new PasswordHasher<AccountModel>().VerifyHashedPassword(account, account.PasswordHash, request.Password);
+                if (verifyResult == PasswordVerificationResult.Failed)
                 {
-                    _logger.Error($"Invalid hash for {request.Password}. Expected {user.PasswordHash}, value = {passwordHash}");
+                    _logger.Error($"Invalid password");
                     return new AuthenticationResponse() { Result = AuthenticationResult.BadPassword };
                 }
 
