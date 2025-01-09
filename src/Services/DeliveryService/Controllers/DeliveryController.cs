@@ -23,17 +23,17 @@ namespace DeliveryService.Controllers
             _logger = logger;
         }
 
-        [HttpGet("/api/product/{id}")]        
+        [HttpGet("/api/delivery/{id}")]        
         public async Task<IActionResult> GetAsync(Guid id)
         {            
             var deliveryModel = _mapper.Map<DeliveryModel>(await _deliveryService.GetByIdAsync(id));
             return Ok(_mapper.Map<DeliveryDBContext>(await _deliveryService.GetByIdAsync(id)));
         }
 
-        [HttpPost("/api/create-product")]        
+        [HttpPost("/api/create-delivery")]        
         public async Task<IActionResult> CreateAsync(CreateDeliveryModel deliveryModel)
         {
-            var createDeliveryDTO = _mapper.Map<CreateDeliveryDTO>(deliveryModel);
+            //var createDeliveryDTO = _mapper.Map<CreateDeliveryDTO>(deliveryModel);
             return Ok(await _deliveryService.CreateAsync(_mapper.Map<CreateDeliveryDTO>(deliveryModel)));
         }
 
@@ -46,7 +46,14 @@ namespace DeliveryService.Controllers
         //    return isUpdated ? Ok() : NotFound($"Доставка с идентфикатором {id} не найдена");
         //}
 
-        [HttpDelete("DeleteDelivery")]
+        [HttpPut("/api/create-delivery/{id}")]
+        public async Task<IActionResult> EditAsync(Guid id, UpdateDeliveryModel updateDeliveryModel)
+        {
+            await _deliveryService.TryUpdateAsync(id, _mapper.Map<UpdateDeliveryModel, UpdateDeliveryDTO>(updateDeliveryModel));
+            return Ok();
+        }
+
+        [HttpDelete("/api/delete-delivery/{id}")]
         public async Task<IActionResult> DeleteAsync(Guid id) 
         {
             bool isDeleted = await _deliveryService.TryDeleteAsync(id);
