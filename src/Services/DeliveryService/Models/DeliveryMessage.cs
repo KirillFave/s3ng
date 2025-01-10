@@ -1,4 +1,4 @@
-﻿using DeliveryService.Domain.Domain.Entities;
+using DeliveryService.Domain.Domain.Entities;
 using DeliveryService.Domain.External.Entities;
 using DeliveryService.Enums;
 using System.ComponentModel.DataAnnotations;
@@ -7,7 +7,7 @@ namespace DeliveryService.Models
 {
     public class DeliveryMessage
     {
-        public Guid Delivery_Id { get; set; }       
+        public Guid DeliveryId { get; set; }       
         public DeliveryStatus DeliveryStatus { get; set; }
         public Guid OrderId { get; set; }
         public Guid UserId { get; set; }

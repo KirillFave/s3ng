@@ -24,17 +24,16 @@ namespace DeliveryService.Controllers
         }
 
         [HttpGet("/api/delivery/{id}")]        
-        public async Task<IActionResult> GetAsync(Guid id)
+        public async Task<IActionResult> GetByIdAsync(Guid id)
         {            
             var deliveryModel = _mapper.Map<DeliveryModel>(await _deliveryService.GetByIdAsync(id));
             return Ok(_mapper.Map<DeliveryDBContext>(await _deliveryService.GetByIdAsync(id)));
         }
 
-        [HttpPost("/api/create-delivery")]        
-        public async Task<IActionResult> CreateAsync(CreateDeliveryModel deliveryModel)
-        {
-            //var createDeliveryDTO = _mapper.Map<CreateDeliveryDTO>(deliveryModel);
-            return Ok(await _deliveryService.CreateAsync(_mapper.Map<CreateDeliveryDTO>(deliveryModel)));
+        [HttpPut("/api/create-delivery")]        
+        public async Task<IActionResult> CreateAsync(CreateDeliveryModel createDeliveryModel)
+        {            
+            return Ok(await _deliveryService.CreateAsync(_mapper.Map<CreateDeliveryDTO>(createDeliveryModel)));
         }
 
         //[HttpPut("UpdateDelivery")]        
@@ -46,10 +45,13 @@ namespace DeliveryService.Controllers
         //    return isUpdated ? Ok() : NotFound($"Доставка с идентфикатором {id} не найдена");
         //}
 
-        [HttpPut("/api/create-delivery/{id}")]
-        public async Task<IActionResult> EditAsync(Guid id, UpdateDeliveryModel updateDeliveryModel)
+        [HttpPatch("/api/update-delivery/{id}")]
+        public async Task<IActionResult> TryUpdateSync(Guid id, UpdateDeliveryModel updateDeliveryModel)
         {
             await _deliveryService.TryUpdateAsync(id, _mapper.Map<UpdateDeliveryModel, UpdateDeliveryDTO>(updateDeliveryModel));
+            //bool isUpdated = await _deliveryService.TryUpdateAsync(id, updateDeliveryModel);
+
+            //return isUpdated ? Ok() : NotFound($"Доставка с идентфикатором {id} не найдена");
             return Ok();
         }
 

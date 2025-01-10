@@ -17,7 +17,8 @@ namespace DeliveryService.Models
         public required decimal TotalPrice { get; set; }
         public PaymentType PaymentType { get; set; }        
         public required string ShippingAddress { get; set; }
-        public Guid Courier_Id { get; set; }        
-        public required DateTime EstimatedDeliveryTime { get; set; }                  
+        public Guid CourierId { get; set; }        
+        public required DateTime EstimatedDeliveryTime { get; set; }
+        public DateTime ActualDeliveryTime { get; set; }
     }
 }
