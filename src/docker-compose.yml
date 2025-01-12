@@ -129,7 +129,7 @@ services:
       context: .
       dockerfile: Services/OrderService/Dockerfile
     ports:
-      - "5066:5066"
+      - "50055:50055"
     networks:
       - app-network
 
