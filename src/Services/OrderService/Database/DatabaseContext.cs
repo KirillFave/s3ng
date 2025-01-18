@@ -7,8 +7,6 @@ public class DatabaseContext : DbContext
 {
     public DbSet<Order> Orders { get; set; }
     public DbSet<OrderItem> OrderItems { get; set; }
-    //public DbSet<OrderStatus> OrderStatuses { get; set; }
-    //public DbSet<PaymentType> PaymentTypes { get; set; }
 
     public DatabaseContext(DbContextOptions<DatabaseContext> options) : base(options)
     {

@@ -128,10 +128,35 @@ services:
     build:
       context: .
       dockerfile: Services/OrderService/Dockerfile
+    environment:
+      DOTNET_ENVIRONMENT: "Development"
+      PRODUCT_POSTGRES_HOST: ${ORDER_POSTGRES_HOST}
+      PRODUCT_POSTGRES_PORT: ${ORDER_POSTGRES_PORT}
+      PRODUCT_POSTGRES_DB: ${ORDER_POSTGRES_DB}
+      PRODUCT_POSTGRES_USER: ${ORDER_POSTGRES_USER}
+      PRODUCT_POSTGRES_PASSWORD: ${ORDER_POSTGRES_PASSWORD}
     ports:
       - "50055:50055"
     networks:
       - app-network
+    depends_on:
+      - order_bd
+ 
+  order_bd:
+    image: postgres:latest
+    environment:
+      POSTGRES_DB: ${ORDER_POSTGRES_DB}
+      POSTGRES_USER: ${ORDER_POSTGRES_USER}
+      POSTGRES_PASSWORD: ${ORDER_POSTGRES_PASSWORD}
+    expose:
+      - "50056"
+    ports:
+      - "50056:50056"
+    volumes:
+      - order-data:/var/lib/postgresql/data
+    networks:
+      - app-network
+    command: -p 50056
 
 volumes:
   pg-data:
@@ -140,3 +165,4 @@ volumes:
   postgres_data:
   seq-data:
   product-data:
+  order-data:

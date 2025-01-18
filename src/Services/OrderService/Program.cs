@@ -2,17 +2,19 @@ using OrderService.Database;
 using SharedLibrary.OrderService.Models;
 using OrderService.Repositories;
 
+using DotNetEnv;
+using DotNetEnv.Configuration;
 using Microsoft.EntityFrameworkCore;
 
 var builder = WebApplication.CreateBuilder(args);
 
-builder.Configuration.Sources.Clear();
-builder.Configuration.AddJsonFile("appsettings.json");
+builder.Configuration.AddDotNetEnvMulti([".env"], LoadOptions.DEFAULT);
+
+builder.Services.ConfigureContext(builder.Configuration);
 
 // Add services to the container.
 builder.Services.AddControllersWithViews();
-builder.Services.AddDbContext<DatabaseContext>(
-    optionsBuilder => optionsBuilder.UseSqlite(builder.Configuration["ConnectionString"]));
+
 
 builder.Services.AddScoped(typeof(IRepository<Order>), typeof(EfRepository<Order>));
 builder.Services.AddScoped(typeof(IRepository<OrderItem>), typeof(EfRepository<OrderItem>));
