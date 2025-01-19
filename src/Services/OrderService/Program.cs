@@ -5,6 +5,7 @@ using OrderService.Repositories;
 using DotNetEnv;
 using DotNetEnv.Configuration;
 using Microsoft.EntityFrameworkCore;
+using Microsoft.AspNetCore.Server.Kestrel.Core;
 
 var builder = WebApplication.CreateBuilder(args);
 
@@ -39,6 +40,11 @@ builder.Services.AddOpenApiDocument(options =>
 });
 
 builder.Services.AddAutoMapper(typeof(Program));
+
+builder.WebHost.ConfigureKestrel(o =>
+{
+    o.ListenAnyIP(50055, listenOptions => listenOptions.Protocols = HttpProtocols.Http1AndHttp2AndHttp3);
+});
 
 var app = builder.Build();
     
