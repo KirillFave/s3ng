@@ -20,6 +20,10 @@ public class DatabaseContext : DbContext
             .WithOne(i => i.Order)
             .HasForeignKey(i => i.OrderId);
 
+
+        modelBuilder.Entity<Order>().HasKey(i => i.Id);
+        modelBuilder.Entity<OrderItem>().HasKey(i => i.Id);
+
         base.OnModelCreating(modelBuilder);
     }
 

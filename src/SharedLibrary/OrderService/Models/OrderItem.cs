@@ -2,7 +2,7 @@ namespace SharedLibrary.OrderService.Models;
 
 public class OrderItem
 {
-    public Guid Guid { get; set; }
+    public Guid Id { get; set; }
     public Guid OrderId { get; set; }
     public virtual Order Order { get; set; }
     public Guid ProductGuid { get; set; }

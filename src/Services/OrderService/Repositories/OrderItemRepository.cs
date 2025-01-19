@@ -23,7 +23,7 @@ public class OrderItemRepository
     {
         return await _databaseContext.OrderItems
             .Include(orderItem => orderItem.Order)
-            .FirstOrDefaultAsync(orderItem => orderItem.Guid == guid);
+            .FirstOrDefaultAsync(orderItem => orderItem.Id == guid);
     }
 
     public async Task<bool> AddAsync(OrderItem orderItem)

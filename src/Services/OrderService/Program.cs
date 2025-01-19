@@ -1,5 +1,4 @@
 using OrderService.Database;
-using SharedLibrary.OrderService.Models;
 using OrderService.Repositories;
 
 using DotNetEnv;
