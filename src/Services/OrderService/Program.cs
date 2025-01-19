@@ -15,8 +15,8 @@ builder.Services.ConfigureContext(builder.Configuration);
 
 builder.Services.AddControllers();
 
-builder.Services.AddScoped(typeof(IRepository<Order>), typeof(EfRepository<Order>));
-builder.Services.AddScoped(typeof(IRepository<OrderItem>), typeof(EfRepository<OrderItem>));
+builder.Services.AddScoped(typeof(OrderRepository));
+builder.Services.AddScoped(typeof(OrderItemRepository));
 
 builder.Services.AddOpenApiDocument(options =>
 {
