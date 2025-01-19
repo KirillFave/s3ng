@@ -8,14 +8,14 @@ namespace WebHost.Controllers;
 
 [ApiController]
 [Route("[controller]")]
-public class OrderController(IHttpClientFactory httpClientFactory) : Controller
+public class OrderController(IHttpClientFactory httpClientFactory) : ControllerBase
 {
     private readonly HttpClient _httpClient = httpClientFactory.CreateClient("OrderService");
 
-    [HttpGet("Get/{guid}")]
-    public async Task<ActionResult> Get(Guid guid)
+    [HttpGet("get/{id}")]
+    public async Task<ActionResult> Get(Guid id)
     {
-        HttpResponseMessage response = await _httpClient.GetAsync($"/api/Order/{guid}");
+        HttpResponseMessage response = await _httpClient.GetAsync($"/api/order/{id}");
 
         return response.StatusCode switch
         {

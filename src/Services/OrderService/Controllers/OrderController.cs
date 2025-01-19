@@ -6,7 +6,7 @@ namespace OrderService.Controllers;
 
 [ApiController]
 [Route("[controller]")]
-public class OrderController : Controller
+public class OrderController : ControllerBase
 {
     private readonly OrderRepository _orderRepository;
 
@@ -15,15 +15,15 @@ public class OrderController : Controller
         _orderRepository = orderRepository;
     }
 
-    [HttpGet("api/Order/{guid}")]
-    public async Task<ActionResult> Get(Guid guid)
+    [HttpGet("/api/order/{id}")]
+    public async Task<ActionResult> Get(Guid id)
     {
-        Order? order = await _orderRepository.GetByIdAsync(guid);
+        Order? order = await _orderRepository.GetByIdAsync(id);
 
         return order is null ? NotFound() : Ok(order);
     }
 
-    [HttpPut("api/CreateOrder")]
+    [HttpPut("/api/CreateOrder")]
     public async Task<ActionResult> Create(Order order)
     {
         bool result = await _orderRepository.AddAsync(order);
