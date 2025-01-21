@@ -1,5 +1,7 @@
 using AutoMapper;
+using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
+using SharedLibrary.IAM.Enums;
 using SharedLibrary.UserService.Models;
 using static CreateUserResponse.Types;
 using static DeleteUserResponse.Types;
@@ -71,6 +73,8 @@ public class UserController : ControllerBase
     [HttpPut("edit")]
     [ProducesResponseType<UserModel>(StatusCodes.Status200OK)]
     [ProducesResponseType(StatusCodes.Status400BadRequest)]
+    [Authorize(Roles = nameof(RoleType.User))]
+    [Authorize(Roles = nameof(RoleType.Admin))]
     public async Task<IActionResult> UpdateUserAsync(UpdateUserRequestModel request)
     {
         _logger.Information($"Api method UpdateUserAsync was called");
@@ -92,6 +96,7 @@ public class UserController : ControllerBase
     [HttpDelete("delete{id}")]
     [ProducesResponseType<bool>(StatusCodes.Status200OK)]
     [ProducesResponseType(StatusCodes.Status400BadRequest)]
+    [Authorize(Roles = nameof(RoleType.Admin))]
     public async Task<IActionResult> DeleteUserAsync(string id)
     {
         _logger.Information($"Api method DeleteUserAsync was called with parameters {id}");

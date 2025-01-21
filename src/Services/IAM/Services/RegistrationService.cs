@@ -71,6 +71,7 @@ namespace IAM.Services
                 newAccount.PasswordHash = passwordHash;
 
                 var newUser = _mapper.Map<User>(newAccount);
+                newUser.Role = SharedLibrary.IAM.Enums.RoleType.User;
 
                 //TODO нужен отдельный класс для работы с BD
                 await _databaseContext.Users.AddAsync(newUser, cancellationToken: context.CancellationToken);

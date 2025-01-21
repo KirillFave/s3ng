@@ -1,15 +1,16 @@
-using Microsoft.AspNetCore.Authorization;
-using Microsoft.AspNetCore.Mvc;
-using SharedLibrary.ProductService.Models;
 using System.Text;
 using System.Text.Json;
+using Microsoft.AspNetCore.Authorization;
+using Microsoft.AspNetCore.Mvc;
+using SharedLibrary.IAM.Enums;
+using SharedLibrary.ProductService.Models;
 using ILogger = Serilog.ILogger;
 
 namespace WebHost.Controllers
 {
     [ApiController]
     [Route("[controller]")]
-    [Authorize]
+    [Authorize(Roles = nameof(RoleType.Admin))]
     public class ProductController : ControllerBase
     {
         private readonly HttpClient _httpClient;

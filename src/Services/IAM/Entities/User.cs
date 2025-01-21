@@ -1,3 +1,5 @@
+using SharedLibrary.IAM.Enums;
+
 namespace IAM.Entities
 {
     /// <summary>
@@ -19,5 +21,10 @@ namespace IAM.Entities
         /// Хэш пароля
         /// </summary>
         internal required string PasswordHash { get; set; }
+
+        /// <summary>
+        /// Роль
+        /// </summary>
+        internal required RoleType Role { get; set; }
     }
 }
