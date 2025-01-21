@@ -20,7 +20,6 @@ enum AuthenticationResult {
 	badPassword = 2;
 	//Успех
 	success = 3;
-    fail = 4;
 }
 
 //Запрос на авторизацию

@@ -61,7 +61,7 @@ namespace IAM.Services
             catch (Exception ex)
             {
                 _logger.Error("Во время аутентификации получили ошибку", ex);
-                return new AuthenticationResponse() { Result = AuthenticationResult.Fail };
+                return new AuthenticationResponse() { Result = AuthenticationResult.Unspecified };
             }
         }
     }

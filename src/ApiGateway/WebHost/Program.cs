@@ -68,7 +68,8 @@ builder.WebHost.ConfigureKestrel(o =>
 builder.Host.UseSerilog(LoggerHelper.AddLogger(configuration));
 
 var app = builder.Build();
-
+AppContext.SetSwitch(
+    "System.Net.Http.SocketsHttpHandler.Http2UnencryptedSupport", true);
 app.UseAuthentication();
 app.UseAuthorization();
 

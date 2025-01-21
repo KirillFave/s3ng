@@ -9,6 +9,7 @@ using IAM.Services;
 using Microsoft.AspNetCore.Diagnostics;
 using Microsoft.EntityFrameworkCore;
 using Serilog;
+using SharedLibrary.Common.Kafka;
 using SharedLibrary.IAM.JWT;
 
 var builder = WebApplication.CreateBuilder(args);
@@ -23,6 +24,7 @@ builder.Services.ConfigureContext(builder.Configuration);
 builder.WebHost.ConfigureListen(builder.Configuration);
 
 builder.Services.Configure<JwtOptions>(builder.Configuration.GetSection(JwtOptions.Jwt));
+builder.Services.Configure<KafkaOptions>(builder.Configuration.GetSection(KafkaOptions.Kafka));
 
 builder.Host.UseSerilog(LoggerHelper.AddLogger(builder.Configuration));
 
