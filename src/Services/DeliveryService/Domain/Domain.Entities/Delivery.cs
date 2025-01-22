@@ -19,8 +19,8 @@ namespace DeliveryService.Domain.Domain.Entities
         public required int TotalQuantity { get; set; }
         public required decimal TotalPrice { get; set; }        
         
-        public PaymentType PaymentType { get; set; }                
-        [MaxLength(200, ErrorMessage = "Length must be less then 200 characters")]
+        public PaymentType PaymentType { get; set; }              
+       
         public required string ShippingAddress { get; set; }        
         public Guid ? CourierId { get; set; }
         /// <summary>
@@ -31,10 +31,8 @@ namespace DeliveryService.Domain.Domain.Entities
         public DateTime CreateTimestamp { get; set; }    
         /// <summary>
         /// Details of Delivery
-        /// </summary>        
-        
-        public bool IsDeleted { get; set; }
-        
+        /// </summary>           
+        public bool IsDeleted { get; set; }        
         public DateTime TimeModified { get; set; }
     }
 }

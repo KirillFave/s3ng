@@ -9,9 +9,10 @@ namespace DeliveryService.Models
 {
     public class CreateDeliveryModel
     {
+        public Guid Id { get; set; }
         public required Guid UserId { get; set; }
         public Guid OrderId { get; set; }
-        public OrderStatus orderStatus { get; set; }
+        public OrderStatus OrderStatus { get; set; }
         public DeliveryStatus DeliveryStatus { get; set; }
         public required int TotalQuantity { get; set; }
         public required decimal TotalPrice { get; set; }

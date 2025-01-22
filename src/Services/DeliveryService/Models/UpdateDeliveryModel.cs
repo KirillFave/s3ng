@@ -4,7 +4,7 @@ namespace DeliveryService.Models
 {
     public class UpdateDeliveryModel
     {
-        public required Guid Id { get; set; }
+        public Guid Id { get; set; }
         public Guid OrderId { get; set; }
         public required Guid UserId { get; set; }
         public Guid CourierId { get; set; }
@@ -17,4 +17,3 @@ namespace DeliveryService.Models
         public DateTime ActualDeliveryTime { get; set; }
     }
 }
-
