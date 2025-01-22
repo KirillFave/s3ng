@@ -46,7 +46,7 @@ namespace DeliveryService.Controllers
         //}
 
         [HttpPatch("/api/update-delivery/{id}")]
-        public async Task<IActionResult> TryUpdateSync(Guid id, UpdateDeliveryModel updateDeliveryModel)
+        public async Task<IActionResult> TryUpdateAsync(Guid id, UpdateDeliveryModel updateDeliveryModel)
         {
             await _deliveryService.TryUpdateAsync(id, _mapper.Map<UpdateDeliveryModel, UpdateDeliveryDTO>(updateDeliveryModel));
             //bool isUpdated = await _deliveryService.TryUpdateAsync(id, updateDeliveryModel);

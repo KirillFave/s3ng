@@ -21,7 +21,7 @@ var builder = WebApplication.CreateBuilder(args);
             builder.Services.AddSwaggerGen();
             builder.Services.AddControllers();
 
-builder.Services.AddControllersWithViews();
+//builder.Services.AddControllersWithViews();
 
 builder.Services.AddDbContext<DeliveryDBContext>(options =>
             {

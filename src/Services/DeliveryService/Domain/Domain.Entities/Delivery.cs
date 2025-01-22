@@ -22,7 +22,7 @@ namespace DeliveryService.Domain.Domain.Entities
         public PaymentType PaymentType { get; set; }                
         [MaxLength(200, ErrorMessage = "Length must be less then 200 characters")]
         public required string ShippingAddress { get; set; }        
-        public Guid CourierId { get; set; }
+        public Guid ? CourierId { get; set; }
         /// <summary>
         /// Delivery timing
         /// </summary>
@@ -31,10 +31,8 @@ namespace DeliveryService.Domain.Domain.Entities
         public DateTime CreateTimestamp { get; set; }    
         /// <summary>
         /// Details of Delivery
-        /// </summary>
-        [Required]
-        public  List<OrderItem> ? Items { get; set; }
-        public virtual List<Courier> ? Couriers { get; set; }
+        /// </summary>        
+        
         public bool IsDeleted { get; set; }
         
         public DateTime TimeModified { get; set; }
