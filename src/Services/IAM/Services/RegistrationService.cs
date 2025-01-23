@@ -6,9 +6,7 @@ using IAM.Models;
 using IAM.Producers;
 using Microsoft.AspNetCore.Identity;
 using Microsoft.EntityFrameworkCore;
-using Microsoft.Extensions.Options;
 using s3ng.Contracts.IAM;
-using SharedLibrary.Common.Kafka;
 using SharedLibrary.IAM.Messages;
 using ILogger = Serilog.ILogger;
 
@@ -19,14 +17,14 @@ namespace IAM.Services
         private readonly ILogger _logger;
         private readonly DatabaseContext _databaseContext;
         private readonly IMapper _mapper;
-        private readonly KafkaOptions _kafkaOptions;
+        private readonly UserRegistredProducer _userRegistredProducer;
 
-        public RegistrationService(DatabaseContext dbContext, ILogger logger, IMapper mapper, IOptions<KafkaOptions> kafkaOptions) 
+        public RegistrationService(DatabaseContext dbContext, ILogger logger, IMapper mapper, UserRegistredProducer userRegistredProducer) 
         {
             _databaseContext = dbContext;
             _logger = logger.ForContext<RegistrationService>();
             _mapper = mapper;
-            _kafkaOptions = kafkaOptions.Value;
+            _userRegistredProducer = userRegistredProducer;
         }
 
         public override async Task<RegisterResponse> RegisterUser(RegisterRequest request, ServerCallContext context)
@@ -75,8 +73,7 @@ namespace IAM.Services
 
                 //TODO нужен отдельный класс для работы с BD
                 await _databaseContext.Users.AddAsync(newUser, cancellationToken: context.CancellationToken);
-                var userRegistredProducer = new UserRegistredProducer(_kafkaOptions, _logger.ForContext<UserRegistredProducer>());
-                await userRegistredProducer.ProduceAsync(newId.ToString(), new UserRegistredMessage
+                await _userRegistredProducer.ProduceAsync(newId.ToString(), new UserRegistredMessage
                 {
                     RegistredAt = DateTimeOffset.UtcNow,
                     Id = newId.ToString()

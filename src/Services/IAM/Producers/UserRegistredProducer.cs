@@ -1,4 +1,5 @@
 using Confluent.Kafka;
+using Microsoft.Extensions.Options;
 using SharedLibrary.Common.Kafka;
 using SharedLibrary.IAM.Messages;
 using ILogger = Serilog.ILogger;
@@ -13,10 +14,10 @@ namespace IAM.Producers
         private const string TopicName = "registration_events";
 
         public UserRegistredProducer(
-            KafkaOptions applicationOptions,
-            ILogger logger) :
-            base(applicationOptions, logger)
-        { }
+            IOptions<KafkaOptions> applicationOptions, ILogger logger) :
+            base(applicationOptions.Value, logger.ForContext<UserRegistredProducer>())
+        {
+        }
 
         public async Task ProduceAsync(string key, UserRegistredMessage message, CancellationToken cancellationToken)
         {

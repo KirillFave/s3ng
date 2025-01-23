@@ -3,6 +3,7 @@ using DotNetEnv.Configuration;
 using IAM;
 using IAM.DAL;
 using IAM.Mappers;
+using IAM.Producers;
 using IAM.Seedwork;
 using IAM.Seedwork.Abstractions;
 using IAM.Services;
@@ -25,6 +26,8 @@ builder.WebHost.ConfigureListen(builder.Configuration);
 
 builder.Services.Configure<JwtOptions>(builder.Configuration.GetSection(JwtOptions.Jwt));
 builder.Services.Configure<KafkaOptions>(builder.Configuration.GetSection(KafkaOptions.Kafka));
+
+builder.Services.AddSingleton(typeof(UserRegistredProducer));
 
 builder.Host.UseSerilog(LoggerHelper.AddLogger(builder.Configuration));
 
