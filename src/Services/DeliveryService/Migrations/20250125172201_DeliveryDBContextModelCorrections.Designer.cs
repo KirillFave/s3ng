@@ -12,8 +12,8 @@ using Npgsql.EntityFrameworkCore.PostgreSQL.Metadata;
 namespace DeliveryService.Migrations
 {
     [DbContext(typeof(DeliveryDBContext))]
-    [Migration("20250124155021_ModelsCorrection")]
-    partial class ModelsCorrection
+    [Migration("20250125172201_DeliveryDBContextModelCorrections")]
+    partial class DeliveryDBContextModelCorrections
     {
         /// <inheritdoc />
         protected override void BuildTargetModel(ModelBuilder modelBuilder)
@@ -29,12 +29,12 @@ namespace DeliveryService.Migrations
                 {
                     b.Property<Guid>("Id")
                         .ValueGeneratedOnAdd()
+                        .HasMaxLength(100)
                         .HasColumnType("uuid");
 
                     b.Property<string>("Name")
                         .IsRequired()
-                        .HasMaxLength(100)
-                        .HasColumnType("character varying(100)");
+                        .HasColumnType("text");
 
                     b.HasKey("Id");
 
@@ -45,12 +45,13 @@ namespace DeliveryService.Migrations
                 {
                     b.Property<Guid>("Id")
                         .ValueGeneratedOnAdd()
+                        .HasMaxLength(100)
                         .HasColumnType("uuid");
 
                     b.Property<DateTime>("ActualDeliveryTime")
                         .HasColumnType("timestamp with time zone");
 
-                    b.Property<Guid?>("CourierId")
+                    b.Property<Guid>("CourierId")
                         .HasColumnType("uuid");
 
                     b.Property<DateTime>("CreateTimestamp")
@@ -75,7 +76,6 @@ namespace DeliveryService.Migrations
                         .HasColumnType("integer");
 
                     b.Property<string>("ShippingAddress")
-                        .IsRequired()
                         .HasColumnType("text");
 
                     b.Property<DateTime>("TimeModified")
@@ -87,27 +87,30 @@ namespace DeliveryService.Migrations
                     b.Property<int>("TotalQuantity")
                         .HasColumnType("integer");
 
-                    b.Property<Guid>("UserId")
+                    b.Property<Guid?>("UserId")
                         .HasColumnType("uuid");
 
                     b.HasKey("Id");
 
-                    b.HasIndex("CourierId")
-                        .IsUnique();
+                    b.HasIndex("CourierId");
 
                     b.ToTable("Deliveries");
                 });
 
             modelBuilder.Entity("DeliveryService.Domain.Domain.Entities.Delivery", b =>
                 {
-                    b.HasOne("DeliveryService.Domain.Domain.Entities.Courier", null)
-                        .WithOne("Delivery")
-                        .HasForeignKey("DeliveryService.Domain.Domain.Entities.Delivery", "CourierId");
+                    b.HasOne("DeliveryService.Domain.Domain.Entities.Courier", "Courier")
+                        .WithMany("Deliveries")
+                        .HasForeignKey("CourierId")
+                        .OnDelete(DeleteBehavior.Cascade)
+                        .IsRequired();
+
+                    b.Navigation("Courier");
                 });
 
             modelBuilder.Entity("DeliveryService.Domain.Domain.Entities.Courier", b =>
                 {
-                    b.Navigation("Delivery");
+                    b.Navigation("Deliveries");
                 });
 #pragma warning restore 612, 618
         }

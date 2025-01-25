@@ -20,7 +20,7 @@ namespace DeliveryService.Domain.Domain.Entities
         public decimal TotalPrice { get; set; }
         public PaymentType PaymentType { get; set; }
         public string ? ShippingAddress { get; set; }
-        public virtual Courier ? Courier { get; set; }          
+        public virtual Courier ? Courier { get; set; }        
         /// <summary>
         /// Delivery timing
         /// </summary>

@@ -6,7 +6,7 @@ using Microsoft.EntityFrameworkCore.Migrations;
 namespace DeliveryService.Migrations
 {
     /// <inheritdoc />
-    public partial class ModelsCorrection : Migration
+    public partial class DeliveryDBContextModelCorrections : Migration
     {
         /// <inheritdoc />
         protected override void Up(MigrationBuilder migrationBuilder)
@@ -29,35 +29,44 @@ namespace DeliveryService.Migrations
                 name: "DeliveryId",
                 table: "Couriers");
 
-            migrationBuilder.AlterColumn<string>(
-                name: "ShippingAddress",
-                table: "Deliveries",
-                type: "text",
-                nullable: false,
-                oldClrType: typeof(string),
-                oldType: "character varying(200)",
-                oldMaxLength: 200);
-
             migrationBuilder.AlterColumn<Guid>(
-                name: "CourierId",
+                name: "UserId",
                 table: "Deliveries",
                 type: "uuid",
                 nullable: true,
                 oldClrType: typeof(Guid),
                 oldType: "uuid");
 
+            migrationBuilder.AlterColumn<string>(
+                name: "ShippingAddress",
+                table: "Deliveries",
+                type: "text",
+                nullable: true,
+                oldClrType: typeof(string),
+                oldType: "character varying(200)",
+                oldMaxLength: 200);
+
+            migrationBuilder.AlterColumn<string>(
+                name: "Name",
+                table: "Couriers",
+                type: "text",
+                nullable: false,
+                oldClrType: typeof(string),
+                oldType: "character varying(100)",
+                oldMaxLength: 100);
+
             migrationBuilder.CreateIndex(
                 name: "IX_Deliveries_CourierId",
                 table: "Deliveries",
-                column: "CourierId",
-                unique: true);
+                column: "CourierId");
 
             migrationBuilder.AddForeignKey(
                 name: "FK_Deliveries_Couriers_CourierId",
                 table: "Deliveries",
                 column: "CourierId",
                 principalTable: "Couriers",
-                principalColumn: "Id");
+                principalColumn: "Id",
+                onDelete: ReferentialAction.Cascade);
         }
 
         /// <inheritdoc />
@@ -71,17 +80,8 @@ namespace DeliveryService.Migrations
                 name: "IX_Deliveries_CourierId",
                 table: "Deliveries");
 
-            migrationBuilder.AlterColumn<string>(
-                name: "ShippingAddress",
-                table: "Deliveries",
-                type: "character varying(200)",
-                maxLength: 200,
-                nullable: false,
-                oldClrType: typeof(string),
-                oldType: "text");
-
             migrationBuilder.AlterColumn<Guid>(
-                name: "CourierId",
+                name: "UserId",
                 table: "Deliveries",
                 type: "uuid",
                 nullable: false,
@@ -89,6 +89,26 @@ namespace DeliveryService.Migrations
                 oldClrType: typeof(Guid),
                 oldType: "uuid",
                 oldNullable: true);
+
+            migrationBuilder.AlterColumn<string>(
+                name: "ShippingAddress",
+                table: "Deliveries",
+                type: "character varying(200)",
+                maxLength: 200,
+                nullable: false,
+                defaultValue: "",
+                oldClrType: typeof(string),
+                oldType: "text",
+                oldNullable: true);
+
+            migrationBuilder.AlterColumn<string>(
+                name: "Name",
+                table: "Couriers",
+                type: "character varying(100)",
+                maxLength: 100,
+                nullable: false,
+                oldClrType: typeof(string),
+                oldType: "text");
 
             migrationBuilder.AddColumn<Guid>(
                 name: "DeliveryId",
