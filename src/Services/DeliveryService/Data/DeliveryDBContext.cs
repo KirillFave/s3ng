@@ -10,24 +10,26 @@ namespace DeliveryService.Data
         {
         }
         /// <summary>
-        /// Deliveries
-        /// </summary>
-        public DbSet<Delivery> Deliveries { get; set; }
-        /// <summary>
         /// Couriers
         /// </summary>
-        public DbSet<Courier> Couriers { get; set; }
+        public DbSet<Courier> Couriers { get; set; } = null!;
+        /// <summary>
+        /// Deliveries
+        /// </summary>
+        public DbSet<Delivery> Deliveries { get; set; } = null!;
+        
 
         protected override void OnModelCreating(ModelBuilder modelBuilder)
         {
             base.OnModelCreating(modelBuilder);
 
-            modelBuilder.Entity<Delivery>()
-                .HasMany(u => u.Couriers)
-                .WithOne(c => c.Delivery)
-                .IsRequired();            
+            modelBuilder.Entity<Courier>()
+                .HasMany(u => u.Deliveries)
+                .WithOne(c => c.Courier)
+                .IsRequired();
 
-            modelBuilder.Entity<Courier>().Property(c => c.Name).HasMaxLength(100);           
+            modelBuilder.Entity<Delivery>().Property(c => c.Id).HasMaxLength(100);
+            modelBuilder.Entity<Courier>().Property(c => c.Id).HasMaxLength(100);
         }
     }
 }

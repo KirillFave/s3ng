@@ -15,8 +15,8 @@ namespace DeliveryService.Services.Services.Implementations.Mapping
         public DeliveryMappingProfile()
         {
             CreateMap<DeliveryModel, DeliveryDTO>();
-            //CreateMap<CreateDeliveryModel, CreateDeliveryDTO>();
-            CreateMap<Delivery, CreateDeliveryDTO>();
+            CreateMap<CreateDeliveryModel, CreateDeliveryDTO>();
+            //CreateMap<Delivery, CreateDeliveryDTO>();
             CreateMap<UpdateDeliveryModel, UpdateDeliveryDTO>();
         }
     }

@@ -5,7 +5,7 @@ using DeliveryService.Enums;
 
 namespace DeliveryService.Domain.Domain.Entities
 {
-    public class Delivery 
+    public class Delivery : IEntity<Guid>
     {
         [Key]
         public Guid Id { get; set; }
@@ -13,26 +13,24 @@ namespace DeliveryService.Domain.Domain.Entities
         /// Delivery basic parameters
         /// </summary>         
         public DeliveryStatus DeliveryStatus { get; set; }
-        public Guid OrderId { get; set; }               
-        public required Guid UserId {  get; set; }
+        public Guid OrderId { get; set; }
+        public Guid ? UserId { get; set; }
         public OrderStatus OrderStatus { get; set; }
-        public required int TotalQuantity { get; set; }
-        public required decimal TotalPrice { get; set; }        
-        
-        public PaymentType PaymentType { get; set; }              
-       
-        public required string ShippingAddress { get; set; }        
-        public Guid ? CourierId { get; set; }
+        public int TotalQuantity { get; set; }
+        public decimal TotalPrice { get; set; }
+        public PaymentType PaymentType { get; set; }
+        public string ? ShippingAddress { get; set; }
+        public virtual Courier ? Courier { get; set; }          
         /// <summary>
         /// Delivery timing
         /// </summary>
-        public required DateTime EstimatedDeliveryTime { get; set; }
+        public DateTime EstimatedDeliveryTime { get; set; }
         public DateTime ActualDeliveryTime { get; set; }
-        public DateTime CreateTimestamp { get; set; }    
+        public DateTime CreateTimestamp { get; set; }
         /// <summary>
-        /// Details of Delivery
+        /// Delivery modify status
         /// </summary>           
-        public bool IsDeleted { get; set; }        
+        public bool IsDeleted { get; set; }
         public DateTime TimeModified { get; set; }
-    }
+    }    
 }

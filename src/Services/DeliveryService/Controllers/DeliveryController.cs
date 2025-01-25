@@ -10,7 +10,7 @@ namespace DeliveryService.Controllers
 {
     [ApiController]
     [Route("api/v3/[controller]")]
-    public class DeliveryController : Controller
+    public class DeliveryController : ControllerBase
     {
         private readonly IDeliveryService _deliveryService;
         private readonly IMapper _mapper;
@@ -30,7 +30,7 @@ namespace DeliveryService.Controllers
             return Ok(_mapper.Map<DeliveryDBContext>(await _deliveryService.GetByIdAsync(id)));
         }
 
-        [HttpPut("/api/create-delivery")]        
+        [HttpPost("/api/create-delivery")]        
         public async Task<IActionResult> CreateAsync(CreateDeliveryModel createDeliveryModel)
         {            
             return Ok(await _deliveryService.CreateAsync(_mapper.Map<CreateDeliveryDTO>(createDeliveryModel)));

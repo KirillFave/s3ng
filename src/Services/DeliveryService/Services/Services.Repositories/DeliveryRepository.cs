@@ -106,8 +106,8 @@ namespace DeliveryService.Services.Services.Repositories
 
             if (deliveryToUpdate.PaymentType == delivery.PaymentType &&
               deliveryToUpdate.DeliveryStatus == delivery.DeliveryStatus &&
-              deliveryToUpdate.Items == delivery.Items &&
-              deliveryToUpdate.CourierId == delivery.CourierId &&                             // ?is required
+              //deliveryToUpdate.Items == delivery.Items &&
+              deliveryToUpdate.Courier == delivery.Courier &&                             // ?is required
               deliveryToUpdate.ShippingAddress == delivery.ShippingAddress &&
               deliveryToUpdate.TotalQuantity == delivery.TotalQuantity &&                   // ?is required
               deliveryToUpdate.TotalPrice == delivery.TotalPrice &&                         // ?is required
@@ -122,10 +122,10 @@ namespace DeliveryService.Services.Services.Repositories
             {
                 deliveryToUpdate.ShippingAddress = delivery.ShippingAddress;
             }
-            if (delivery.Items is not null)
-            {
-                deliveryToUpdate.Items = delivery.Items;
-            }
+            //if (delivery.Items is not null)
+            //{
+            //    deliveryToUpdate.Items = delivery.Items;
+            //}
 
             int stateEntriesWritten = await _context.SaveChangesAsync();
             return stateEntriesWritten > 0 ? OperationResult.Success : OperationResult.NotChangesApplied;

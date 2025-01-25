@@ -1,4 +1,4 @@
-﻿using DeliveryService.Domain.External.Entities;
+using DeliveryService.Domain.External.Entities;
 
 namespace DeliveryService.Domain.Domain.Entities
 {
@@ -11,8 +11,7 @@ public interface IEntity<TId>
     /// <summary>
     /// Идентификатор.
     /// </summary>
-    TId Id { get; set; }
-        Order? Order { get; set; }
+    TId Id { get; set; }      
     }
 
 }
