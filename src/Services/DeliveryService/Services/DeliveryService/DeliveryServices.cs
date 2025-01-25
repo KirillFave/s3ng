@@ -5,6 +5,7 @@ using DeliveryService.Services.Services.Contracts.DTO;
 using DeliveryService.Models;
 using DeliveryService.Domain.Domain.Entities;
 using Microsoft.AspNetCore.Http.HttpResults;
+using DeliveryService.Extentions;
 
 namespace DeliveryService.Services.DeliveryService
 {
@@ -25,7 +26,8 @@ namespace DeliveryService.Services.DeliveryService
         /// <param name="createDeliveryDTO"> ДТО создаваемой доставки. </param>
         public async Task<Guid> CreateAsync(CreateDeliveryDTO createDeliveryDTO)
         {
-            var delivery = _mapper.Map<CreateDeliveryDTO, Delivery>(createDeliveryDTO);    
+            var delivery = _mapper.Map<CreateDeliveryDTO, Delivery>(createDeliveryDTO); 
+           // var delivery = createDeliveryDTO.MapDelivery();
             var createdDelivery = await _deliveryRepository.AddAsync(delivery);
             await _deliveryRepository.SaveChangesAsync();
 

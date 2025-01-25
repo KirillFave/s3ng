@@ -5,6 +5,7 @@ using DeliveryService.Data;
 using DeliveryService.Domain.Domain.Entities;
 using DeliveryService.Services.Services.Abstractions;
 using DeliveryService.Services.Services.Contracts.DTO;
+using DeliveryService.Extentions;
 
 namespace DeliveryService.Controllers
 {
@@ -32,9 +33,12 @@ namespace DeliveryService.Controllers
 
         [HttpPost("/api/create-delivery")]        
         public async Task<IActionResult> CreateAsync(CreateDeliveryModel createDeliveryModel)
-        {            
-            return Ok(await _deliveryService.CreateAsync(_mapper.Map<CreateDeliveryDTO>(createDeliveryModel)));
-        }
+           
+        {
+            var model = createDeliveryModel.MapDelivery();
+            //return Ok(await _deliveryService.CreateAsync(_mapper.Map<CreateDeliveryDTO>(createDeliveryModel)));
+            return Ok(await _deliveryService.CreateAsync(model));
+            }
 
         //[HttpPut("UpdateDelivery")]        
         //public async Task<IActionResult> UpdateAsync(Guid id, UpdateDeliveryDTO updateDeliveryDTO)
