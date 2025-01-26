@@ -1,5 +1,6 @@
 using Microsoft.AspNetCore.Diagnostics;
 using Microsoft.AspNetCore.Server.Kestrel.Core;
+using Microsoft.OpenApi.Models;
 using Serilog;
 using WebHost;
 using WebHost.Controllers;
@@ -21,7 +22,6 @@ builder.Services.AddAutoMapper(typeof(UsersMappingProfile));
 //general
 builder.Services.AddControllers();
 builder.Services.AddEndpointsApiExplorer();
-builder.Services.AddSwaggerGen();
 
 builder.Services.AddGrpc();
 
@@ -35,6 +35,35 @@ builder.Services.AddIAMServiceClient(configuration);
 builder.Services.AddUserServiceClient(configuration);
 builder.Services.AddProductServiceClient(configuration);
 builder.Services.ConfigureOrderService(configuration);
+
+builder.Services.AddSwaggerGen(c =>
+{
+    c.SwaggerDoc("v1", new OpenApiInfo { Title = "s3ng API", Version = "v1" });
+    c.AddSecurityDefinition("Bearer", new OpenApiSecurityScheme
+    {
+        In = ParameterLocation.Header,
+        Description = "Введите JWT токен",
+        Name = "Authorization",
+        Type = SecuritySchemeType.Http,
+        BearerFormat = "JWT",
+        Scheme = "bearer"
+    });
+
+    c.AddSecurityRequirement(new OpenApiSecurityRequirement
+    {
+        {
+            new OpenApiSecurityScheme
+            {
+                Reference = new OpenApiReference
+                {
+                    Type = ReferenceType.SecurityScheme,
+                    Id = "Bearer"
+                }
+            },
+            Array.Empty<string>()
+        }
+    });
+});
 
 builder.WebHost.ConfigureKestrel(o =>
 {
@@ -51,8 +80,6 @@ app.UseAuthorization();
 
 app.UseSwagger();
 app.UseSwaggerUI();
-
-app.UseAuthorization();
 
 app.MapControllers();
 

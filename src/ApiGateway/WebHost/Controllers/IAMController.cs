@@ -1,5 +1,6 @@
 using System.Net;
 using AutoMapper;
+using Grpc.Core;
 using Microsoft.AspNetCore.Mvc;
 using s3ng.Contracts.IAM;
 using WebHost.Dto.IAM;
@@ -37,11 +38,19 @@ namespace WebHost.Controllers
         [ProducesResponseType(StatusCodes.Status400BadRequest)]
         public async Task<IActionResult> RegisterUser(RegistrationRequestDto requestDto, CancellationToken ct)
         {
-            _logger.Information($"Api method {nameof(RegisterUser)} was called with parameters {requestDto.Login}, {requestDto.Password}");
-            var serviceRequest = _mapper.Map<RegisterRequest>(requestDto);
-            var result = await _registrationClient.RegisterUserAsync(serviceRequest, cancellationToken: ct);
-            _logger.Information($"end call registration with result {result.Result}, {result.Message}");
-            return result.Result == RegisterResult.Success ? new OkObjectResult(result.Message) : new BadRequestObjectResult(result.Message);
+            try
+            {
+                _logger.Information($"Api method {nameof(RegisterUser)} was called with parameters {requestDto.Login}, {requestDto.Password}");
+                var serviceRequest = _mapper.Map<RegisterRequest>(requestDto);
+                var result = await _registrationClient.RegisterUserAsync(serviceRequest, cancellationToken: ct);
+                _logger.Information($"end call registration with result {result.Result}, {result.Message}");
+                return result.Result == RegisterResult.Success ? new OkObjectResult(result.Message) : new BadRequestObjectResult(result.Message);
+            }
+            catch (RpcException ex)
+            {
+                _logger.Error($"gRPC Error: {ex.Status.Detail}");
+                throw;
+            }
         }
 
 
