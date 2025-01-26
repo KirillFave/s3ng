@@ -1,7 +1,7 @@
-﻿using Microsoft.EntityFrameworkCore;
+using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.ChangeTracking;
 using OrderService.Database;
-using OrderService.Models;
+using SharedLibrary.OrderService.Models;
 
 namespace OrderService.Repositories;
 
@@ -23,7 +23,7 @@ public class OrderItemRepository
     {
         return await _databaseContext.OrderItems
             .Include(orderItem => orderItem.Order)
-            .FirstOrDefaultAsync(orderItem => orderItem.Guid == guid);
+            .FirstOrDefaultAsync(orderItem => orderItem.Id == guid);
     }
 
     public async Task<bool> AddAsync(OrderItem orderItem)
