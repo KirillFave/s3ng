@@ -28,7 +28,7 @@ public class OrderController : ControllerBase
     {
         bool result = await _orderRepository.AddAsync(order);
 
-        return result ? NoContent() : Created();
+        return result ? NoContent() : BadRequest();
     }
 
     [HttpPatch("api/UpdateOrder")]
