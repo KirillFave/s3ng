@@ -19,8 +19,8 @@ namespace DeliveryService.Domain.Domain.Entities
         public int TotalQuantity { get; set; }
         public decimal TotalPrice { get; set; }
         public PaymentType PaymentType { get; set; }
-        public string ? ShippingAddress { get; set; }
-        public virtual Courier ? Courier { get; set; }        
+        public required string ShippingAddress { get; set; }
+        public required virtual Courier Courier { get; set; }        
         /// <summary>
         /// Delivery timing
         /// </summary>

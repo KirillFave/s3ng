@@ -16,7 +16,7 @@ namespace DeliveryService.Services.Services.Implementations.Mapping
         {
             CreateMap<DeliveryModel, DeliveryDTO>();
             CreateMap<CreateDeliveryModel, CreateDeliveryDTO>();
-            //CreateMap<Delivery, CreateDeliveryDTO>();
+            CreateMap<Delivery, CreateDeliveryDTO>();
             CreateMap<UpdateDeliveryModel, UpdateDeliveryDTO>();
         }
     }

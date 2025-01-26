@@ -27,8 +27,8 @@ namespace DeliveryService.Data
                 .HasMany(u => u.Deliveries)
                 .WithOne(c => c.Courier)
                 .IsRequired();
-
-            modelBuilder.Entity<Delivery>().Property(c => c.Id).HasMaxLength(100);
+           
+            modelBuilder.Entity<Delivery>().Property(c => c.Id).HasMaxLength(200);
             modelBuilder.Entity<Courier>().Property(c => c.Id).HasMaxLength(100);
         }
     }

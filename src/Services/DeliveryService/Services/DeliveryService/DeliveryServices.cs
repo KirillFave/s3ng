@@ -26,11 +26,9 @@ namespace DeliveryService.Services.DeliveryService
         /// <param name="createDeliveryDTO"> ДТО создаваемой доставки. </param>
         public async Task<Guid> CreateAsync(CreateDeliveryDTO createDeliveryDTO)
         {
-            var delivery = _mapper.Map<CreateDeliveryDTO, Delivery>(createDeliveryDTO); 
-           // var delivery = createDeliveryDTO.MapDelivery();
+            var delivery = _mapper.Map<CreateDeliveryDTO, Delivery>(createDeliveryDTO);            
             var createdDelivery = await _deliveryRepository.AddAsync(delivery);
             await _deliveryRepository.SaveChangesAsync();
-
             return createdDelivery.Id;
         }      
 

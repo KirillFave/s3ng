@@ -35,7 +35,7 @@ namespace DeliveryService.Controllers
         public async Task<IActionResult> CreateAsync(CreateDeliveryModel createDeliveryModel)
            
         {
-            var model = createDeliveryModel.MapDelivery();
+            var model = createDeliveryModel.MapModelDelivery();
             //return Ok(await _deliveryService.CreateAsync(_mapper.Map<CreateDeliveryDTO>(createDeliveryModel)));
             return Ok(await _deliveryService.CreateAsync(model));
             }
