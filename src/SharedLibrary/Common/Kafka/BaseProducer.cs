@@ -1,5 +1,6 @@
 using Confluent.Kafka;
-using Serilog;
+using SharedLibrary.Common.Kafka.Messages;
+using SharedLibrary.Common.Kafka.Utils;
 using ILogger = Serilog.ILogger;
 
 namespace SharedLibrary.Common.Kafka

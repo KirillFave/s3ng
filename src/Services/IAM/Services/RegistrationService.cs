@@ -7,7 +7,7 @@ using IAM.Producers;
 using Microsoft.AspNetCore.Identity;
 using Microsoft.EntityFrameworkCore;
 using s3ng.Contracts.IAM;
-using SharedLibrary.IAM.Messages;
+using SharedLibrary.Common.Kafka.Messages;
 using ILogger = Serilog.ILogger;
 
 namespace IAM.Services

@@ -8,6 +8,8 @@ using UserService.Infrastructure.EFCore;
 using Serilog;
 using Microsoft.AspNetCore.Diagnostics;
 using UserService.Application;
+using UserService.KafkaConsumer.Consumers;
+using UserService.KafkaConsumer.Options;
 
 var builder = WebApplication.CreateBuilder(args);
 
@@ -31,6 +33,11 @@ builder.WebHost.ConfigureKestrel(options =>
 });
 
 builder.Host.UseSerilog(LoggerHelper.AddLogger(configuration));
+
+var options = configuration.Get<ApplicationOptions>();
+builder.Services.AddSingleton(options);
+
+builder.Services.AddHostedService<UserRegistredConsumer>();
 
 var app = builder.Build();
 

@@ -1,10 +1,10 @@
 using AutoMapper;
 using Google.Protobuf.WellKnownTypes;
 using UserService.Domain.Entities;
-using UserService.Application.Models;
 using UserService.Application.Models.Requests;
 using UserService.Application.Models.Response;
 using SharedLibrary.UserService.Models;
+using SharedLibrary.Common.Kafka.Messages;
 
 namespace UserService.Application.Mapping;
 
@@ -78,5 +78,13 @@ public class UserServiceMappingProfile : Profile
             .ForMember(dest => dest.Role, opt => opt.MapFrom(src => Converter.ConvertRoleToEntity(src.Role)))
             .ForMember(dest => dest.CreatedAt, opt => opt.MapFrom(_ => DateTime.UtcNow))
             .ForMember(dest => dest.Id, opt => opt.MapFrom(_ => Guid.NewGuid()));
+
+        CreateMap<UserRegistredMessage, CreateUserRequestDto>()
+            .ForMember(dest => dest.AuthenticationId, opt => opt.MapFrom(src => src.Id))
+            .ForMember(dest => dest.FirstName, opt => opt.MapFrom(_ => ""))
+            .ForMember(dest => dest.LastName, opt => opt.MapFrom(_ => ""))
+            .ForMember(dest => dest.Phone, opt => opt.MapFrom(_ => 0))
+            .ForMember(dest => dest.Address, opt => opt.MapFrom(_ => ""))
+            .ForMember(dest => dest.Role, opt => opt.MapFrom(_ => RoleModel.Unspecified));
     }
 }

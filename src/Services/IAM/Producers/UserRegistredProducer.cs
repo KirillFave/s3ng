@@ -1,7 +1,7 @@
 using Confluent.Kafka;
 using Microsoft.Extensions.Options;
 using SharedLibrary.Common.Kafka;
-using SharedLibrary.IAM.Messages;
+using SharedLibrary.Common.Kafka.Messages;
 using ILogger = Serilog.ILogger;
 
 namespace IAM.Producers

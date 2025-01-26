@@ -7,7 +7,6 @@ using UserService.Application.Models.Response;
 using UserService.Application.Models.Results;
 using ILogger = Serilog.ILogger;
 using SharedLibrary.UserService.Models;
-using Serilog;
 
 namespace UserService.Application.Handler;
 

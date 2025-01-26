@@ -69,11 +69,13 @@ Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "IAM", "Services\IAM\IAM.csp
 EndProject
 Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "SharedLibrary", "SharedLibrary", "{8E1DA47A-6339-4267-9EA9-58CF28D87E48}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "SharedLibrary", "SharedLibrary\SharedLibrary.csproj", "{E4E3A148-4E34-4EEB-9376-3E79D68461FA}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "SharedLibrary", "SharedLibrary\SharedLibrary.csproj", "{E4E3A148-4E34-4EEB-9376-3E79D68461FA}"
 EndProject
 Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "UserService.Test", "UserService.Test", "{03842583-454C-4116-949F-DFD62E0CCD76}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "UserService.Application.Test", "Tests\UserService.Test\Application\UserService.Application.Test\UserService.Application.Test.csproj", "{1D3D1FB2-64DC-4E45-ADFA-AC8AC22E1E0C}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "UserService.Application.Test", "Tests\UserService.Test\Application\UserService.Application.Test\UserService.Application.Test.csproj", "{1D3D1FB2-64DC-4E45-ADFA-AC8AC22E1E0C}"
+EndProject
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "UserService.KafkaConsumer", "Services\UserService\UserService.KafkaConsumer\UserService.KafkaConsumer.csproj", "{49285710-0A15-45DD-8C10-BDAC6B1998B7}"
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
@@ -145,6 +147,10 @@ Global
 		{1D3D1FB2-64DC-4E45-ADFA-AC8AC22E1E0C}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{1D3D1FB2-64DC-4E45-ADFA-AC8AC22E1E0C}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{1D3D1FB2-64DC-4E45-ADFA-AC8AC22E1E0C}.Release|Any CPU.Build.0 = Release|Any CPU
+		{49285710-0A15-45DD-8C10-BDAC6B1998B7}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{49285710-0A15-45DD-8C10-BDAC6B1998B7}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{49285710-0A15-45DD-8C10-BDAC6B1998B7}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{49285710-0A15-45DD-8C10-BDAC6B1998B7}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE
@@ -183,6 +189,7 @@ Global
 		{E4E3A148-4E34-4EEB-9376-3E79D68461FA} = {8E1DA47A-6339-4267-9EA9-58CF28D87E48}
 		{03842583-454C-4116-949F-DFD62E0CCD76} = {373D8AA1-36BE-49EC-89F0-6CB736666285}
 		{1D3D1FB2-64DC-4E45-ADFA-AC8AC22E1E0C} = {03842583-454C-4116-949F-DFD62E0CCD76}
+		{49285710-0A15-45DD-8C10-BDAC6B1998B7} = {26A47E0E-DBE9-4302-85A4-C7F36C61A92F}
 	EndGlobalSection
 	GlobalSection(ExtensibilityGlobals) = postSolution
 		SolutionGuid = {D191DEA7-F878-4855-84A6-22850C11AC70}
