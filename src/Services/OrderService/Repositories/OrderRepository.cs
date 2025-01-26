@@ -1,7 +1,7 @@
-﻿using Microsoft.EntityFrameworkCore;
+using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.ChangeTracking;
 using OrderService.Database;
-using OrderService.Models;
+using SharedLibrary.OrderService.Models;
 
 namespace OrderService.Repositories;
 
@@ -23,7 +23,7 @@ public class OrderRepository
     {
         return await _databaseContext.Orders
             .Include(order => order.Items)
-            .FirstOrDefaultAsync(order => order.Guid == guid);
+            .FirstOrDefaultAsync(order => order.Id == guid);
     }
 
     public async Task<bool> AddAsync(Order order)
@@ -52,7 +52,7 @@ public class OrderRepository
         Order order,
         bool isUpdatePaymentType)
     {
-        Order? orderToUpdate = await _databaseContext.Orders.FindAsync(order.Guid);
+        Order? orderToUpdate = await _databaseContext.Orders.FindAsync(order.Id);
         if (orderToUpdate is null)
         {
             return OperationResult.NotEntityFound;

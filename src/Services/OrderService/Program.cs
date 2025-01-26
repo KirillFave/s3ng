@@ -1,24 +1,21 @@
 using OrderService.Database;
-using OrderService.Models;
 using OrderService.Repositories;
 
+using DotNetEnv;
+using DotNetEnv.Configuration;
 using Microsoft.EntityFrameworkCore;
-using OrderService.Data;
-using OrderService.Repositories;
+using Microsoft.AspNetCore.Server.Kestrel.Core;
 
 var builder = WebApplication.CreateBuilder(args);
 
-builder.Configuration.Sources.Clear();
-builder.Configuration.AddJsonFile("appsettings.json");
+builder.Configuration.AddDotNetEnvMulti([".env"], LoadOptions.DEFAULT);
 
-// Add services to the container.
-builder.Services.AddControllersWithViews();
-builder.Services.AddDbContext<DatabaseContext>(
-    optionsBuilder => optionsBuilder.UseSqlite(builder.Configuration["ConnectionString"]));
+builder.Services.ConfigureContext(builder.Configuration);
 
-builder.Services.AddScoped(typeof(IRepository<Order>), typeof(EfRepository<Order>));
-//builder.Services.AddScoped(typeof(IRepository<OrderItem>), (x) =>
-//    new EfRepository<Customer>(FakeDataFactory.Customers));
+builder.Services.AddControllers();
+
+builder.Services.AddScoped(typeof(OrderRepository));
+builder.Services.AddScoped(typeof(OrderItemRepository));
 
 builder.Services.AddOpenApiDocument(options =>
 {
@@ -35,14 +32,20 @@ builder.Services.AddOpenApiDocument(options =>
             }
         }
     };
-    options.Title = "OrderService API Doc";
+    options.Title = "API Doc";
     options.Version = "1.0";
 });
 
 builder.Services.AddAutoMapper(typeof(Program));
+builder.Services.AddEndpointsApiExplorer();
+
+builder.WebHost.ConfigureKestrel(o =>
+{
+    o.ListenAnyIP(50055, listenOptions => listenOptions.Protocols = HttpProtocols.Http1AndHttp2AndHttp3);
+});
 
 var app = builder.Build();
-
+    
 // Configure the HTTP request pipeline.
 if (!app.Environment.IsDevelopment())
 {
@@ -65,5 +68,20 @@ app.UseRouting();
 app.MapControllers();
 
 app.UseAuthorization();
+
+using (var scope = app.Services.CreateScope())
+{
+    var services = scope.ServiceProvider;
+    var context = services.GetRequiredService<DatabaseContext>();
+
+    try
+    {
+        context.Database.Migrate();
+    }
+    catch (Exception ex)
+    {
+        Console.WriteLine($"Ошибка применения миграций: {ex.Message}");
+    }
+}
 
 app.Run();

@@ -1,43 +1,40 @@
-﻿using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
-using Microsoft.EntityFrameworkCore;
-using OrderService.Database;
-using OrderService.Models;
 using OrderService.Repositories;
+using SharedLibrary.OrderService.Models;
 
 namespace OrderService.Controllers;
 
 [ApiController]
-[Route("api/v1/[controller]")]
-public class OrderController : Controller
+[Route("[controller]")]
+public class OrderController : ControllerBase
 {
-    private readonly IRepository<Order> _orderRepository;
+    private readonly OrderRepository _orderRepository;
 
-    public OrderController(IRepository<Order> orderRepository)
+    public OrderController(OrderRepository orderRepository)
     {
         _orderRepository = orderRepository;
     }
 
-    [HttpGet]
-    public async Task<ActionResult> Get(Guid guid)
+    [HttpGet("/api/order/{id}")]
+    public async Task<ActionResult> Get(Guid id)
     {
-        Order? order = await _orderRepository.GetByIdAsync(guid);
+        Order? order = await _orderRepository.GetByIdAsync(id);
 
         return order is null ? NotFound() : Ok(order);
     }
 
-    [HttpPut]
+    [HttpPut("/api/CreateOrder")]
     public async Task<ActionResult> Create(Order order)
     {
         bool result = await _orderRepository.AddAsync(order);
 
-        return result ? NoContent() : Created();
+        return result ? NoContent() : BadRequest();
     }
 
-    [HttpPatch]
+    [HttpPatch("api/UpdateOrder")]
     public async Task<ActionResult> Update(Order order)
     {
-        OperationResult result = await _orderRepository.UpdateAsync(order);
+        OperationResult result = await _orderRepository.UpdateAsync(order, false);
 
         return result switch
         {
@@ -48,7 +45,7 @@ public class OrderController : Controller
         };
     }
 
-    [HttpDelete]
+    [HttpDelete("api/DeleteOrder")]
     public async Task<ActionResult> Delete(Guid guid)
     {
         OperationResult result = await _orderRepository.DeleteAsync(guid);

@@ -1,4 +1,4 @@
-﻿using OrderService.Models;
+using SharedLibrary.OrderService.Models;
 
 using System;
 using System.Collections.Generic;
