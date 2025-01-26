@@ -3,9 +3,11 @@ using Grpc.Core;
 using IAM.DAL;
 using IAM.Entities;
 using IAM.Models;
+using IAM.Producers;
 using Microsoft.AspNetCore.Identity;
 using Microsoft.EntityFrameworkCore;
 using s3ng.Contracts.IAM;
+using SharedLibrary.IAM.Messages;
 using ILogger = Serilog.ILogger;
 
 namespace IAM.Services
@@ -15,12 +17,14 @@ namespace IAM.Services
         private readonly ILogger _logger;
         private readonly DatabaseContext _databaseContext;
         private readonly IMapper _mapper;
+        private readonly UserRegistredProducer _userRegistredProducer;
 
-        public RegistrationService(DatabaseContext dbContext, ILogger logger, IMapper mapper) 
+        public RegistrationService(DatabaseContext dbContext, ILogger logger, IMapper mapper, UserRegistredProducer userRegistredProducer) 
         {
             _databaseContext = dbContext;
             _logger = logger.ForContext<RegistrationService>();
             _mapper = mapper;
+            _userRegistredProducer = userRegistredProducer;
         }
 
         public override async Task<RegisterResponse> RegisterUser(RegisterRequest request, ServerCallContext context)
@@ -65,9 +69,16 @@ namespace IAM.Services
                 newAccount.PasswordHash = passwordHash;
 
                 var newUser = _mapper.Map<User>(newAccount);
+                newUser.Role = SharedLibrary.IAM.Enums.RoleType.User;
 
                 //TODO нужен отдельный класс для работы с BD
                 await _databaseContext.Users.AddAsync(newUser, cancellationToken: context.CancellationToken);
+                await _userRegistredProducer.ProduceAsync(newId.ToString(), new UserRegistredMessage
+                {
+                    RegistredAt = DateTimeOffset.UtcNow,
+                    Id = newId.ToString()
+                }, context.CancellationToken);
+
                 await _databaseContext.SaveChangesAsync();
 
                 _logger.Information($"Успешно отработали запрос на регистрацию юзера Login:{request.Login}");

@@ -16,6 +16,7 @@ namespace IAM.DAL
             base.OnModelCreating(modelBuilder);
             modelBuilder.Entity<User>().Property(x => x.Login).IsRequired().HasMaxLength(128);
             modelBuilder.Entity<User>().Property(x => x.PasswordHash).IsRequired().HasMaxLength(128);
+            modelBuilder.Entity<User>().Property(x => x.Role).IsRequired();
 
             modelBuilder.Entity<User>().HasIndex(x => x.Login).IsUnique();
             modelBuilder.Entity<User>().HasKey(x => x.Id);

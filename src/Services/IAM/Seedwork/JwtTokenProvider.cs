@@ -27,8 +27,9 @@ namespace IAM.Seedwork
 
             var claims = new List<Claim>
             {
-                new Claim("login", user.Login),
-                new Claim("id", user.Id.ToString()),
+                new(ClaimTypes.Name, user.Login),
+                new(ClaimTypes.NameIdentifier, user.Id.ToString()),
+                new(ClaimTypes.Role, user.Role.ToString()),
             };
 
             var key = new SymmetricSecurityKey(Encoding.UTF8.GetBytes(_options.SecretKey));
