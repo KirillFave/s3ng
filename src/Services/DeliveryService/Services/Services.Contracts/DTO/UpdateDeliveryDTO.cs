@@ -8,7 +8,7 @@ namespace DeliveryService.Services.Services.Contracts.DTO
     {
         public Guid Id { get; set; }
         public Guid OrderId { get; set; }
-        public required Guid UserId { get; set; }
+        //public required Guid UserId { get; set; }
         public Guid CourierId { get; set; }
         public DeliveryStatus DeliveryStatus { get; set; }
         public PaymentType PaymentType { get; set; }

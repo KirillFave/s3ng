@@ -12,8 +12,8 @@ using Npgsql.EntityFrameworkCore.PostgreSQL.Metadata;
 namespace DeliveryService.Migrations
 {
     [DbContext(typeof(DeliveryDBContext))]
-    [Migration("20250125172201_DeliveryDBContextModelCorrections")]
-    partial class DeliveryDBContextModelCorrections
+    [Migration("20250202160556_DBContextUpdate")]
+    partial class DBContextUpdate
     {
         /// <inheritdoc />
         protected override void BuildTargetModel(ModelBuilder modelBuilder)
@@ -29,12 +29,12 @@ namespace DeliveryService.Migrations
                 {
                     b.Property<Guid>("Id")
                         .ValueGeneratedOnAdd()
-                        .HasMaxLength(100)
                         .HasColumnType("uuid");
 
                     b.Property<string>("Name")
                         .IsRequired()
-                        .HasColumnType("text");
+                        .HasMaxLength(100)
+                        .HasColumnType("character varying(100)");
 
                     b.HasKey("Id");
 
@@ -45,16 +45,15 @@ namespace DeliveryService.Migrations
                 {
                     b.Property<Guid>("Id")
                         .ValueGeneratedOnAdd()
-                        .HasMaxLength(100)
                         .HasColumnType("uuid");
 
-                    b.Property<DateTime>("ActualDeliveryTime")
+                    b.Property<DateTime?>("ActualDeliveryTime")
                         .HasColumnType("timestamp with time zone");
 
                     b.Property<Guid>("CourierId")
                         .HasColumnType("uuid");
 
-                    b.Property<DateTime>("CreateTimestamp")
+                    b.Property<DateTime?>("CreateTimestamp")
                         .HasColumnType("timestamp with time zone");
 
                     b.Property<int>("DeliveryStatus")
@@ -76,6 +75,7 @@ namespace DeliveryService.Migrations
                         .HasColumnType("integer");
 
                     b.Property<string>("ShippingAddress")
+                        .IsRequired()
                         .HasColumnType("text");
 
                     b.Property<DateTime>("TimeModified")
@@ -87,14 +87,64 @@ namespace DeliveryService.Migrations
                     b.Property<int>("TotalQuantity")
                         .HasColumnType("integer");
 
-                    b.Property<Guid?>("UserId")
-                        .HasColumnType("uuid");
-
                     b.HasKey("Id");
 
                     b.HasIndex("CourierId");
 
+                    b.HasIndex("OrderId")
+                        .IsUnique();
+
                     b.ToTable("Deliveries");
+                });
+
+            modelBuilder.Entity("DeliveryService.Domain.External.Entities.Order", b =>
+                {
+                    b.Property<Guid>("Id")
+                        .ValueGeneratedOnAdd()
+                        .HasColumnType("uuid");
+
+                    b.Property<DateTime>("CreatedTimestamp")
+                        .HasColumnType("timestamp with time zone");
+
+                    b.Property<int>("OrderStatus")
+                        .HasColumnType("integer");
+
+                    b.Property<int>("PaymentType")
+                        .HasColumnType("integer");
+
+                    b.Property<string>("ShippingAddress")
+                        .IsRequired()
+                        .HasMaxLength(200)
+                        .HasColumnType("character varying(200)");
+
+                    b.Property<decimal>("TotalPrice")
+                        .HasColumnType("numeric");
+
+                    b.Property<int>("TotalQuantity")
+                        .HasColumnType("integer");
+
+                    b.HasKey("Id");
+
+                    b.ToTable("Orders");
+                });
+
+            modelBuilder.Entity("DeliveryService.Domain.External.Entities.OrderItem", b =>
+                {
+                    b.Property<Guid>("Id")
+                        .ValueGeneratedOnAdd()
+                        .HasColumnType("uuid");
+
+                    b.Property<Guid?>("OrderId")
+                        .HasColumnType("uuid");
+
+                    b.Property<decimal>("PricePerUnit")
+                        .HasColumnType("numeric");
+
+                    b.HasKey("Id");
+
+                    b.HasIndex("OrderId");
+
+                    b.ToTable("OrderItem");
                 });
 
             modelBuilder.Entity("DeliveryService.Domain.Domain.Entities.Delivery", b =>
@@ -105,12 +155,36 @@ namespace DeliveryService.Migrations
                         .OnDelete(DeleteBehavior.Cascade)
                         .IsRequired();
 
+                    b.HasOne("DeliveryService.Domain.External.Entities.Order", "Order")
+                        .WithOne("Delivery")
+                        .HasForeignKey("DeliveryService.Domain.Domain.Entities.Delivery", "OrderId")
+                        .OnDelete(DeleteBehavior.Restrict)
+                        .IsRequired();
+
                     b.Navigation("Courier");
+
+                    b.Navigation("Order");
+                });
+
+            modelBuilder.Entity("DeliveryService.Domain.External.Entities.OrderItem", b =>
+                {
+                    b.HasOne("DeliveryService.Domain.External.Entities.Order", "Order")
+                        .WithMany("Items")
+                        .HasForeignKey("OrderId");
+
+                    b.Navigation("Order");
                 });
 
             modelBuilder.Entity("DeliveryService.Domain.Domain.Entities.Courier", b =>
                 {
                     b.Navigation("Deliveries");
+                });
+
+            modelBuilder.Entity("DeliveryService.Domain.External.Entities.Order", b =>
+                {
+                    b.Navigation("Delivery");
+
+                    b.Navigation("Items");
                 });
 #pragma warning restore 612, 618
         }

@@ -8,7 +8,7 @@ namespace DeliveryService.Models
     public class DeliveryModel
         {        
             public Guid Id { get; set; }
-            public Guid UserId { get; set; }
+            //public Guid UserId { get; set; }
             public Guid OrderId { get; set; }
             public OrderStatus orderStatus { get; set; }
             public DeliveryStatus DeliveryStatus { get; set; }

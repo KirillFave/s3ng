@@ -35,10 +35,10 @@ namespace DeliveryService.Services.Services.Repositories
         /// </summary>
         /// <param name="id"> Id сущности. </param>        
         /// <returns> Cущность. </returns>
-        public Delivery GetUserId(Guid UserId)
-        {
-            return _entityDeliverySet.Find(UserId);
-        }
+        //public Delivery GetUserId(Guid UserId)
+        //{
+        //    return _entityDeliverySet.Find(UserId);
+        //}
         /// <summary>
         /// Получить сущность по Id.
         /// </summary>
@@ -104,15 +104,15 @@ namespace DeliveryService.Services.Services.Repositories
                 return OperationResult.NotEntityFound;
             }
 
-            if (deliveryToUpdate.PaymentType == delivery.PaymentType &&
-              deliveryToUpdate.DeliveryStatus == delivery.DeliveryStatus &&
-              //deliveryToUpdate.Items == delivery.Items &&
-              deliveryToUpdate.Courier == delivery.Courier &&                             // ?is required
-              deliveryToUpdate.ShippingAddress == delivery.ShippingAddress &&
-              deliveryToUpdate.TotalQuantity == delivery.TotalQuantity &&                   // ?is required
-              deliveryToUpdate.TotalPrice == delivery.TotalPrice &&                         // ?is required
-              deliveryToUpdate.EstimatedDeliveryTime == delivery.EstimatedDeliveryTime    // ?is required
-              )
+            if (
+                  deliveryToUpdate.PaymentType == delivery.PaymentType &&
+                  deliveryToUpdate.DeliveryStatus == delivery.DeliveryStatus &&             
+                  deliveryToUpdate.Courier == delivery.Courier &&                             // ?is required
+                  deliveryToUpdate.ShippingAddress == delivery.ShippingAddress &&
+                  deliveryToUpdate.TotalQuantity == delivery.TotalQuantity &&                   // ?is required
+                  deliveryToUpdate.TotalPrice == delivery.TotalPrice &&                         // ?is required
+                  deliveryToUpdate.EstimatedDeliveryTime == delivery.EstimatedDeliveryTime    // ?is required
+               )
                 if (isUpdateDeliveryStatus)
                 {
                     deliveryToUpdate.PaymentType = delivery.PaymentType;

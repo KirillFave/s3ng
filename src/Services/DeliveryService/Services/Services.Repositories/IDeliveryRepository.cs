@@ -15,12 +15,12 @@ public interface IDeliveryRepository
     /// <returns> Cущность. </returns>
     Delivery Get(Guid id);
 
-    /// <summary>
-    /// Получить сущность по Id.
-    /// </summary>
-    /// <param name="id"> Id сущности. </param>
-    /// <returns> Cущность. </returns>
-    Delivery GetUserId(Guid UserId);
+    ///// <summary>
+    ///// Получить сущность по Id.
+    ///// </summary>
+    ///// <param name="id"> Id сущности. </param>
+    ///// <returns> Cущность. </returns>
+    //Delivery GetUserId(Guid UserId);
 
     /// <summary>
     /// Получить сущность по Id.

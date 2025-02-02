@@ -61,12 +61,11 @@ namespace DeliveryService.Services.DeliveryService
 
             delivery.PaymentType = updateDeliveryDTO.PaymentType;
             delivery.DeliveryStatus = updateDeliveryDTO.DeliveryStatus;
-            //delivery.Items = updateDeliveryDTO.Items;
-            //delivery.CourierId = updateDeliveryDTO.CourierId;
+            delivery.OrderId = updateDeliveryDTO.OrderId;
+            delivery.CourierId = updateDeliveryDTO.CourierId;
             delivery.ShippingAddress = updateDeliveryDTO.ShippingAddress;
             delivery.TotalQuantity = updateDeliveryDTO.TotalQuantity;
-            delivery.TotalPrice = updateDeliveryDTO.TotalPrice;
-            //delivery.UserId = updateDeliveryDTO.UserId;
+            delivery.TotalPrice = updateDeliveryDTO.TotalPrice;            
             delivery.EstimatedDeliveryTime = updateDeliveryDTO.EstimatedDeliveryTime;            
 
             _deliveryRepository.Update(delivery);

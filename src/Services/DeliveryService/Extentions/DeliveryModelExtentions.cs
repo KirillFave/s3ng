@@ -11,23 +11,22 @@ namespace DeliveryService.Extentions
 {
     public static class DeliveryModelExtentions
     {
-        public static CreateDeliveryDTO MapModelDelivery(this CreateDeliveryModel dtoEntity)
+        public static CreateDeliveryDTO MapModelDelivery(this Delivery dtoEntity)
 
         {
-            return new CreateDeliveryDTO 
+            return new CreateDeliveryDTO
             {
-                Id = dtoEntity.Id,
-                UserId = dtoEntity.UserId,
+                Id = dtoEntity.Id,               
                 OrderId = dtoEntity.OrderId,
                 OrderStatus = dtoEntity.OrderStatus,
+                Courier = dtoEntity.Courier,
                 DeliveryStatus = dtoEntity.DeliveryStatus,
                 TotalQuantity = dtoEntity.TotalQuantity,
                 TotalPrice = dtoEntity.TotalPrice,
                 PaymentType = dtoEntity.PaymentType,
                 ShippingAddress = dtoEntity.ShippingAddress,
-                CourierId = dtoEntity.CourierId,
-                EstimatedDeliveryTime = dtoEntity.EstimatedDeliveryTime    
+                EstimatedDeliveryTime = dtoEntity.EstimatedDeliveryTime
             };
-        }
+        }        
     }
 }

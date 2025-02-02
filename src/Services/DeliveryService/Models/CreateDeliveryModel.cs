@@ -10,7 +10,7 @@ namespace DeliveryService.Models
     public class CreateDeliveryModel
     {
         public Guid Id { get; set; }
-        public required Guid UserId { get; set; }
+        //public required Guid UserId { get; set; }
         public Guid OrderId { get; set; }
         public OrderStatus OrderStatus { get; set; }
         public DeliveryStatus DeliveryStatus { get; set; }
