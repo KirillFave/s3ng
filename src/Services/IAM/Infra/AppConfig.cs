@@ -1,13 +1,13 @@
 using Microsoft.AspNetCore.Server.Kestrel.Core;
 
-namespace IAM.Services
+namespace IAM.Infra
 {
-    public static class Configuration
+    public static class AppConfig
     {
         public static void ConfigureListen(this IWebHostBuilder webHost, IConfiguration configuration)
         {
-            const string portName = "IAM_SERVICE_PORT";
-            var portValue = Convert.ToInt32(configuration[portName] ?? throw new ArgumentNullException(portName));
+            const string servicePortSectionName = "AppSettings:ServicePort";
+            var portValue = configuration.GetValue<int>(servicePortSectionName);
 
             webHost.ConfigureKestrel(options =>
             {

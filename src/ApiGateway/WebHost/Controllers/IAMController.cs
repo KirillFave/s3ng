@@ -1,4 +1,5 @@
 using System.Net;
+using System.Text.RegularExpressions;
 using AutoMapper;
 using Grpc.Core;
 using Microsoft.AspNetCore.Mvc;
@@ -10,23 +11,15 @@ namespace WebHost.Controllers
 {
     [ApiController]
     [Route("[controller]")]
-    public sealed class IAMController : ControllerBase
-    {
-        private readonly ILogger _logger;
-        private readonly Registration.RegistrationClient _registrationClient;
-        private readonly Authentication.AuthenticationClient _authenticationClient;
-        private readonly IMapper _mapper;
-
-        public IAMController(ILogger logger
+    public sealed class IAMController(ILogger logger
             , Registration.RegistrationClient registrationClient
             , Authentication.AuthenticationClient authenticationClient
-            , IMapper mapper)
-        {
-            _registrationClient = registrationClient;
-            _authenticationClient = authenticationClient;
-            _mapper = mapper;
-            _logger = logger.ForContext<IAMController>();
-        }
+            , IMapper mapper) : ControllerBase
+    {
+        private readonly ILogger _logger = logger.ForContext<IAMController>();
+        private readonly Registration.RegistrationClient _registrationClient = registrationClient;
+        private readonly Authentication.AuthenticationClient _authenticationClient = authenticationClient;
+        private readonly IMapper _mapper = mapper;
 
         /// <summary>
         /// Зарегистрировать пользователя
@@ -42,9 +35,19 @@ namespace WebHost.Controllers
             {
                 _logger.Information($"Api method {nameof(RegisterUser)} was called with parameters {requestDto.Login}, {requestDto.Password}");
                 var serviceRequest = _mapper.Map<RegisterRequest>(requestDto);
+                var password = serviceRequest.Password;
+                bool isStrongPassword = password.Length >= 8 
+                    && Regex.IsMatch(password, @"^(?=.*[A-Z])(?=.*[a-z])(?=.*[0-9])(?=.*[!@#$%^&*(),.?""':{}|<>]).{8,}$");
+                if (!isStrongPassword)
+                    return new BadRequestObjectResult("Easy password");
+
                 var result = await _registrationClient.RegisterUserAsync(serviceRequest, cancellationToken: ct);
                 _logger.Information($"end call registration with result {result.Result}, {result.Message}");
-                return result.Result == RegisterResult.Success ? new OkObjectResult(result.Message) : new BadRequestObjectResult(result.Message);
+                return result.Result switch
+                {
+                    RegisterResult.Success => new OkObjectResult(result.Message),
+                    _ => new BadRequestObjectResult(result.Message)
+                };
             }
             catch (RpcException ex)
             {
@@ -70,20 +73,23 @@ namespace WebHost.Controllers
             var serviceRequest = _mapper.Map<AuthenticationRequest>(requestDto);
             var result = await _authenticationClient.AuthenticateUserAsync(serviceRequest, cancellationToken: ct);
             _logger.Information($"end call registration with result {result.Result}, {result.Token}");
-            switch (result.Result)
+            if (result.Result == AuthenticationResult.Success)
             {
-                case AuthenticationResult.Success:
-                    {
-                        HttpContext.Response.Cookies.Append("drugs", result.Token);
-                        return new OkObjectResult(result.Token);
-                    }
-                case AuthenticationResult.BadPassword:
-                    return new UnauthorizedObjectResult("Bad password");
-                case AuthenticationResult.UserNotFound:
-                    return new NotFoundObjectResult("User not found");
-                default:
-                    return StatusCode((int)HttpStatusCode.InternalServerError);
+                HttpContext.Response.Cookies.Append("drugs", result.Token);
+                return new OkObjectResult(result.Token);
             }
+
+            return result.Result switch
+            {
+                AuthenticationResult.BadPassword =>
+                    new UnauthorizedObjectResult("Bad password"),
+
+                AuthenticationResult.UserNotFound =>
+                    new NotFoundObjectResult("User not found"),
+
+                _ =>
+                    StatusCode((int)HttpStatusCode.InternalServerError)
+            };
         }
     }
 }

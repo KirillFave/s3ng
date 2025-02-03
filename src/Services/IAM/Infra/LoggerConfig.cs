@@ -3,12 +3,14 @@ using Serilog;
 using ILogger = Serilog.ILogger;
 using System.Text.Json;
 
-namespace IAM;
+namespace IAM.Infra;
 
-public static class LoggerHelper
+public static class LoggerConfig
 {
     public static ILogger AddLogger(IConfiguration configuration)
     {
+        const string serviceSectionName = "AppSettings:Name";
+        var portValue = configuration.GetValue<string>(serviceSectionName);
         var lc = new LoggerConfiguration()
             .MinimumLevel.Verbose()
             .Destructure.AsScalar<JsonDocument>()
@@ -20,7 +22,7 @@ public static class LoggerHelper
             .MinimumLevel.Override("Grpc", LogEventLevel.Information)
             .MinimumLevel.Override("Microsoft.AspNetCore.StaticFiles.StaticFileMiddleware", LogEventLevel.Error)
             .MinimumLevel.Override("Microsoft.AspNetCore.Cors.Infrastructure.CorsService", LogEventLevel.Error)
-            .Enrich.WithProperty("ServiceName", "IAM");
+            .Enrich.WithProperty("ServiceName", serviceSectionName);
 
         return lc.CreateLogger();
     }

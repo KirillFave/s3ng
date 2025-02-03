@@ -3,7 +3,7 @@ using Microsoft.AspNetCore.Authentication.JwtBearer;
 using Microsoft.IdentityModel.Tokens;
 using SharedLibrary.IAM.JWT;
 
-namespace WebHost.IAMConfiguration
+namespace WebHost.Configuration.IAMConfiguration
 {
     public static class ConfigurationAuthentication
     {

@@ -3,8 +3,8 @@ using Serilog;
 using ILogger = Serilog.ILogger;
 using System.Text.Json;
 
-namespace WebHost;
-public static class LoggerHelper
+namespace WebHost.Configuration;
+public static class ConfigLogger
 {
     public static ILogger AddLogger(IConfiguration configuration)
     {

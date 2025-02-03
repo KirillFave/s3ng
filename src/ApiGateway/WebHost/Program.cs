@@ -1,16 +1,14 @@
-using System.IdentityModel.Tokens.Jwt;
 using Microsoft.AspNetCore.Authentication.JwtBearer;
 using Microsoft.AspNetCore.Diagnostics;
 using Microsoft.AspNetCore.Server.Kestrel.Core;
 using Microsoft.OpenApi.Models;
 using Serilog;
-using WebHost;
-using WebHost.Controllers;
-using WebHost.OrderServiceConfiguration;
-using WebHost.IAMConfiguration;
+using WebHost.Configuration;
+using WebHost.Configuration.IAMConfiguration;
+using WebHost.Configuration.OrderServiceConfiguration;
+using WebHost.Configuration.ProductServiceClient;
+using WebHost.Configuration.UserServiceClient;
 using WebHost.Mappers;
-using WebHost.ProductServiceClient;
-using WebHost.UserServiceClient;
 
 var builder = WebApplication.CreateBuilder(args);
 
@@ -47,7 +45,7 @@ builder.Services.AddSwaggerGen(c =>
         Description = "Введите JWT токен",
         Name = "Authorization",
         Type = SecuritySchemeType.Http,
-        BearerFormat = JwtConstants.HeaderType,
+        BearerFormat = JwtBearerDefaults.AuthenticationScheme,
         Scheme = JwtBearerDefaults.AuthenticationScheme
     });
 
@@ -72,7 +70,7 @@ builder.WebHost.ConfigureKestrel(o =>
     o.ListenAnyIP(8080, listenOptions => listenOptions.Protocols = HttpProtocols.Http1AndHttp2AndHttp3);
 });
 
-builder.Host.UseSerilog(LoggerHelper.AddLogger(configuration));
+builder.Host.UseSerilog(ConfigLogger.AddLogger(configuration));
 
 builder.Services.AddAutoMapper(typeof(Program));
 var app = builder.Build();
