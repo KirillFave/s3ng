@@ -37,20 +37,12 @@ namespace DeliveryService.Controllers
             //var model = createDeliveryModel.MapModelDelivery();
             return Ok(await _deliveryService.CreateAsync(_mapper.Map<CreateDeliveryDTO>(createDeliveryModel)));
             //return Ok(await _deliveryService.CreateAsync(model));
-        }
+        }     
 
-        //[HttpPut("UpdateDelivery")]
-        //public async Task<IActionResult> UpdateAsync(Guid id, UpdateDeliveryDTO updateDeliveryDTO)
-        //{
-        //    var updateDeliveryDTO = _mapper.Map<UpdateDeliveryDTO>(updateDeliveryDTO);
-        //    bool isUpdated = await _deliveryService.TryUpdateAsync(id, updateDeliveryModel);
-
-        //    return isUpdated ? Ok() : NotFound($"Доставка с идентфикатором {id} не найдена");
-        //}
-
-        [HttpPatch("/api/update-delivery/{id}")]
+        [HttpPut("/api/update-delivery/{id}")]
         public async Task<IActionResult> TryUpdateAsync(Guid id, UpdateDeliveryModel updateDeliveryModel)
         {
+            //var updateDeliveryDTO = _mapper.Map<UpdateDeliveryDTO>(updateDeliveryDTO);
             await _deliveryService.TryUpdateAsync(id, _mapper.Map<UpdateDeliveryModel, UpdateDeliveryDTO>(updateDeliveryModel));
             //bool isUpdated = await _deliveryService.TryUpdateAsync(id, updateDeliveryModel);
 

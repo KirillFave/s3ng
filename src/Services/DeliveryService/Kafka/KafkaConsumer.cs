@@ -3,7 +3,7 @@ using DeliveryService.Models;
 using Newtonsoft.Json;
 using DeliveryService.Data;
 
-namespace DeliveryService.Enums.Kafka
+namespace DeliveryService.Kafka
 {
     public class KafkaConsumer(IServiceScopeFactory scopeFactory) : BackgroundService
     {

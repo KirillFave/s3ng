@@ -14,19 +14,19 @@ namespace DeliveryService.Extentions
         //public static CreateDeliveryDTO MapModelDelivery(this CreateDeliveryModel dtoEntity)
 
         //{
-            //return new CreateDeliveryDTO
-            //{
-            //    Id = dtoEntity.Id,               
-            //    OrderId = dtoEntity.OrderId,
-            //    OrderStatus = dtoEntity.OrderStatus,
-            //    CourierId = dtoEntity.CourierId,
-            //    DeliveryStatus = dtoEntity.DeliveryStatus,
-            //    TotalQuantity = dtoEntity.TotalQuantity,
-            //    TotalPrice = dtoEntity.TotalPrice,
-            //    PaymentType = dtoEntity.PaymentType,
-            //    ShippingAddress = dtoEntity.ShippingAddress,
-            //    EstimatedDeliveryTime = dtoEntity.EstimatedDeliveryTime
-            //};
-        //}        
+//            return new CreateDeliveryDTO
+//            {
+//                Id = dtoEntity.Id,               
+//                OrderId = dtoEntity.OrderId,
+//                OrderStatus = dtoEntity.OrderStatus,
+//                CourierId = dtoEntity.CourierId,
+//                DeliveryStatus = dtoEntity.DeliveryStatus,
+//                TotalQuantity = dtoEntity.TotalQuantity,
+//                TotalPrice = dtoEntity.TotalPrice,
+//                PaymentType = dtoEntity.PaymentType,
+//                ShippingAddress = dtoEntity.ShippingAddress,
+//                EstimatedDeliveryTime = dtoEntity.EstimatedDeliveryTime
+//    };
+//}        
     }
 }
