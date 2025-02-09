@@ -75,13 +75,26 @@ builder.WebHost.ConfigureKestrel(o =>
 builder.Host.UseSerilog(LoggerHelper.AddLogger(configuration));
 
 builder.Services.AddAutoMapper(typeof(Program));
+
+builder.Services.AddCors(options =>
+{
+    options.AddDefaultPolicy(policy =>
+    {
+        policy.WithOrigins("http://localhost:5173");
+        policy.AllowAnyHeader();
+        policy.AllowAnyMethod();
+    });
+
+});
+
+
 var app = builder.Build();
 app.UseAuthentication();
 app.UseAuthorization();
 
 app.UseSwagger();
 app.UseSwaggerUI();
-
+app.UseCors();
 app.MapControllers();
 
 app.UseExceptionHandler(appBuilder =>
