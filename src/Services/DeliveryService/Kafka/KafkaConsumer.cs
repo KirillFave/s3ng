@@ -1,7 +1,7 @@
 ﻿using Confluent.Kafka;
-using DeliveryService.Models;
 using Newtonsoft.Json;
-using DeliveryService.Data;
+using DeliveryService.DataAccess.Data;
+using DeliveryService.DataAccess.Models;
 
 namespace DeliveryService.Kafka
 {

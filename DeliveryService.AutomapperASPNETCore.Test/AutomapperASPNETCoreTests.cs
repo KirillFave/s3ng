@@ -4,7 +4,7 @@ namespace DeliveryService.AutomapperASPNETCore.Test
 {
     public class AutomapperASPNETCoreTests
     {
-        private static IMapper _mapper;
+        private static IMapper ? _mapper;
 
         public AutomapperASPNETCoreTests()
         {

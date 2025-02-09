@@ -4,14 +4,16 @@ using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.Options;
 using System.Text.Json.Serialization;
 using System.Text.Json;
-using DeliveryService.Data;
-using DeliveryService.Models;
-using DeliveryService.Services.Services.Repositories;
-using DeliveryService.Services.Services.Abstractions;
-using DeliveryService.Services.DeliveryService;
+using DeliveryService.DataAccess.Models;
 using AutoMapper;
+using DeliveryService.BL.Services.DeliveryService;
+using DeliveryService.BL.Services.Services.Abstractions;
+using DeliveryService.BL.Services.Services.Repositories;
+using DeliveryService.DataAccess.Data;
 
 var builder = WebApplication.CreateBuilder(args);
+
+builder.AddServiceDefaults();
 
             // Add services to the container.
 
@@ -51,6 +53,8 @@ builder.Services.AddControllers()
 builder.Services.AddAutoMapper(typeof(Program));
 
 var app = builder.Build();
+
+app.MapDefaultEndpoints();
 
      // Configure the HTTP request pipeline.
       if (app.Environment.IsDevelopment())

@@ -78,6 +78,8 @@ services:
       
   deliveryservice:
     image: ${DOCKER_REGISTRY-}deliveryservice
+    environment:
+      "DOTNET_ENVIRONMENT": "Development"
     build:
       context: .
       dockerfile: Services/DeliveryService/Dockerfile

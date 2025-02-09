@@ -32,4 +32,12 @@
     <PackageReference Include="System.Security.Cryptography.Xml" Version="9.0.0" />
   </ItemGroup>
 
+  <ItemGroup>
+    <Folder Include="Docker-compose\" />
+  </ItemGroup>
+
+  <ItemGroup>
+    <ProjectReference Include="DeliveryService.ServiceDefaults\DeliveryService.ServiceDefaults.csproj" />
+  </ItemGroup>
+
 </Project>
