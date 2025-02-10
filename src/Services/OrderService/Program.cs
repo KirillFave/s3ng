@@ -1,4 +1,5 @@
 using OrderService.Database;
+using OrderService.Mapping;
 using OrderService.Repositories;
 
 using DotNetEnv;
@@ -36,7 +37,8 @@ builder.Services.AddOpenApiDocument(options =>
     options.Version = "1.0";
 });
 
-builder.Services.AddAutoMapper(typeof(Program));
+builder.Services.AddAutoMapper(typeof(OrderMappingProfile));
+builder.Services.AddAutoMapper(typeof(OrderItemMappingProfile));
 builder.Services.AddEndpointsApiExplorer();
 
 builder.WebHost.ConfigureKestrel(o =>

@@ -1,13 +1,13 @@
 using AutoMapper;
 using Microsoft.AspNetCore.Mvc;
-using OrderService.Dto;
-using SharedLibrary.OrderService.Models;
 using OrderService.Repositories;
+using SharedLibrary.OrderService.Dto;
+using SharedLibrary.OrderService.Models;
 
 namespace OrderService.Controllers;
 
 [ApiController]
-[Route("api/v1/[controller]")]
+[Route("[controller]")]
 public class OrderItemController : Controller
 {
     private readonly OrderRepository _orderRepository;
@@ -24,44 +24,38 @@ public class OrderItemController : Controller
         _mapper = mapper;
     }
 
-    [HttpGet]
-    public async Task<ActionResult> Get(Guid guid)
+    [HttpGet("api/orderitem/{id}")]
+    public async Task<ActionResult> Get(Guid id)
     {
-        OrderItem? orderItem = await _orderItemRepository.GetByIdAsync(guid);
+        OrderItem? orderItem = await _orderItemRepository.GetByIdAsync(id);
 
-        if (orderItem is null) return NotFound();
-
-        var responseDto = _mapper.Map<GetOrderItemResponseDto>(orderItem);
-
-        return Ok(responseDto);
-    }
-
-    [HttpPut]
-    public async Task<ActionResult> Create(CreateOrderItemDto dto)
-    {
-        Order? order = await _orderRepository.GetByIdAsync(dto.OrderGuid);
-
-        if (order == null)
+        if (orderItem is null)
         {
-            return NotFound("Order not found.");
+            return NotFound();
         }
 
-        OrderItem orderItem = _mapper.Map<OrderItem>(dto);
-        orderItem.Order = order;
+        GetOrderItemResponseDto getOrderItemResponseDto = _mapper.Map<GetOrderItemResponseDto>(orderItem);
+
+        return Ok(getOrderItemResponseDto);
+    }
+
+    [HttpPut("/api/CreateOrderItem")]
+    public async Task<ActionResult> Create(CreateOrderItemDto createOrderItemDto)
+    {
+        OrderItem orderItem = _mapper.Map<OrderItem>(createOrderItemDto);
+        orderItem.Id = Guid.NewGuid();
 
         bool result = await _orderItemRepository.AddAsync(orderItem);
 
-        if (!result) return NoContent();
-
-        var responseDto = _mapper.Map<GetOrderItemResponseDto>(orderItem);
-
-        return Created($"api/v1/OrderItem/{responseDto.Guid}", responseDto);
+        return result ? Created("", orderItem.Id) : BadRequest();
     }
 
-    [HttpDelete]
+    [HttpDelete("/api/DeleteOrderItem/{guid}")]
     public async Task<ActionResult> Delete(Guid guid)
     {
         OperationResult result = await _orderItemRepository.DeleteAsync(guid);
+
+        // TODO: Сделать удаление из Order  
 
         return result switch
         {

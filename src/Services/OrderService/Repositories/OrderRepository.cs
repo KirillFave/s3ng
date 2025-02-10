@@ -1,6 +1,7 @@
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.ChangeTracking;
 using OrderService.Database;
+using SharedLibrary.OrderService.Dto;
 using SharedLibrary.OrderService.Models;
 
 namespace OrderService.Repositories;
@@ -48,9 +49,7 @@ public class OrderRepository
         return stateEntriesWritten > 0 ? OperationResult.Success : OperationResult.NotChangesApplied;
     }
 
-    public async Task<OperationResult> UpdateAsync(
-        Order order,
-        bool isUpdatePaymentType)
+    public async Task<OperationResult> UpdateAsync(Order order)
     {
         Order? orderToUpdate = await _databaseContext.Orders.FindAsync(order.Id);
         if (orderToUpdate is null)
@@ -59,13 +58,12 @@ public class OrderRepository
         }
 
         if (orderToUpdate.PaymentType == order.PaymentType &&
-            orderToUpdate.Status == order.Status &&
-            orderToUpdate.Items == order.Items)
+            orderToUpdate.Status == order.Status)
         {
             return OperationResult.NotModified;
         }
 
-        if (isUpdatePaymentType)
+        if (order.PaymentType != PaymentType.Undefined)
         {
             orderToUpdate.PaymentType = order.PaymentType;
         }
@@ -74,6 +72,25 @@ public class OrderRepository
         {
             orderToUpdate.ShipAddress = order.ShipAddress;
         }
+
+        int stateEntriesWritten = await _databaseContext.SaveChangesAsync();
+        return stateEntriesWritten > 0 ? OperationResult.Success : OperationResult.NotChangesApplied;
+    }
+
+    public async Task<OperationResult> DeleteOrderItemAsync(Order order)
+    {
+        Order? orderToUpdate = await _databaseContext.Orders.FindAsync(order.Id);
+        if (orderToUpdate is null)
+        {
+            return OperationResult.NotEntityFound;
+        }
+
+        if (order.Items.Count == orderToUpdate.Items.Count)
+        {
+            return OperationResult.NotModified;
+        }
+
+        orderToUpdate.Items = order.Items;
 
         int stateEntriesWritten = await _databaseContext.SaveChangesAsync();
         return stateEntriesWritten > 0 ? OperationResult.Success : OperationResult.NotChangesApplied;

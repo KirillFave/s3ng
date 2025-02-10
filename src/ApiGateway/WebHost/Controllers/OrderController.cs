@@ -1,8 +1,8 @@
-using System.Text.Json;
 using System.Text;
 using Microsoft.AspNetCore.Mvc;
 using SharedLibrary.OrderService.Models;
 using System.Net;
+using SharedLibrary.OrderService.Dto;
 
 namespace WebHost.Controllers;
 
@@ -17,44 +17,50 @@ public class OrderController(IHttpClientFactory httpClientFactory) : ControllerB
     {
         HttpResponseMessage response = await _httpClient.GetAsync($"/api/order/{id}");
 
+        string content = await response.Content.ReadAsStringAsync();
+
         return response.StatusCode switch
         {
-            HttpStatusCode.OK => Ok(response.Content.ReadAsStringAsync()),
+            HttpStatusCode.OK => Ok(content),
             HttpStatusCode.NotFound => NotFound(),
             _ => throw new NotImplementedException(),
         };
     }
 
     [HttpPut("Create")]
-    public async Task<ActionResult> Create(Order order)
+    public async Task<ActionResult> Create(CreateOrderDto createOrderDto)
     {
-        StringContent content = new(JsonSerializer.Serialize(order),
+        StringContent content = new(System.Text.Json.JsonSerializer.Serialize(createOrderDto),
                                     Encoding.UTF8,
                                     "application/json");
-        HttpResponseMessage response = await _httpClient.PutAsync($"/api/CreateOrder",
-                                                                  content);
+        HttpResponseMessage response = await _httpClient.PutAsync($"/api/CreateOrder", content);
+
+        string result = await response.Content.ReadAsStringAsync();
 
         return response.StatusCode switch
-        {
-            HttpStatusCode.Created => Created(),
-            HttpStatusCode.NoContent => NoContent(),
+        {   
+            HttpStatusCode.Created => Created("", result),
+            HttpStatusCode.BadRequest => BadRequest(),
             _ => throw new NotImplementedException(),
         };
     }
 
     [HttpPatch("Update")]
-    public async Task<ActionResult> Update(Order order)
+    public async Task<ActionResult> Update(UpdateOrderDto updateOrderDto)
     {
-        StringContent content = new(JsonSerializer.Serialize(order),
+        StringContent content = new(System.Text.Json.JsonSerializer.Serialize(updateOrderDto),
                                     Encoding.UTF8,
                                     "application/json");
-        HttpResponseMessage response = await _httpClient.PutAsync($"/api/UpdateOrder",
-                                                                  content);
+        HttpResponseMessage response = await _httpClient.PatchAsync($"/api/UpdateOrder", 
+                                                            content);
+
+        string responseContent = await response.Content.ReadAsStringAsync();
 
         return response.StatusCode switch
         {
             HttpStatusCode.NotFound => NotFound(),
-            HttpStatusCode.OK => NoContent(),
+            HttpStatusCode.NoContent => NoContent(),
+            HttpStatusCode.NotModified => StatusCode(304, responseContent),
             HttpStatusCode.InternalServerError => StatusCode(500, $"Failed to save the {nameof(Order)} to the database."),
             _ => throw new NotImplementedException(),
         };
@@ -63,13 +69,36 @@ public class OrderController(IHttpClientFactory httpClientFactory) : ControllerB
     [HttpDelete("Delete")]
     public async Task<ActionResult> Delete(Guid guid)
     {
-        HttpResponseMessage response = await _httpClient.DeleteAsync($"/api/DeleteOrder");
+        HttpResponseMessage response = await _httpClient.DeleteAsync($"/api/DeleteOrder/{guid}");
 
         return response.StatusCode switch
         {
             HttpStatusCode.NotFound => NotFound(),
             HttpStatusCode.OK => NoContent(),
-            HttpStatusCode.InternalServerError => StatusCode(500, $"Failed to delete the {nameof(Order)} to the database."),
+            HttpStatusCode.InternalServerError => StatusCode(500, $"Failed to delete the {nameof(Order)} from the database."),
+            _ => throw new NotImplementedException(),
+        };
+    }
+
+    [HttpPost("DeleteOrderItem")]
+    public async Task<ActionResult> DeleteOrderItem(Guid orderGuid, Guid orderItemGuid)
+    {
+        string contentStr = System.Text.Json.JsonSerializer.Serialize(new { orderGuid, orderItemGuid });
+
+        StringContent content = new(contentStr,
+                                    Encoding.UTF8,
+                                    "application/json");
+
+        HttpResponseMessage response = await _httpClient.PostAsync($"/api/DeleteOrderItem", content);
+
+        string responseContent = await response.Content.ReadAsStringAsync();
+
+        return response.StatusCode switch
+        {
+            HttpStatusCode.NotFound => NotFound(),
+            HttpStatusCode.OK => NoContent(),
+            HttpStatusCode.NotModified => StatusCode(304, responseContent),
+            HttpStatusCode.InternalServerError => StatusCode(500),
             _ => throw new NotImplementedException(),
         };
     }
