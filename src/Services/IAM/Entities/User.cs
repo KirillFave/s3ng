@@ -15,7 +15,7 @@ namespace IAM.Entities
         /// <summary>
         /// Логин
         /// </summary>
-        internal required string Login { get; set; }
+        internal required string Email { get; set; }
 
         /// <summary>
         /// Хэш пароля

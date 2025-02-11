@@ -13,12 +13,12 @@ namespace IAM.Repositories
         private readonly DatabaseContext _databaseContext = databaseContext;
 
         /// <summary>
-        /// Получить пользователя по логину
+        /// Получить пользователя по почте
         /// </summary>
-        /// <param name="login">Логин</param>
+        /// <param name="email">Логин</param>
         /// <param name="ct">Токен отмены</param>
         /// <returns>Пользователь</returns>
-        public async Task<User?> GetByLoginAsync(string login, CancellationToken ct = default) => await _databaseContext.Users.FirstOrDefaultAsync(x => x.Login == login, ct);
+        public async Task<User?> GetByEmailAsync(string email, CancellationToken ct = default) => await _databaseContext.Users.FirstOrDefaultAsync(x => x.Email == email, ct);
 
         /// <summary>
         /// Сохранить нового пользователя

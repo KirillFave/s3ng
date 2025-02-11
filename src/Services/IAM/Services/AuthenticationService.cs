@@ -21,15 +21,15 @@ namespace IAM.Services
 
         public override async Task<AuthenticationResponse> AuthenticateUser(AuthenticationRequest request, ServerCallContext context)
         {
-            _logger.Information($"Получили запрос на аутентификацию юзера Login:{request.Login}");
+            _logger.Information($"Получили запрос на аутентификацию юзера {nameof(request.Email)}:{request.Email}");
 
             try
             {
                 //Получаем пользователя по логину
-                var user = await _repository.GetByLoginAsync(request.Login, context.CancellationToken);
+                var user = await _repository.GetByEmailAsync(request.Email, context.CancellationToken);
                 if (user is null)
                 {
-                    _logger.Error($"Invalid userName {request.Login}");
+                    _logger.Error($"User with {nameof(request.Email)} {request.Email} not exists");
                     return new AuthenticationResponse() { Result = AuthenticationResult.UserNotFound };
                 }
 
@@ -44,7 +44,7 @@ namespace IAM.Services
                 //Вычисляем и возвращаем токен
                 var token = _tokenProvider.GenerateToken(user);
 
-                _logger.Information($"Успешно прошли аутентификацию для юзера с Login:{request.Login}");
+                _logger.Information($"Успешно прошли аутентификацию для юзера с {nameof(request.Email)}:{request.Email}");
 
                 return new AuthenticationResponse() { Result = AuthenticationResult.Success, Token = token };
             }

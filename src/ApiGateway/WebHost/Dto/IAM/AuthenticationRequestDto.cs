@@ -6,9 +6,9 @@ namespace WebHost.Dto.IAM
     public class AuthenticationRequestDto
     {
         /// <summary>
-        /// Логин
+        /// Почта
         /// </summary>
-        public required string Login { get; set; }
+        public required string Email { get; set; }
 
         /// <summary>
         /// Пароль
