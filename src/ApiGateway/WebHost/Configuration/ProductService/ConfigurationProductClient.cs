@@ -1,4 +1,4 @@
-namespace WebHost.ProductServiceClient;
+namespace WebHost.Configuration.ProductServiceClient;
 
 public static class ConfigurationProductClient
 {

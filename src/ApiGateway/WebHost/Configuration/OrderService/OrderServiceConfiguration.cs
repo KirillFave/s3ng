@@ -1,8 +1,8 @@
-namespace WebHost.OrderServiceConfiguration;
+namespace WebHost.Configuration.OrderServiceConfiguration;
 
 public static class OrderServiceConfiguration
 {
-    public static IServiceCollection ConfigureOrderService(this IServiceCollection services, 
+    public static IServiceCollection ConfigureOrderService(this IServiceCollection services,
                                                            IConfiguration configuration)
     {
         services.AddHttpClient("OrderService", client =>

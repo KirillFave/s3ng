@@ -1,32 +1,23 @@
 using AutoMapper;
 using Grpc.Core;
-using IAM.DAL;
 using IAM.Models;
+using IAM.Repositories;
 using IAM.Seedwork.Abstractions;
 using Microsoft.AspNetCore.Identity;
-using Microsoft.EntityFrameworkCore;
 using s3ng.Contracts.IAM;
 using ILogger = Serilog.ILogger;
 
 namespace IAM.Services
 {
-    internal sealed class AuthenticationService : Authentication.AuthenticationBase
-    {
-        private readonly DatabaseContext _dbContext;
-        private readonly ILogger _logger;
-        private readonly ITokenProvider _tokenProvider;
-        private readonly IMapper _mapper;
-
-        public AuthenticationService(DatabaseContext dbContext,
+    internal sealed class AuthenticationService(UserRepository userRepository,
             ILogger logger,
             ITokenProvider tokenProvider,
-            IMapper mapper)
-        {
-            _dbContext = dbContext;
-            _logger = logger.ForContext<AuthenticationService>();
-            _tokenProvider = tokenProvider;
-            _mapper = mapper;
-        }
+            IMapper mapper) : Authentication.AuthenticationBase
+    {
+        private readonly UserRepository _repository = userRepository;
+        private readonly ILogger _logger = logger.ForContext<AuthenticationService>();
+        private readonly ITokenProvider _tokenProvider = tokenProvider;
+        private readonly IMapper _mapper = mapper;
 
         public override async Task<AuthenticationResponse> AuthenticateUser(AuthenticationRequest request, ServerCallContext context)
         {
@@ -35,8 +26,7 @@ namespace IAM.Services
             try
             {
                 //Получаем пользователя по логину
-                var user = await _dbContext.Users
-                    .FirstOrDefaultAsync(x => x.Login == request.Login, cancellationToken: context.CancellationToken);
+                var user = await _repository.GetByLoginAsync(request.Login, context.CancellationToken);
                 if (user is null)
                 {
                     _logger.Error($"Invalid userName {request.Login}");

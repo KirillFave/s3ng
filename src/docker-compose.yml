@@ -49,7 +49,6 @@ services:
   iam_postgres:
     image: postgres:latest
     hostname: iam_postgres
-    env_file: ${IAM_SERVICE_PATH}.env
     environment:
       POSTGRES_DB: ${IAM_SERVICE_POSTGRES_DB}
       POSTGRES_USER: ${IAM_SERVICE_POSTGRES_USER}

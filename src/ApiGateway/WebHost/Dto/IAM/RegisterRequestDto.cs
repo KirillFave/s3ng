@@ -8,11 +8,11 @@ namespace WebHost.Dto.IAM
         /// <summary>
         /// Логин
         /// </summary>
-        public required string Login { get; set; } = null!;
+        public required string Login { get; set; }
 
         /// <summary>
         /// Пароль
         /// </summary>
-        public required string Password { get; set; } = null!;
+        public required string Password { get; set; }
     }
 }

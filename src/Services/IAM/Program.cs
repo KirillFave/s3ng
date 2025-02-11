@@ -1,9 +1,9 @@
-using DotNetEnv;
-using DotNetEnv.Configuration;
-using IAM;
+using Confluent.Kafka;
 using IAM.DAL;
+using IAM.Infra;
 using IAM.Mappers;
 using IAM.Producers;
+using IAM.Repositories;
 using IAM.Seedwork;
 using IAM.Seedwork.Abstractions;
 using IAM.Services;
@@ -14,25 +14,38 @@ using SharedLibrary.Common.Kafka;
 using SharedLibrary.IAM.JWT;
 
 var builder = WebApplication.CreateBuilder(args);
+if (builder.Environment.IsDevelopment())
+{
+    builder.Configuration.AddUserSecrets<Program>();
+}
+//Типа для будущей секурности. Если запускаемся под продакшен конфигурацией, то переменные будут подпихиваться из окружения
+if (builder.Environment.IsProduction())
+{
+    builder.Configuration.AddEnvironmentVariables();
+}
 
+
+//Main
 builder.Services.AddGrpc();
-builder.Services.AddTransient<ITokenProvider, JwtTokenProvider>();
-
-builder.Services.AddAutoMapper(typeof(AccountProfile));
-
-builder.Configuration.AddDotNetEnvMulti([".env" ], LoadOptions.TraversePath());
 builder.Services.ConfigureContext(builder.Configuration);
 builder.WebHost.ConfigureListen(builder.Configuration);
 
+//Configuration
+builder.Services.AddTransient<ITokenProvider, JwtTokenProvider>();
 builder.Services.Configure<JwtOptions>(builder.Configuration.GetSection(JwtOptions.Jwt));
 builder.Services.Configure<KafkaOptions>(builder.Configuration.GetSection(KafkaOptions.Kafka));
+builder.Host.UseSerilog(IAM.Infra.LoggerConfig.AddLogger(builder.Configuration));
 
+//Mappers
+builder.Services.AddAutoMapper(typeof(AccountProfile));
+
+//Services
 builder.Services.AddSingleton(typeof(UserRegistredProducer));
-
-builder.Host.UseSerilog(LoggerHelper.AddLogger(builder.Configuration));
+builder.Services.AddScoped(typeof(UserRepository));
 
 var app = builder.Build();
 
+//Migration
 using (var scope = app.Services.CreateScope())
 {
     var services = scope.ServiceProvider;
@@ -48,6 +61,7 @@ using (var scope = app.Services.CreateScope())
     }
 }
 
+//Global exceptionHandler
 app.UseExceptionHandler(appBuilder =>
 {
     appBuilder.Run(context =>
@@ -64,6 +78,7 @@ app.UseExceptionHandler(appBuilder =>
     });
 });
 
+//GRPC
 app.MapGrpcService<RegistrationService>();
 app.MapGrpcService<AuthenticationService>();
 

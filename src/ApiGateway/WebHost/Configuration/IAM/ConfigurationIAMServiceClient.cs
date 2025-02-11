@@ -1,6 +1,6 @@
 using s3ng.Contracts.IAM;
 
-namespace WebHost.IAMConfiguration
+namespace WebHost.Configuration.IAMConfiguration
 {
     public static class ConfigurationIAMServiceClient
     {
