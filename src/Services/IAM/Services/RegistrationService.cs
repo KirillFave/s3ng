@@ -21,7 +21,7 @@ namespace IAM.Services
 
         public override async Task<RegisterResponse> RegisterUser(RegisterRequest request, ServerCallContext context)
         {
-            _logger.Information($"Получили запрос на регистрацию юзера {nameof({request.Email})}:{request.Email}");
+            _logger.Information($"Получили запрос на регистрацию юзера {nameof(request.Email)}:{request.Email}");
 
             if (request is null)
             {
