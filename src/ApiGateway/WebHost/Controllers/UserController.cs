@@ -34,11 +34,11 @@ public class UserController : ControllerBase
     [ProducesResponseType(StatusCodes.Status400BadRequest)]
     public async Task<IActionResult> GetUserAsync(string id)
     {
-        _logger.Information($"Api method GetUserAsync was called with parameters {id}");
+        _logger.Information("Api method GetUserAsync was called with parameters {id}", id);
         var request = new GetUserByIdRequest { Id = id };
 
         var result = await _client.GetUserByIdAsync(request);
-        _logger.Information($"end call GetUserAsync with result {result.Result}");
+        _logger.Information("end call GetUserAsync with result {result}", result.Result);
 
         if (result.Result != GetUserResult.Success)
             return new BadRequestObjectResult(result.Result);
@@ -55,11 +55,11 @@ public class UserController : ControllerBase
     [ProducesResponseType(StatusCodes.Status400BadRequest)]
     public async Task<IActionResult> CreateUserAsync(CreateUserRequestModel request)
     {
-        _logger.Information($"Api method CreateUserAsync was called with name: {request.FirstName}, {request.LastName}");
+        _logger.Information("Api method CreateUserAsync was called with name: {FirstName}, {LastName}", request.FirstName, request.LastName);
         var createUserRequest = _mapper.Map<CreateUserRequest>(request);
         var result = await _client.CreateUserAsync(createUserRequest);
 
-        _logger.Information($"end call CreateUserAsync with result {result.Result}");
+        _logger.Information("end call CreateUserAsync with result {result}", result.Result);
 
         if (result.Result != CreateUserResult.Success)
             return new BadRequestObjectResult(result.Result);
@@ -77,11 +77,11 @@ public class UserController : ControllerBase
     [Authorize(Roles = nameof(RoleType.Admin))]
     public async Task<IActionResult> UpdateUserAsync(UpdateUserRequestModel request)
     {
-        _logger.Information($"Api method UpdateUserAsync was called");
+        _logger.Information("Api method UpdateUserAsync was called");
         var updateUserRequest = _mapper.Map<UpdateUserRequest>(request);
         var result = await _client.UpdateUserAsync(updateUserRequest);
 
-        _logger.Information($"end call UpdateUserAsync with result {result.Result}");
+        _logger.Information("end call UpdateUserAsync with result {result}", result.Result);
 
         if (result.Result != UpdateUserResult.Success)
             return new BadRequestObjectResult(result.Result);
@@ -99,11 +99,11 @@ public class UserController : ControllerBase
     [Authorize(Roles = nameof(RoleType.Admin))]
     public async Task<IActionResult> DeleteUserAsync(string id)
     {
-        _logger.Information($"Api method DeleteUserAsync was called with parameters {id}");
+        _logger.Information("Api method DeleteUserAsync was called with parameters {id}", id);
         var request = new DeleteUserRequest { Id = id };
 
         var result = await _client.DeleteUserAsync(request);
-        _logger.Information($"end call DeleteUserAsync with result {result.Result}");
+        _logger.Information("end call DeleteUserAsync with result {result}", result.Result);
 
         if (result.Result != DeleteUserResult.Success)
             return new BadRequestObjectResult(result.Result);
