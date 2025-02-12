@@ -1,6 +1,7 @@
 using AutoMapper;
 using Grpc.Core;
 using IAM.Entities;
+using IAM.Mappers;
 using IAM.Models;
 using IAM.Producers;
 using IAM.Repositories;
@@ -20,7 +21,7 @@ namespace IAM.Services
 
         public override async Task<RegisterResponse> RegisterUser(RegisterRequest request, ServerCallContext context)
         {
-            _logger.Information($"Получили запрос на регистрацию юзера Login:{request.Login}");
+            _logger.Information($"Получили запрос на регистрацию юзера {nameof(request.Email)}:{request.Email}");
 
             if (request is null)
             {
@@ -28,10 +29,10 @@ namespace IAM.Services
                 throw new ArgumentNullException(nameof(request));
             }
 
-            if (string.IsNullOrWhiteSpace(request.Login))
+            if (string.IsNullOrWhiteSpace(request.Email))
             {
-                _logger.Warning(nameof(request.Login) + " is null");
-                throw new ArgumentNullException(nameof(request.Login));
+                _logger.Warning(nameof(request.Email) + " is null");
+                throw new ArgumentNullException(nameof(request.Email));
             }
 
             if (string.IsNullOrWhiteSpace(request.Password))
@@ -40,10 +41,10 @@ namespace IAM.Services
                 throw new ArgumentNullException(nameof(request.Password));
             }
 
-            var isAlreadyExists = await _repository.GetByLoginAsync(request.Login, context.CancellationToken) is not null;
+            var isAlreadyExists = await _repository.GetByEmailAsync(request.Email, context.CancellationToken) is not null;
             if (isAlreadyExists)
             {
-                var textError = $"{request.Login} is exists";
+                var textError = $"User with {request.Email} is already exists";
                 _logger.Error(textError);
                 return new RegisterResponse() { Message = textError, Result = RegisterResult.Fail };
             }
@@ -53,13 +54,13 @@ namespace IAM.Services
                 var newAccount = new AccountModel()
                 { 
                     Id = newId,
-                    Login = request.Login,
+                    Email = request.Email,
                 };
                 var passwordHash = new PasswordHasher<AccountModel>().HashPassword(newAccount, request.Password);
                 newAccount.PasswordHash = passwordHash;
 
                 var newUser = _mapper.Map<User>(newAccount);
-                newUser.Role = SharedLibrary.IAM.Enums.RoleType.User;
+                newUser.Role = RoleMapper.Map(request.Role);
 
                 await _repository.AddAsync(newUser, context.CancellationToken);
                 await _userRegistredProducer.ProduceAsync(newId.ToString(), new UserRegistredMessage
@@ -70,7 +71,7 @@ namespace IAM.Services
 
                 await _repository.SaveAsync(context.CancellationToken);
 
-                _logger.Information($"Успешно отработали запрос на регистрацию юзера Login:{request.Login}");
+                _logger.Information($"Успешно отработали запрос на регистрацию юзера {nameof(request.Email)}:{request.Email}");
                 return new RegisterResponse() { Message = newId.ToString(), Result = RegisterResult.Success };
             }
         }

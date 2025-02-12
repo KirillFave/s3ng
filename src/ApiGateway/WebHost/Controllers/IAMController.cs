@@ -1,6 +1,6 @@
 using System.Net;
-using System.Text.RegularExpressions;
 using AutoMapper;
+using FluentValidation;
 using Grpc.Core;
 using Microsoft.AspNetCore.Mvc;
 using s3ng.Contracts.IAM;
@@ -14,12 +14,18 @@ namespace WebHost.Controllers
     public sealed class IAMController(ILogger logger
             , Registration.RegistrationClient registrationClient
             , Authentication.AuthenticationClient authenticationClient
-            , IMapper mapper) : ControllerBase
+            , IMapper mapper
+            , IValidator<AuthenticationRequestDto> authenticationValidator
+            , IValidator<RegistrationRequestDto> registrationValidator
+            , IWebHostEnvironment webHostEnvironment) : ControllerBase
     {
         private readonly ILogger _logger = logger.ForContext<IAMController>();
         private readonly Registration.RegistrationClient _registrationClient = registrationClient;
         private readonly Authentication.AuthenticationClient _authenticationClient = authenticationClient;
+        private readonly IValidator<AuthenticationRequestDto> _authenticationValidator = authenticationValidator;
+        private readonly IValidator<RegistrationRequestDto> _registrationValidator = registrationValidator;
         private readonly IMapper _mapper = mapper;
+        private readonly IWebHostEnvironment _webHostEnvironment = webHostEnvironment;
 
         /// <summary>
         /// Зарегистрировать пользователя
@@ -33,13 +39,16 @@ namespace WebHost.Controllers
         {
             try
             {
-                _logger.Information($"Api method {nameof(RegisterUser)} was called with parameters {requestDto.Login}, {requestDto.Password}");
+                _logger.Information($"Api method {nameof(RegisterUser)} was called with parameters {requestDto.Email}, {requestDto.Password}");
+                var validationResult = _registrationValidator.Validate(requestDto);
+                if (!validationResult.IsValid)
+                    return new BadRequestObjectResult(validationResult.Errors);
+
+                requestDto.Role = _webHostEnvironment.IsDevelopment()
+                    ? requestDto.Role ?? SharedLibrary.IAM.Enums.RoleType.User
+                        : SharedLibrary.IAM.Enums.RoleType.User;
+
                 var serviceRequest = _mapper.Map<RegisterRequest>(requestDto);
-                var password = serviceRequest.Password;
-                bool isStrongPassword = password.Length >= 8 
-                    && Regex.IsMatch(password, @"^(?=.*[A-Z])(?=.*[a-z])(?=.*[0-9])(?=.*[!@#$%^&*(),.?""':{}|<>]).{8,}$");
-                if (!isStrongPassword)
-                    return new BadRequestObjectResult("Easy password");
 
                 var result = await _registrationClient.RegisterUserAsync(serviceRequest, cancellationToken: ct);
                 _logger.Information($"end call registration with result {result.Result}, {result.Message}");
@@ -69,7 +78,11 @@ namespace WebHost.Controllers
         [ProducesResponseType(StatusCodes.Status500InternalServerError)]
         public async Task<IActionResult> AuthenticationUser(AuthenticationRequestDto requestDto, CancellationToken ct)
         {
-            _logger.Information($"Api method {nameof(AuthenticationUser)} was called with parameters {requestDto.Login}, {requestDto.Password}");
+            _logger.Information($"Api method {nameof(AuthenticationUser)} was called with parameters {requestDto.Email}, {requestDto.Password}");
+            var validationResult = _authenticationValidator.Validate(requestDto);
+            if (!validationResult.IsValid)
+                return new BadRequestObjectResult(validationResult.Errors);
+
             var serviceRequest = _mapper.Map<AuthenticationRequest>(requestDto);
             var result = await _authenticationClient.AuthenticateUserAsync(serviceRequest, cancellationToken: ct);
             _logger.Information($"end call registration with result {result.Result}, {result.Token}");

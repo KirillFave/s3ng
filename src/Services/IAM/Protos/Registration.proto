@@ -20,10 +20,19 @@ enum RegisterResult {
 	success = 2;
 }
 
+//Перечисление ролей для регистрации
+enum RoleType{
+	//Пользователь
+	user = 0;
+	//Админ
+	admin = 1;
+}
+
 //Запрос на регистрацию
 message RegisterRequest {
-  string login = 1;
+  string email = 1;
   string password = 2;
+  RoleType role = 3;
 }
 
 //Результат регистрации

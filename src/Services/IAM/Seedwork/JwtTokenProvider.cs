@@ -27,7 +27,7 @@ namespace IAM.Seedwork
 
             var claims = new List<Claim>
             {
-                new(ClaimTypes.Name, user.Login),
+                new(ClaimTypes.Name, user.Email),
                 new(ClaimTypes.NameIdentifier, user.Id.ToString()),
                 new(ClaimTypes.Role, user.Role.ToString()),
             };
