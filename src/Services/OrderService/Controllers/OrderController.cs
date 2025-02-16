@@ -40,6 +40,14 @@ public class OrderController : ControllerBase
         Order order = _mapper.Map<Order>(createOrderDto);
         order.Id = Guid.NewGuid();
 
+        if (order.Items is not null)
+        {
+            foreach(OrderItem item in order.Items)
+            {
+                item.OrderId = order.Id;
+            }
+        }
+
         bool result = await _orderRepository.AddAsync(order);
 
         return result ? Created("", order.Id) : BadRequest();
@@ -72,37 +80,6 @@ public class OrderController : ControllerBase
             OperationResult.NotEntityFound => NotFound(),
             OperationResult.Success => NoContent(),
             OperationResult.NotChangesApplied => StatusCode(500, $"Failed to delete the {nameof(Order)} from the database."),
-            _ => throw new NotImplementedException(),
-        };
-    }
-
-    [HttpPost("/api/DeleteOrderItem")]
-    public async Task<ActionResult> DeleteOrderItem(Guid orderGuid, Guid orderItemGuid)
-    {
-        Order? order = await _orderRepository.GetByIdAsync(orderGuid);
-
-        if (order == null)
-        {
-            return NotFound();
-        }
-
-        OrderItem? orderItemToRemove = order.Items.SingleOrDefault(x => x.Id == orderItemGuid);
-
-        if (orderItemToRemove is null)
-        {
-            return NotFound();
-        }
-
-        order.Items.Remove(orderItemToRemove);
-
-        OperationResult result = await _orderRepository.DeleteOrderItemAsync(order);
-
-        return result switch
-        {
-            OperationResult.NotEntityFound => NotFound(),
-            OperationResult.Success => NoContent(),
-            OperationResult.NotModified => StatusCode(304, $"{nameof(Order)} not modified."),
-            OperationResult.NotChangesApplied => StatusCode(500),
             _ => throw new NotImplementedException(),
         };
     }

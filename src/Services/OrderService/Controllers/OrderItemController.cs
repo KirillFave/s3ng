@@ -39,23 +39,10 @@ public class OrderItemController : Controller
         return Ok(getOrderItemResponseDto);
     }
 
-    [HttpPut("/api/CreateOrderItem")]
-    public async Task<ActionResult> Create(CreateOrderItemDto createOrderItemDto)
-    {
-        OrderItem orderItem = _mapper.Map<OrderItem>(createOrderItemDto);
-        orderItem.Id = Guid.NewGuid();
-
-        bool result = await _orderItemRepository.AddAsync(orderItem);
-
-        return result ? Created("", orderItem.Id) : BadRequest();
-    }
-
     [HttpDelete("/api/DeleteOrderItem/{guid}")]
     public async Task<ActionResult> Delete(Guid guid)
     {
         OperationResult result = await _orderItemRepository.DeleteAsync(guid);
-
-        // TODO: Сделать удаление из Order  
 
         return result switch
         {

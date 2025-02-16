@@ -79,27 +79,4 @@ public class OrderController(IHttpClientFactory httpClientFactory) : ControllerB
             _ => throw new NotImplementedException(),
         };
     }
-
-    [HttpPost("DeleteOrderItem")]
-    public async Task<ActionResult> DeleteOrderItem(Guid orderGuid, Guid orderItemGuid)
-    {
-        string contentStr = System.Text.Json.JsonSerializer.Serialize(new { orderGuid, orderItemGuid });
-
-        StringContent content = new(contentStr,
-                                    Encoding.UTF8,
-                                    "application/json");
-
-        HttpResponseMessage response = await _httpClient.PostAsync($"/api/DeleteOrderItem", content);
-
-        string responseContent = await response.Content.ReadAsStringAsync();
-
-        return response.StatusCode switch
-        {
-            HttpStatusCode.NotFound => NotFound(),
-            HttpStatusCode.OK => NoContent(),
-            HttpStatusCode.NotModified => StatusCode(304, responseContent),
-            HttpStatusCode.InternalServerError => StatusCode(500),
-            _ => throw new NotImplementedException(),
-        };
-    }
 }

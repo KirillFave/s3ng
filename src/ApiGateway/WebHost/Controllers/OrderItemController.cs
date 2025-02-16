@@ -27,29 +27,6 @@ public class OrderItemController(IHttpClientFactory httpClientFactory) : Control
         };
     }
 
-    [HttpPut("Create")]
-    public async Task<ActionResult> Create(CreateOrderItemDto createOrderItemDto)
-    {
-        StringContent content = new(System.Text.Json.JsonSerializer.Serialize(createOrderItemDto),
-                                    Encoding.UTF8,
-                                    "application/json");
-        HttpResponseMessage response = await _httpClient.PutAsync($"/api/CreateOrderItem", content);
-
-        string result = await response.Content.ReadAsStringAsync();
-
-        if (response.StatusCode == HttpStatusCode.Created)
-        { 
-            content = new()
-        }
-
-        return response.StatusCode switch
-        {
-            HttpStatusCode.Created => Created("", result),
-            HttpStatusCode.BadRequest => BadRequest(),
-            _ => throw new NotImplementedException(),
-        };
-    }
-
     [HttpDelete("Delete")]
     public async Task<ActionResult> Delete(Guid guid)
     {

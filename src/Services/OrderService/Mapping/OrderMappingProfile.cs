@@ -20,6 +20,7 @@ public class OrderMappingProfile : Profile
 
         CreateMap<CreateOrderDto, Order>()
             .ForMember(dest => dest.Id, opt => opt.Ignore())
+            .ForMember(dest => dest.Items, opt => opt.MapFrom(src => src.OrderItems))
             .ForMember(dest => dest.UserGuid, opt => opt.MapFrom(src => src.UserGuid))
             .ForMember(dest => dest.Status, opt => opt.MapFrom(src => src.Status))
             .ForMember(dest => dest.PaymentType, opt => opt.MapFrom(src => src.PaymentType))
