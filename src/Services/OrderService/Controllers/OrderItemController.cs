@@ -24,7 +24,7 @@ public class OrderItemController : Controller
         _mapper = mapper;
     }
 
-    [HttpGet("api/orderitem/{id}")]
+    [HttpGet("/api/orderitem/{id}")]
     public async Task<ActionResult> Get(Guid id)
     {
         OrderItem? orderItem = await _orderItemRepository.GetByIdAsync(id);
