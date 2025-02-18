@@ -74,7 +74,7 @@ public class OrderController(IHttpClientFactory httpClientFactory) : ControllerB
         return response.StatusCode switch
         {
             HttpStatusCode.NotFound => NotFound(),
-            HttpStatusCode.OK => NoContent(),
+            HttpStatusCode.NoContent => NoContent(),
             HttpStatusCode.InternalServerError => StatusCode(500, $"Failed to delete the {nameof(Order)} from the database."),
             _ => throw new NotImplementedException(),
         };
