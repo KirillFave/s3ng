@@ -37,9 +37,10 @@ namespace WebHost.Controllers
         [ProducesResponseType(StatusCodes.Status400BadRequest)]
         public async Task<IActionResult> RegisterUser(RegistrationRequestDto requestDto, CancellationToken ct)
         {
+            const string apiMethodName = nameof(RegisterUser);
             try
             {
-                _logger.Information($"Api method {nameof(RegisterUser)} was called with parameters {requestDto.Email}, {requestDto.Password}");
+                _logger.Information($"Api method {apiMethodName} was called with parameters {requestDto.Email}, {requestDto.Password}");
                 var validationResult = _registrationValidator.Validate(requestDto);
                 if (!validationResult.IsValid)
                     return new BadRequestObjectResult(validationResult.Errors);
@@ -51,11 +52,12 @@ namespace WebHost.Controllers
                 var serviceRequest = _mapper.Map<RegisterRequest>(requestDto);
 
                 var result = await _registrationClient.RegisterUserAsync(serviceRequest, cancellationToken: ct);
-                _logger.Information($"end call registration with result {result.Result}, {result.Message}");
+                _logger.Information($"end call {apiMethodName} with result {result.Result}, {result.Message}");
+
                 return result.Result switch
                 {
-                    RegisterResult.Success => new OkObjectResult(result.Message),
-                    _ => new BadRequestObjectResult(result.Message)
+                    RegisterResult.Success => Ok(new { Message = result.Message }),
+                    _ => BadRequest(new { Message = result.Message })
                 };
             }
             catch (RpcException ex)
@@ -64,7 +66,6 @@ namespace WebHost.Controllers
                 throw;
             }
         }
-
 
         /// <summary>
         /// Аутентификация пользователя
@@ -78,30 +79,67 @@ namespace WebHost.Controllers
         [ProducesResponseType(StatusCodes.Status500InternalServerError)]
         public async Task<IActionResult> AuthenticationUser(AuthenticationRequestDto requestDto, CancellationToken ct)
         {
-            _logger.Information($"Api method {nameof(AuthenticationUser)} was called with parameters {requestDto.Email}, {requestDto.Password}");
+            const string apiMethodName = nameof(AuthenticationUser);
+
+            _logger.Information($"Api method {apiMethodName} was called with parameters {requestDto.Email}, {requestDto.Password}");
             var validationResult = _authenticationValidator.Validate(requestDto);
             if (!validationResult.IsValid)
                 return new BadRequestObjectResult(validationResult.Errors);
 
             var serviceRequest = _mapper.Map<AuthenticationRequest>(requestDto);
             var result = await _authenticationClient.AuthenticateUserAsync(serviceRequest, cancellationToken: ct);
-            _logger.Information($"end call registration with result {result.Result}, {result.Token}");
-            if (result.Result == AuthenticationResult.Success)
+            _logger.Information($"end call {apiMethodName} with result {result.Result}, {result.Token}");
+
+            if (result.Result == AuthenticationResult.AuthSuccess)
             {
-                HttpContext.Response.Cookies.Append("drugs", result.Token);
-                return new OkObjectResult(result.Token);
+                return Ok(new
+                {
+                    AccessToken = result.Token,
+                    RefreshToken = result.RefreshToken
+                });
             }
 
             return result.Result switch
             {
-                AuthenticationResult.BadPassword =>
-                    new UnauthorizedObjectResult("Bad password"),
+                AuthenticationResult.AuthInvalidPassword => Unauthorized(new { Message = "Invalid password" }),
+                AuthenticationResult.AuthUserNotFound => NotFound(new { Message = "User not found" }),
+                _ => StatusCode((int)HttpStatusCode.InternalServerError)
+            };
+        }
 
-                AuthenticationResult.UserNotFound =>
-                    new NotFoundObjectResult("User not found"),
+        /// <summary>
+        /// Обновить токен
+        /// </summary>
+        /// <param name="requestDto">Запрос</param>
+        /// <param name="ct">Токен отмены</param>
+        [HttpPost("/Refresh/")]
+        [ProducesResponseType<string>(StatusCodes.Status200OK)]
+        [ProducesResponseType(StatusCodes.Status400BadRequest)]
+        [ProducesResponseType(StatusCodes.Status404NotFound)]
+        [ProducesResponseType(StatusCodes.Status500InternalServerError)]
+        public async Task<IActionResult> RefreshToken(RefreshTokenRequestDto requestDto, CancellationToken ct)
+        {
+            const string apiMethodName = nameof(RefreshToken);
 
-                _ =>
-                    StatusCode((int)HttpStatusCode.InternalServerError)
+            _logger.Information($"Api method {apiMethodName} was called with {nameof(requestDto.RefreshToken)} {requestDto.RefreshToken}");
+            var serviceRequest = _mapper.Map<RefreshAccessTokenRequest>(requestDto);
+            var result = await _authenticationClient.RefreshAccessTokenAsync(serviceRequest, cancellationToken: ct);
+            _logger.Information($"end call {apiMethodName} with result {result.Result}, {result.Token}");
+
+            if (result.Result == RefreshTokenResult.RefreshSuccess)
+            {
+                return Ok(new
+                {
+                    AccessToken = result.Token,
+                    RefreshToken = result.RefreshToken
+                });
+            }
+
+            return result.Result switch
+            {
+                RefreshTokenResult.RefreshInvalidToken => BadRequest(new { Message = "Invalid token" }),
+                RefreshTokenResult.RefreshUserNotFound => NotFound(new { Message = "User not found" }),
+                _ => StatusCode((int)HttpStatusCode.InternalServerError, new { Message = "Internal Server Error" })
             };
         }
     }

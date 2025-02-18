@@ -13,19 +13,19 @@ rpc RegisterUser (RegisterRequest) returns (RegisterResponse);
 //Перечисление результата регистрации
 enum RegisterResult {
 	//Неизвестно
-	unspecified = 0;
+	UNSPECIFIED = 0;
 	//Ошибка
-	fail = 1;
+	FAIL = 1;
 	//Успех
-	success = 2;
+	SUCCESS = 2;
 }
 
 //Перечисление ролей для регистрации
 enum RoleType{
 	//Пользователь
-	user = 0;
+	USER = 0;
 	//Админ
-	admin = 1;
+	ADMIN = 1;
 }
 
 //Запрос на регистрацию
