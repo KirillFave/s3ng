@@ -36,15 +36,18 @@ public class OrderItemRepository
 
     public async Task<OperationResult> DeleteAsync(Guid guid)
     {
-        OrderItem? entityToUpdate = await _databaseContext.OrderItems.FindAsync(guid);
-        if (entityToUpdate is null)
+        OrderItem? entityToDelete = await _databaseContext.OrderItems
+                                                          .FirstOrDefaultAsync(orderItem => orderItem.Id.Equals(guid));
+
+        if (entityToDelete is null)
         {
             return OperationResult.NotEntityFound;
         }
 
-        _databaseContext.OrderItems.Remove(entityToUpdate);
+        _databaseContext.OrderItems.Remove(entityToDelete);
 
         int stateEntriesWritten = await _databaseContext.SaveChangesAsync();
+
         return stateEntriesWritten > 0 ? OperationResult.Success : OperationResult.NotChangesApplied;
     }
 }
