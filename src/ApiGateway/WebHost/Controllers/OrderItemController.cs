@@ -1,72 +1,43 @@
-using AutoMapper;
 using Microsoft.AspNetCore.Mvc;
+using SharedLibrary.OrderService.Dto;
 using SharedLibrary.OrderService.Models;
+using System.Net;
+using System.Text;
 
 namespace WebHost.Controllers;
 
-//[ApiController]
-//[Route("api/v1/[controller]")]
-//public class OrderItemController : Controller
-//{
-//    private readonly OrderRepository _orderRepository;
-//    private readonly OrderItemRepository _orderItemRepository;
-//    private readonly IMapper _mapper;
+[ApiController]
+[Route("[controller]")]
+public class OrderItemController(IHttpClientFactory httpClientFactory) : Controller
+{
+    private readonly HttpClient _httpClient = httpClientFactory.CreateClient("OrderService");
 
-//    public OrderItemController(
-//        OrderRepository orderRepository,
-//        OrderItemRepository orderItemRepository,
-//        IMapper mapper)
-//    {
-//        _orderRepository = orderRepository;
-//        _orderItemRepository = orderItemRepository;
-//        _mapper = mapper;
-//    }
+    [HttpGet("get/{id}")]
+    public async Task<ActionResult> Get(Guid id)
+    {
+        HttpResponseMessage response = await _httpClient.GetAsync($"/api/orderitem/{id}");
 
-//    [HttpGet]
-//    public async Task<ActionResult> Get(Guid guid)
-//    {
-//        OrderItem? orderItem = await _orderItemRepository.GetByIdAsync(guid);
+        string content = await response.Content.ReadAsStringAsync();
 
-//        if (orderItem is null) return NotFound();
+        return response.StatusCode switch
+        {
+            HttpStatusCode.OK => Ok(content),
+            HttpStatusCode.NotFound => NotFound(),
+            _ => throw new NotImplementedException(),
+        };
+    }
 
-//        var responseDto = _mapper.Map<GetOrderItemResponseDto>(orderItem);
+    [HttpDelete("Delete")]
+    public async Task<ActionResult> Delete(Guid guid)
+    {
+        HttpResponseMessage response = await _httpClient.DeleteAsync($"/api/DeleteOrderItem/{guid}");
 
-//        return Ok(responseDto);
-//    }
-
-//    [HttpPut]
-//    public async Task<ActionResult> Create(CreateOrderItemDto dto)
-//    {
-//        Order? order = await _orderRepository.GetByIdAsync(dto.OrderGuid);
-
-//        if (order == null)
-//        {
-//            return NotFound("Order not found.");
-//        }
-
-//        OrderItem orderItem = _mapper.Map<OrderItem>(dto);
-//        orderItem.Order = order;
-
-//        bool result = await _orderItemRepository.AddAsync(orderItem);
-
-//        if (!result) return NoContent();
-
-//        var responseDto = _mapper.Map<GetOrderItemResponseDto>(orderItem);
-
-//        return Created($"api/v1/OrderItem/{responseDto.Guid}", responseDto);
-//    }
-
-//    [HttpDelete]
-//    public async Task<ActionResult> Delete(Guid guid)
-//    {
-//        OperationResult result = await _orderItemRepository.DeleteAsync(guid);
-
-//        return result switch
-//        {
-//            OperationResult.NotEntityFound => NotFound(),
-//            OperationResult.Success => NoContent(),
-//            OperationResult.NotChangesApplied => StatusCode(500, $"Failed to delete the {nameof(OrderItem)} from the database."),
-//            _ => throw new NotImplementedException(),
-//        };
-//    }
-//}
+        return response.StatusCode switch
+        {
+            HttpStatusCode.NotFound => NotFound(),
+            HttpStatusCode.NoContent => NoContent(),
+            HttpStatusCode.InternalServerError => StatusCode(500, $"Failed to delete the {nameof(OrderItem)} from the database."),
+            _ => throw new NotImplementedException(),
+        };
+    }
+}
