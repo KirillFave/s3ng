@@ -6,20 +6,34 @@ package authentication;
 
 //Сервис аутентификации
 service Authentication {
- //Аутентифицировать пользователя	
-rpc AuthenticateUser (AuthenticationRequest) returns (AuthenticationResponse);
+	//Аутентифицировать пользователя	
+	rpc AuthenticateUser (AuthenticationRequest) returns (AuthenticationResponse);
+	//Обновить токен
+	rpc RefreshAccessToken (RefreshAccessTokenRequest) returns (RefreshAccessTokenResponse);
 }
 
 //Перечисление результата аутентификации
 enum AuthenticationResult {
 	//Неизвестно
-	unspecified = 0;
+	AUTH_UNSPECIFIED = 0;
 	//Пользователь не найден
-	userNotFound = 1;
+	AUTH_USER_NOT_FOUND = 1;
 	//Некорректный пароль
-	badPassword = 2;
+	AUTH_INVALID_PASSWORD = 2;
 	//Успех
-	success = 3;
+	AUTH_SUCCESS = 3;
+}
+
+//Перечисление результата рефреш токена
+enum RefreshTokenResult{
+	//Неизвестно
+	REFRESH_UNSPECIFIED = 0;
+	//Пользователь не найден
+	REFRESH_USER_NOT_FOUND = 1;
+	//Некорректный рефреш токен
+	REFRESH_INVALID_TOKEN = 2;
+	//Успех
+	REFRESH_SUCCESS = 3;
 }
 
 //Запрос на авторизацию
@@ -32,4 +46,17 @@ message AuthenticationRequest {
 message AuthenticationResponse {
   AuthenticationResult result = 1;
   string token = 2;
+  string refreshToken = 3;
+}
+
+//Запрос на обновление токена
+message RefreshAccessTokenRequest{
+	string refreshToken = 1;
+}
+
+//Ответ на запрос о рефреш токене
+message RefreshAccessTokenResponse{
+	RefreshTokenResult result = 1;
+	string token = 2;
+	string refreshToken = 3;
 }
