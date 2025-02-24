@@ -1,0 +1,61 @@
+﻿
+Microsoft Visual Studio Solution File, Format Version 12.00
+# Visual Studio Version 17
+VisualStudioVersion = 17.11.35327.3
+MinimumVisualStudioVersion = 10.0.40219.1
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "DeliveryService", "DeliveryService\DeliveryService.csproj", "{796E4334-774C-4F82-84DC-7A2EA98E0BD9}"
+EndProject
+Project("{E53339B2-1760-4266-BCC7-CA923CBCF16C}") = "docker-compose", "docker-compose.dcproj", "{685D643C-14D2-4354-A220-A45539564CFB}"
+EndProject
+Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Tests", "Tests", "{8278B51C-A43B-47F0-BC87-2E439C68F9A3}"
+EndProject
+Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "DeliveryService.Tests", "DeliveryService.Tests", "{B4B55364-EC52-4EB4-B3C4-ECD4BFB8C5B1}"
+EndProject
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "DeliveryService.Application.Tests", "..\DeliveryService.Application.Tests\DeliveryService.Application.Tests.csproj", "{8693D539-5642-41D3-9308-27B81F8DB5AF}"
+EndProject
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "DeliveryService.AutomapperASPNETCore.Test", "..\DeliveryService.AutomapperASPNETCore.Test\DeliveryService.AutomapperASPNETCore.Test.csproj", "{54963323-CEAC-4972-A646-44E5DF245672}"
+EndProject
+Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "SharedLibrary", "SharedLibrary", "{79BA1E63-7389-43C9-BCC9-3C29FF8CEBF1}"
+EndProject
+Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "DeliveryService", "DeliveryService", "{F52D5E51-3C51-4340-9909-3BF00DE0E813}"
+	ProjectSection(SolutionItems) = preProject
+		DeliveryShared.cs = DeliveryShared.cs
+		DeliveryStatusShared.cs = DeliveryStatusShared.cs
+	EndProjectSection
+EndProject
+Global
+	GlobalSection(SolutionConfigurationPlatforms) = preSolution
+		Debug|Any CPU = Debug|Any CPU
+		Release|Any CPU = Release|Any CPU
+	EndGlobalSection
+	GlobalSection(ProjectConfigurationPlatforms) = postSolution
+		{796E4334-774C-4F82-84DC-7A2EA98E0BD9}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{796E4334-774C-4F82-84DC-7A2EA98E0BD9}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{796E4334-774C-4F82-84DC-7A2EA98E0BD9}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{796E4334-774C-4F82-84DC-7A2EA98E0BD9}.Release|Any CPU.Build.0 = Release|Any CPU
+		{685D643C-14D2-4354-A220-A45539564CFB}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{685D643C-14D2-4354-A220-A45539564CFB}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{685D643C-14D2-4354-A220-A45539564CFB}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{685D643C-14D2-4354-A220-A45539564CFB}.Release|Any CPU.Build.0 = Release|Any CPU
+		{8693D539-5642-41D3-9308-27B81F8DB5AF}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{8693D539-5642-41D3-9308-27B81F8DB5AF}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{8693D539-5642-41D3-9308-27B81F8DB5AF}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{8693D539-5642-41D3-9308-27B81F8DB5AF}.Release|Any CPU.Build.0 = Release|Any CPU
+		{54963323-CEAC-4972-A646-44E5DF245672}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{54963323-CEAC-4972-A646-44E5DF245672}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{54963323-CEAC-4972-A646-44E5DF245672}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{54963323-CEAC-4972-A646-44E5DF245672}.Release|Any CPU.Build.0 = Release|Any CPU
+	EndGlobalSection
+	GlobalSection(SolutionProperties) = preSolution
+		HideSolutionNode = FALSE
+	EndGlobalSection
+	GlobalSection(NestedProjects) = preSolution
+		{B4B55364-EC52-4EB4-B3C4-ECD4BFB8C5B1} = {8278B51C-A43B-47F0-BC87-2E439C68F9A3}
+		{8693D539-5642-41D3-9308-27B81F8DB5AF} = {B4B55364-EC52-4EB4-B3C4-ECD4BFB8C5B1}
+		{54963323-CEAC-4972-A646-44E5DF245672} = {B4B55364-EC52-4EB4-B3C4-ECD4BFB8C5B1}
+		{F52D5E51-3C51-4340-9909-3BF00DE0E813} = {79BA1E63-7389-43C9-BCC9-3C29FF8CEBF1}
+	EndGlobalSection
+	GlobalSection(ExtensibilityGlobals) = postSolution
+		SolutionGuid = {F4E39D10-50B5-4D94-A59E-E67A8D3E3255}
+	EndGlobalSection
+EndGlobal
