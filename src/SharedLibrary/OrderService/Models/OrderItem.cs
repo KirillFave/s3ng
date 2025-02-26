@@ -8,5 +8,4 @@ public class OrderItem
     public Guid ProductGuid { get; set; }
     public decimal PricePerUnit { get; set; }
     public int Count { get; set; }
-    public decimal TotalPrice { get; set; }
 }

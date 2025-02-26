@@ -27,19 +27,21 @@ if (builder.Environment.IsProduction())
 
 //Main
 builder.Services.AddGrpc();
-builder.Services.ConfigureContext(builder.Configuration);
 builder.WebHost.ConfigureListen(builder.Configuration);
 
 //Configuration
-builder.Services.AddTransient<ITokenProvider, JwtTokenProvider>();
+builder.Services.ConfigureContext(builder.Configuration);
+builder.Services.ConfigureDistributedCache(builder.Configuration);
+builder.Host.UseSerilog(LoggerConfig.AddLogger(builder.Configuration));
 builder.Services.Configure<JwtOptions>(builder.Configuration.GetSection(JwtOptions.Jwt));
 builder.Services.Configure<KafkaOptions>(builder.Configuration.GetSection(KafkaOptions.Kafka));
-builder.Host.UseSerilog(IAM.Infra.LoggerConfig.AddLogger(builder.Configuration));
 
 //Mappers
 builder.Services.AddAutoMapper(typeof(AccountProfile));
 
 //Services
+builder.Services.AddTransient<ITokenProvider, JwtTokenProvider>();
+builder.Services.AddTransient(typeof(RefreshTokenRepository));
 builder.Services.AddSingleton(typeof(UserRegistredProducer));
 builder.Services.AddScoped(typeof(UserRepository));
 

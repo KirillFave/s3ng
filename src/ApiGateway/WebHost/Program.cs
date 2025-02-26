@@ -17,6 +17,8 @@ var builder = WebApplication.CreateBuilder(args);
 // Add services to the container.
 //automapper
 builder.Services.AddAutoMapper(typeof(IAMProfile));
+builder.Services.AddAutoMapper(typeof(OrderMappingProfile));
+builder.Services.AddAutoMapper(typeof(OrderItemMappingProfile));
 builder.Services.AddAutoMapper(typeof(UsersMappingProfile));
 
 //general

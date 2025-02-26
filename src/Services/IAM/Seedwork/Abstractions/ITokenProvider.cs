@@ -13,5 +13,11 @@ namespace IAM.Seedwork.Abstractions
         /// <param name="user">Пользователь</param>
         /// <returns>Токен</returns>
         public string GenerateToken(User user);
+
+        /// <summary>
+        /// Сгенерировать обновляющий токен
+        /// </summary>
+        /// <returns>Обновляющий токен</returns>
+        public string GenerateRefreshToken();
     }
 }

@@ -73,8 +73,7 @@ public class UserController : ControllerBase
     [HttpPut("edit")]
     [ProducesResponseType<UserModel>(StatusCodes.Status200OK)]
     [ProducesResponseType(StatusCodes.Status400BadRequest)]
-    [Authorize(Roles = nameof(RoleType.User))]
-    [Authorize(Roles = nameof(RoleType.Admin))]
+    [Authorize(Roles = nameof(RoleType.User) + "," + nameof(RoleType.Admin))] // Разрешение для обеих ролей
     public async Task<IActionResult> UpdateUserAsync(UpdateUserRequestModel request)
     {
         _logger.Information("Api method UpdateUserAsync was called");

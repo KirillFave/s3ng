@@ -13,6 +13,14 @@ namespace IAM.Repositories
         private readonly DatabaseContext _databaseContext = databaseContext;
 
         /// <summary>
+        /// Получить пользователя по идентификатору
+        /// </summary>
+        /// <param name="email">Идентификатор</param>
+        /// <param name="ct">Токен отмены</param>
+        /// <returns>Пользователь</returns>
+        public async Task<User?> GetByIdAsync(Guid id, CancellationToken ct = default) => await _databaseContext.Users.FirstOrDefaultAsync(x => x.Id == id, ct);
+
+        /// <summary>
         /// Получить пользователя по почте
         /// </summary>
         /// <param name="email">Логин</param>
