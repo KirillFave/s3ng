@@ -1,4 +1,4 @@
-﻿using System;
+using System;
 using DeliveryService.Delivery.BusinessLogic.Services.Delivery.Contracts.Dto;
 
 
@@ -31,6 +31,6 @@ namespace DeliveryService.Delivery.BusinessLogic.Services.Delivery.Abstractions
         /// Удалить доставку.
         /// </summary>
         /// <param name="id"> Идентификатор доставки. </param>
-        Task<bool> TryDeleteAsync(Guid id);
+        Task<bool> TryDeleteAsync(Guid id, CancellationToken cancellationToken);
     }
 }

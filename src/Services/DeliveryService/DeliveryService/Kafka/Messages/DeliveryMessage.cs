@@ -9,7 +9,7 @@ namespace DeliveryService.Kafka.Messages
         public DeliveryStatus DeliveryStatus { get; set; }
         public Guid OrderId { get; set; }
         //public Guid UserId { get; set; }
-        public OrderStatus OrderStatus { get; set; }
+        public OrderState OrderStatus { get; set; }
         public int TotalQuantity { get; set; }
         public decimal TotalPrice { get; set; }
         public PaymentType PaymentType { get; set; }

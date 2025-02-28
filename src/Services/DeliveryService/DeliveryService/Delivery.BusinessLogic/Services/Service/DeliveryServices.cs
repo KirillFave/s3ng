@@ -1,4 +1,4 @@
-﻿using AutoMapper;
+using AutoMapper;
 using DeliveryService.Delivery.BusinessLogic.Services.Delivery.Abstractions;
 using DeliveryService.Delivery.BusinessLogic.Services.Delivery.Contracts.Dto;
 using DeliveryService.Delivery.BusinessLogic.Services.Delivery.Repositories;
@@ -57,8 +57,7 @@ namespace DeliveryService.Delivery.BusinessLogic.Services.DeliveryService
 
             delivery.PaymentType = updateDeliveryDto.PaymentType;
             delivery.DeliveryStatus = updateDeliveryDto.DeliveryStatus;
-            delivery.OrderId = updateDeliveryDto.OrderId;
-            delivery.CourierId = updateDeliveryDto.CourierId;
+            delivery.OrderId = updateDeliveryDto.OrderId;            
             delivery.ShippingAddress = updateDeliveryDto.ShippingAddress;
             delivery.TotalQuantity = updateDeliveryDto.TotalQuantity;
             delivery.TotalPrice = updateDeliveryDto.TotalPrice;
@@ -74,7 +73,7 @@ namespace DeliveryService.Delivery.BusinessLogic.Services.DeliveryService
         /// Удалить доставку.
         /// </summary>
         /// <param name="id"> Идентификатор доставки. </param>
-        public async Task<bool> TryDeleteAsync(Guid id)
+        public async Task<bool> TryDeleteAsync(Guid id, CancellationToken cancellationToken)
         {
             var product = await _deliveryRepository.GetAsync(id, CancellationToken.None);
 

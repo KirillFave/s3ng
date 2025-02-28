@@ -1,125 +1,48 @@
-﻿using Azure.Core;
+using System.Text.Json;
+using Azure.Core;
 using Confluent.Kafka;
+using DeliveryService.Delivery.BusinessLogic.Services.Delivery.Repositories;
 using Mailchimp.Core;
+using DeliveryService.Delivery.DataAccess.Domain.External.Entities;
 
 namespace DeliveryService.Kafka.Consumer
 {
     public class ConsumerService : BackgroundService
     {
-        private readonly IConfiguration _config;
-        //private readonly IElasticLogger _logger;
-        private readonly ConsumerConfig _consumerConfig;
-        private readonly string[] _topics;
-        private readonly double _maxNumAttempts;
-        private readonly double _retryIntervalInSec;
+        private readonly IConsumer<Null, string> _kafkaConsumer;
+        private readonly IOrderRepository _orderRepository;
+        private readonly IDeliveryRepository _deliveryRepository;
 
-        public ConsumerService(IConfiguration config)
+        public ConsumerService(IConsumer<Null, string> kafkaConsumer, IOrderRepository orderRepository, IDeliveryRepository deliveryRepository)
         {
-            _config = config;            
-            _consumerConfig = new ConsumerConfig
-            {
-                BootstrapServers = _config.GetValue<string>("Kafka:BootstrapServers"),
-                GroupId = _config.GetValue<string>("Kafka:GroupId"),
-                EnableAutoCommit = _config.GetValue<bool>("Kafka:Consumer:EnableAutoCommit"),
-                AutoOffsetReset = (AutoOffsetReset)_config.GetValue<int>("Kafka:Consumer:AutoOffsetReset")
-            };
-            _topics = _config.GetValue<string>("Kafka:Consumer:Topics").Split(',');
-            _maxNumAttempts = _config.GetValue<double>("App:MaxNumAttempts");
-            _retryIntervalInSec = _config.GetValue<double>("App:RetryIntervalInSec");
+            _kafkaConsumer = kafkaConsumer;
+            _orderRepository = orderRepository;
+            _deliveryRepository = deliveryRepository;
         }
 
-        protected override Task ExecuteAsync(CancellationToken stoppingToken)
+        protected override async Task ExecuteAsync(CancellationToken stoppingToken)
         {
-            Console.WriteLine("!!! CONSUMER STARTED !!!\n");
-
-            // Starting a new Task here because Consume() method is synchronous
-            var task = Task.Run(() => ProcessQueue(stoppingToken), stoppingToken);
-
-            return task;
-        }
-
-        private void ProcessQueue(CancellationToken stoppingToken)
-        {
-            using (var consumer = new ConsumerBuilder<Ignore, Request>(_consumerConfig)
-            .Build()) 
+            _kafkaConsumer.Subscribe("order-events");
+            while (!stoppingToken.IsCancellationRequested)
             {
-                consumer.Subscribe(_topics);
-
-                try
-                {
-                    while (!stoppingToken.IsCancellationRequested)
-                    {
-                        try
-                        {
-                            var consumeResult = consumer.Consume(stoppingToken);
-
-                            // Don't want to block consume loop, so starting new Task for each message  
-                            Task.Run(async () =>
-                            {
-                                var currentNumAttempts = 0;
-                                var committed = false;
-
-                                //var response = new Response();
-
-                                //while (currentNumAttempts < _maxNumAttempts)
-                                //{
-                                //    currentNumAttempts++;
-
-                                //    // SendDataAsync is a method that sends http request to some end-points
-                                //    response = await Helper.SendDataAsync(consumeResult.Value, _config, _logger);
-
-                                //    //if (response != null && response.Code >= 0)
-                                //        if (response != null)
-                                //        {
-                                //        try
-                                //        {
-                                //            consumer.Commit(consumeResult);
-                                //            committed = true;
-
-                                //            break;
-                                //        }
-                                //        catch (KafkaException ex)
-                                //        {
-                                //            // log
-                                //        }
-                                //    }
-                                //    else
-                                //    {
-                                //        // log
-                                //    }
-
-                                //    if (currentNumAttempts < _maxNumAttempts)
-                                //    {
-                                //        // Delay between tries
-                                //        await Task.Delay(TimeSpan.FromSeconds(_retryIntervalInSec));
-                                //    }
-                                //}
-
-                                if (!committed)
-                                {
-                                    try
-                                    {
-                                        consumer.Commit(consumeResult);
-                                    }
-                                    catch (KafkaException ex)
-                                    {
-                                        // log
-                                    }
-                                }
-                            }, stoppingToken);
-                        }
-                        catch (ConsumeException ex)
-                        {
-                            // log
-                        }
-                    }
-                }
-                catch (OperationCanceledException ex)
-                {
-                    // log
-                    consumer.Close();
-                }
+                var consumeResult = _kafkaConsumer.Consume(stoppingToken);
+                var order = JsonSerializer.Deserialize<Order>(consumeResult.Message.Value);
+                Console.WriteLine("Order received in OrderConsumerService:\nData: {consumeResult.Message.Value}");
+                // Update delivery status in the database.
+                await UpdateOrderStatusAsync(order);
             }
+        }
+
+        private async Task UpdateOrderStatusAsync(Order order)
+        {
+            //await _orderRepository.UpdateStatusOrder(order);
+            //await _deliveryRepository.SaveDeliveryStatus(order);
+
+            //var orderObj = _orderContext.Orders.Find(order.Id);
+            //if (orderObj == null) return Task.CompletedTask;
+            //orderObj.Status = order.Status;
+            //_orderContext.Orders.Update(orderObj);
+            //return _orderContext.SaveChangesAsync();
         }
     }
 }

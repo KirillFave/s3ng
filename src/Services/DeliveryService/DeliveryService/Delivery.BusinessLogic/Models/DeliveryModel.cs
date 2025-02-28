@@ -7,7 +7,7 @@ namespace DeliveryService.Delivery.BusinessLogic.Models
         public Guid Id { get; set; }
         //public Guid UserId { get; set; }
         public Guid OrderId { get; set; }
-        public OrderStatus orderStatus { get; set; }
+        public OrderState orderStatus { get; set; }
         public DeliveryStatus DeliveryStatus { get; set; }
         public required int TotalQuantity { get; set; }
         public required decimal TotalPrice { get; set; }

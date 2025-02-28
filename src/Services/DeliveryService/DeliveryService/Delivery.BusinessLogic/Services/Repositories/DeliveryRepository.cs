@@ -1,6 +1,9 @@
-﻿using DeliveryService.Delivery.BusinessLogic.Enums;
+using DeliveryService.Delivery.BusinessLogic.Enums;
 using Microsoft.EntityFrameworkCore;
 using DeliveryService.Delivery.DataAccess.Data;
+using DeliveryService.Delivery.DataAccess.Domain.Domain.Entities;
+using DeliveryService.Delivery.DataAccess.Domain.External.Entities;
+//using DeliveryService.Kafka.Models;
 
 namespace DeliveryService.Delivery.BusinessLogic.Services.Delivery.Repositories
 {
@@ -26,12 +29,21 @@ namespace DeliveryService.Delivery.BusinessLogic.Services.Delivery.Repositories
             /// <summary>
             /// Получить сущность по Id.
             /// </summary>
-            /// <param name="id"> Id сущности. </param>        
+            /// <param name="userId"> Id сущности. </param>        
             /// <returns> Cущность. </returns>
-        public DataAccess.Domain.Domain.Entities.Delivery GetUserId(Guid UserId)
+        public DataAccess.Domain.Domain.Entities.Delivery GetUserId(Guid userId)
         {
-            return _entityDeliverySet.Find(UserId);
+            return _entityDeliverySet.Find(userId);
         }
+        /// <summary>
+        /// Получить сущность по Id.
+        /// </summary>
+        /// <param name="orderId"> Id сущности. </param>        
+        /// <returns> Cущность. </returns>
+        public async Task<DataAccess.Domain.Domain.Entities.Delivery?> GetDeliveryByOrderIdAsync(Guid orderId, CancellationToken cancellationToken) =>
+            //return _entityDeliverySet.Find(orderId);
+            await _entityDeliverySet.FindAsync(orderId);
+
         /// <summary>
         /// Получить сущность по Id.
         /// </summary>
@@ -71,7 +83,7 @@ namespace DeliveryService.Delivery.BusinessLogic.Services.Delivery.Repositories
             /// <returns> Обновленная сущность. </returns>
         public void Update(DataAccess.Domain.Domain.Entities.Delivery delivery)
         {
-            delivery.TimeModified = DateTime.Now;
+            delivery.LastUpdated = DateTime.Now;
             _entityDeliverySet.Entry(delivery).State = EntityState.Modified;
         }
             /// <summary>
@@ -89,8 +101,7 @@ namespace DeliveryService.Delivery.BusinessLogic.Services.Delivery.Repositories
 
             if (
                   deliveryToUpdate.PaymentType == delivery.PaymentType &&
-                  deliveryToUpdate.DeliveryStatus == delivery.DeliveryStatus &&
-                  deliveryToUpdate.Courier == delivery.Courier &&                             // ?is required
+                  deliveryToUpdate.DeliveryStatus == delivery.DeliveryStatus &&                                              
                   deliveryToUpdate.ShippingAddress == delivery.ShippingAddress &&
                   deliveryToUpdate.TotalQuantity == delivery.TotalQuantity &&                   // ?is required
                   deliveryToUpdate.TotalPrice == delivery.TotalPrice &&                         // ?is required
@@ -143,7 +154,7 @@ namespace DeliveryService.Delivery.BusinessLogic.Services.Delivery.Repositories
             /// <summary>
             /// Удалить сущность.
             /// </summary>
-            /// <param name="id"> Id удалённой сущности. </param>
+            /// <param name="delivery"> Id удалённой сущности. </param>
             /// <returns> Была ли сущность удалена. </returns> public bool Delete(Product product)
         public bool DeleteAsync(DataAccess.Domain.Domain.Entities.Delivery delivery, CancellationToken cancellationToken)
         {
@@ -157,9 +168,94 @@ namespace DeliveryService.Delivery.BusinessLogic.Services.Delivery.Repositories
             return true;
         }
 
-            /// <summary>
-            /// Сохранить изменения.
-            /// </summary>
+        /// <summary>
+        /// Получить сущность по Id.
+        /// </summary>
+        /// <param name="orderId"> Id сущности. </param>        
+        /// <returns> Cущность. </returns>
+        public async Task<DataAccess.Domain.Domain.Entities.Delivery?> GetDeliveryByOrderIdAsync(Guid orderId)
+        {
+            try
+            {
+                var result = await _context.Deliveries.Where(p => p.OrderId == orderId).FirstOrDefaultAsync();
+                return result;
+            }
+            catch (Exception e)
+            {
+                Console.WriteLine(e);
+                throw;
+            }
+        }
+        /// <summary>
+        /// Получить сущность по Id.
+        /// </summary>
+        /// <param name="order"> Id сущности. </param>        
+        /// <returns> Cущность. </returns>
+        public async Task SaveDeliveryStatus(Order order)
+        {
+            var delivery = await _context.Deliveries.FirstOrDefaultAsync(d => d.Id == order.Id);
+            if (delivery == null)
+            {
+                delivery = new DataAccess.Domain.Domain.Entities.Delivery
+                {
+                    Id = Guid.NewGuid(),
+                    OrderId = order.Id,
+                    DeliveryStatus = DeliveryStatus.AwaitingShipment,
+                    LastUpdated = DateTime.UtcNow,
+                    ShippingAddress = delivery.ShippingAddress,
+
+                    History = new List<DeliveryHistory>()
+                };
+
+                var history = new DeliveryHistory
+                {
+                    Id = Guid.NewGuid(),
+                    DeliveryId = delivery.Id,
+                    DeliveryStatus = delivery.DeliveryStatus,
+                    Timestamp = DateTime.UtcNow,
+                    Comments = "Status updated based on Order status (Статус обновляется в зависимости от статуса заказа)."
+                };
+                delivery.History?.Add(history);
+
+                _context.Deliveries.Add(delivery);
+                await _context.SaveChangesAsync();
+                return;
+            }
+
+            delivery.DeliveryStatus = GetDeliveryStatusFromOrderStatus(order.OrderStatus);
+
+            delivery.LastUpdated = DateTime.UtcNow;
+
+            var deliveryHistory = new DeliveryHistory
+            {
+                Id = Guid.NewGuid(),
+                DeliveryId = delivery.Id,
+                DeliveryStatus = delivery.DeliveryStatus,
+                Timestamp = DateTime.Now,
+                Comments = "Status updated based on Order status(Статус обновляется в зависимости от статуса заказа)."
+            };
+            delivery.History?.Add(deliveryHistory);
+
+            _context.Deliveries.Update(delivery);
+            await _context.SaveChangesAsync();
+        }
+
+        private static DeliveryStatus GetDeliveryStatusFromOrderStatus(OrderState orderStatus)
+        {
+            return orderStatus switch
+            {
+                OrderState.Pending => DeliveryStatus.AwaitingShipment,
+                OrderState.Processing => DeliveryStatus.Shipped,
+                OrderState.Delivering => DeliveryStatus.InTransit,
+                OrderState.Completed => DeliveryStatus.Delivered,
+                OrderState.Cancelled => DeliveryStatus.Cancelled,
+                _ => DeliveryStatus.AwaitingShipment,
+            };
+        }
+
+        /// <summary>
+        /// Сохранить изменения.
+        /// </summary>
         public void SaveChanges()
         {
             _context.SaveChanges();
@@ -171,5 +267,6 @@ namespace DeliveryService.Delivery.BusinessLogic.Services.Delivery.Repositories
         {
             await _context.SaveChangesAsync(cancellationToken);
         }
+       
     }
 }

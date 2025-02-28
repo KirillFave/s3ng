@@ -5,6 +5,9 @@ using DeliveryService.Delivery.DataAccess.Data;
 using System.Text.Json.Serialization;
 using System.Text.Json;
 using DeliveryService;
+using DeliveryService.Delivery.DataAccess.Domain.External.Entities;
+using Confluent.Kafka;
+using Microsoft.EntityFrameworkCore;
 
 var builder = WebApplication.CreateBuilder(args);
 
@@ -18,21 +21,42 @@ builder.Services.AddEndpointsApiExplorer();
 builder.Services.AddSwaggerGen();
 builder.Services.AddControllers();
 
-//builder.Services.AddControllersWithViews();
+//builder.Services.AddDbContext<OrderContext>(opt =>
+//        opt.UseNpgsql(builder.Configuration.GetConnectionString("Default")),
+//    ServiceLifetime.Singleton
+//);
+
+builder.Services.AddSingleton<IConsumer<Null, string>>(sp =>
+{
+    var config = new ConsumerConfig
+    {
+        GroupId = "DeliveryService",
+        BootstrapServers = "localhost:9092",
+        AutoOffsetReset = AutoOffsetReset.Earliest
+    };
+    return new ConsumerBuilder<Null, string>(config).Build();
+});
+
+
 
 builder.Services.AddApplicationDataContext(builder.Configuration);
 
+//was deleted
+
+var connectionString = builder.Configuration.GetConnectionString("DefaultConnection");
+
+
+builder.Services.AddDbContext<DeliveryDBContext>(options =>
+{
+    options.UseNpgsql(builder.Configuration.GetConnectionString("DefaultConnection"));
+});
+
+
 builder.Services.AddScoped<IDeliveryRepository, DeliveryRepository>();
 builder.Services.AddTransient<IDeliveryService, DeliveryServices>();
+//builder.Services.AddSingleton<IOrderRepository, OrderRepository>();
+//builder.Services.AddHostedService<OrderConsumerService>();
 
-
-//var apiDeliveryService = builder.AddProject<Projects.DeliveryService>("apiservice-delivery");
-
-//var apiOrderService = builder.AddProject<Projects.OrderService>("apiservice-order");
-
-//builder.AddProject<Projects.ApiGateway("webfrontend")
-//    .WithReference(apiDeliveryService)
-//    .WithReference(apiOrderService);
 
 builder.Services.AddControllers()
     .AddJsonOptions(options =>

@@ -1,4 +1,4 @@
-﻿using AutoMapper;
+using AutoMapper;
 using DeliveryService.Delivery.BusinessLogic.Models;
 using DeliveryService.Delivery.BusinessLogic.Services.Delivery.Contracts.Dto;
 
@@ -15,8 +15,7 @@ namespace DeliveryService.Delivery.BusinessLogic.Services.Delivery.Implementatio
             CreateMap<CreateDeliveryDto, DataAccess.Domain.Domain.Entities.Delivery>()
             .ForMember(dest => dest.Id, opt => opt.Ignore())
             .ForMember(dest => dest.DeliveryStatus, opt => opt.MapFrom(src => src.DeliveryStatus))
-            .ForMember(dest => dest.OrderId, opt => opt.MapFrom(src => src.OrderId))
-            .ForMember(dest => dest.CourierId, opt => opt.MapFrom(src => src.CourierId))
+            .ForMember(dest => dest.OrderId, opt => opt.MapFrom(src => src.OrderId))            
             .ForMember(dest => dest.OrderStatus, opt => opt.MapFrom(src => src.OrderStatus))
             .ForMember(dest => dest.TotalQuantity, opt => opt.MapFrom(src => src.TotalQuantity))
             .ForMember(dest => dest.TotalPrice, opt => opt.MapFrom(src => src.TotalPrice))

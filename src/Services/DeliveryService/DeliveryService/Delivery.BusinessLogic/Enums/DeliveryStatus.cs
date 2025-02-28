@@ -1,11 +1,11 @@
-﻿namespace DeliveryService.Delivery.BusinessLogic.Enums
+namespace DeliveryService.Delivery.BusinessLogic.Enums
 {
     public enum DeliveryStatus
     {
-        Created = 0,
-        Postponed = 1,
-        Dispatched = 2,
-        Delivered = 3,
-        Canceled = 4
+        AwaitingShipment = 1,
+        Shipped = 2,
+        InTransit = 3,
+        Delivered = 4,
+        Cancelled = 5
     }
 }

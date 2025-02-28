@@ -1,4 +1,4 @@
-﻿using DeliveryService.Delivery.BusinessLogic.Enums;
+using DeliveryService.Delivery.BusinessLogic.Enums;
 
 namespace DeliveryService.Delivery.BusinessLogic.Services.Delivery.Repositories
 {
@@ -25,6 +25,14 @@ namespace DeliveryService.Delivery.BusinessLogic.Services.Delivery.Repositories
         /// <param name="cancellationToken"></param>
         /// <returns> Cущность. </returns>
         Task<DataAccess.Domain.Domain.Entities.Delivery> GetAsync(Guid id, CancellationToken cancellationToken);
+
+        /// <summary>
+        /// Получить сущность по Id.
+        /// </summary>
+        /// <param name="orderId"> Id сущности. </param>
+        /// <param name="cancellationToken"></param>
+        /// <returns> Cущность. </returns>
+        Task<DataAccess.Domain.Domain.Entities.Delivery?> GetDeliveryByOrderIdAsync(Guid orderId, CancellationToken cancellationToken);
 
         ///// <summary>
         ///// Запросить все сущности в базе.
@@ -67,9 +75,9 @@ namespace DeliveryService.Delivery.BusinessLogic.Services.Delivery.Repositories
         /// <summary>
         /// Удалить сущность.
         /// </summary>
-        /// <param name="entity"> Cущность для удаления. </param>
+        /// <param name="delivery"> Cущность для удаления. </param>
         /// <returns> Была ли сущность удалена. </returns>
-        bool DeleteAsync(DataAccess.Domain.Domain.Entities.Delivery entity, CancellationToken cancellationToken);
+        bool DeleteAsync(DataAccess.Domain.Domain.Entities.Delivery delivery, CancellationToken cancellationToken);
         /// <summary>
         /// Сохранить изменения.
         /// </summary>
@@ -77,7 +85,7 @@ namespace DeliveryService.Delivery.BusinessLogic.Services.Delivery.Repositories
         /// <summary>
         /// Сохранить изменения.
         /// </summary>
-        Task SaveChangesAsync(CancellationToken cancellationToken = default);
+        Task SaveChangesAsync(CancellationToken cancellationToken = default);        
     }
 
 }

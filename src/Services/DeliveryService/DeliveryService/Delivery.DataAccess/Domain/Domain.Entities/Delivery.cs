@@ -1,4 +1,4 @@
-﻿using DeliveryService.Delivery.BusinessLogic.Enums;
+using DeliveryService.Delivery.BusinessLogic.Enums;
 using DeliveryService.Delivery.DataAccess.Domain.External.Entities;
 using System.Diagnostics.Metrics;
 
@@ -6,21 +6,19 @@ namespace DeliveryService.Delivery.DataAccess.Domain.Domain.Entities
 {
     public class Delivery : IEntity<Guid>
     {
-        public Guid Id { get; set; }
+        public Guid Id { get; set; } = Guid.NewGuid();
         /// <summary>
         /// Delivery basic parameters
         /// </summary>         
-        public required Guid UserGuid { get; set; }
-        public DeliveryStatus DeliveryStatus { get; set; }       
-        public Guid OrderId { get; set; }
-        public Guid? CourierId { get; set; }
-        public OrderStatus OrderStatus { get; set; }
+        public Guid UserGuid { get; set; }
+        public DeliveryStatus DeliveryStatus { get; set; } = DeliveryStatus.AwaitingShipment;      
+        public Guid OrderId { get; set; }       
+        public OrderState OrderStatus { get; set; } 
         public int TotalQuantity { get; set; }
         public decimal TotalPrice { get; set; }
         public PaymentType PaymentType { get; set; }
-        public required string ShippingAddress { get; set; }
-        public Courier? Courier { get; set; }
-        public required Order Order { get; set; }
+        public required string ShippingAddress { get; set; } = null!;      
+        public Order? Order { get; set; }
         /// <summary>
         /// Delivery timing
         /// </summary>
@@ -31,6 +29,8 @@ namespace DeliveryService.Delivery.DataAccess.Domain.Domain.Entities
         /// Delivery modify status
         /// </summary>           
         public bool IsDeleted { get; set; }
-        public DateTime TimeModified { get; set; }
+        public DateTime LastUpdated { get; set; }
+
+        public virtual List<DeliveryHistory>? History { get; set; }
     }
 }
