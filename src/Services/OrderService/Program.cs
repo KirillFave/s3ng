@@ -1,11 +1,14 @@
+using OrderService.Configuration;
 using OrderService.Database;
 using OrderService.Mapping;
+using OrderService.Producers;
 using OrderService.Repositories;
 
 using DotNetEnv;
 using DotNetEnv.Configuration;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.AspNetCore.Server.Kestrel.Core;
+using Serilog;
 
 var builder = WebApplication.CreateBuilder(args);
 
@@ -15,6 +18,7 @@ builder.Services.ConfigureContext(builder.Configuration);
 
 builder.Services.AddControllers();
 
+// Repositories
 builder.Services.AddScoped(typeof(OrderRepository));
 builder.Services.AddScoped(typeof(OrderItemRepository));
 
@@ -37,8 +41,15 @@ builder.Services.AddOpenApiDocument(options =>
     options.Version = "1.0";
 });
 
+// MappingProfile
 builder.Services.AddAutoMapper(typeof(OrderMappingProfile));
 builder.Services.AddAutoMapper(typeof(OrderItemMappingProfile));
+
+// Producers
+builder.Services.AddSingleton(typeof(OrderCreatedProducer));
+
+builder.Host.UseSerilog(LoggerConfig.AddLogger());
+
 builder.Services.AddEndpointsApiExplorer();
 
 builder.WebHost.ConfigureKestrel(o =>

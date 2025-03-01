@@ -5,7 +5,6 @@ using OrderService.Producers;
 using SharedLibrary.Common.Kafka.Messages;
 using SharedLibrary.OrderService.Dto;
 using SharedLibrary.OrderService.Models;
-using Namotion.Reflection;
 
 namespace OrderService.Controllers;
 
