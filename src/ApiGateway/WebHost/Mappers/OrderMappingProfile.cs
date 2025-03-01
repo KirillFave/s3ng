@@ -12,7 +12,7 @@ public class OrderMappingProfile : Profile
         CreateMap<Order, GetOrderResponseDto>()
            .ForMember(dest => dest.Id, opt => opt.MapFrom(src => src.Id))
            .ForMember(dest => dest.UserGuid, opt => opt.MapFrom(src => src.UserGuid))
-           .ForMember(dest => dest.OrderItemGuids, opt => opt.MapFrom(src => src.Items.Select(i => i.Id)))
+           .ForMember(dest => dest.Items, opt => opt.MapFrom(src => src.Items))
            .ForMember(dest => dest.Status, opt => opt.MapFrom(src => src.Status))
            .ForMember(dest => dest.PaymentType, opt => opt.MapFrom(src => src.PaymentType))
            .ForMember(dest => dest.ShipAddress, opt => opt.MapFrom(src => src.ShipAddress))
