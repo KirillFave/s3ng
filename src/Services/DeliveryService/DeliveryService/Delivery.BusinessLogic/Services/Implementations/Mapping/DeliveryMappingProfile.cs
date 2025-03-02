@@ -3,16 +3,16 @@ using DeliveryService.Delivery.BusinessLogic.Models;
 using DeliveryService.Delivery.BusinessLogic.Services.Delivery.Contracts.Dto;
 
 namespace DeliveryService.Delivery.BusinessLogic.Services.Delivery.Implementations.Mapping
-{ 
- /// <summary>
- /// Automapper Profile for Delivery Entities 
- /// </summary>
+{
+    /// <summary>
+    /// Automapper Profile for Delivery Entities 
+    /// </summary>
     public class DeliveryMappingProfile : Profile
     {
         public DeliveryMappingProfile()
         {
             CreateMap<DeliveryModel, DeliveryDto>();
-            CreateMap<CreateDeliveryDto, DataAccess.Domain.Domain.Entities.Delivery>()
+            CreateMap<CreateDeliveryDto, Domain.Entities.DeliveryEntities.Delivery>()
             .ForMember(dest => dest.Id, opt => opt.Ignore())
             .ForMember(dest => dest.DeliveryStatus, opt => opt.MapFrom(src => src.DeliveryStatus))
             .ForMember(dest => dest.OrderId, opt => opt.MapFrom(src => src.OrderId))            
@@ -23,7 +23,7 @@ namespace DeliveryService.Delivery.BusinessLogic.Services.Delivery.Implementatio
             .ForMember(dest => dest.EstimatedDeliveryTime, opt => opt.MapFrom(src => src.EstimatedDeliveryTime));
             
             CreateMap<CreateDeliveryModel, CreateDeliveryDto>();
-            CreateMap<DataAccess.Domain.Domain.Entities.Delivery, CreateDeliveryDto>();
+            CreateMap<Domain.Entities.DeliveryEntities.Delivery, CreateDeliveryDto>();
             CreateMap<UpdateDeliveryModel, UpdateDeliveryDto>();
         }
     }

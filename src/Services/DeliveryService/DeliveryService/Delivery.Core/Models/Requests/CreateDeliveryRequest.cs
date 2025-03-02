@@ -1,5 +1,5 @@
 using DeliveryService.Delivery.BusinessLogic.Enums;
-using DeliveryService.Delivery.DataAccess.Domain.Domain.Entities;
+using DeliveryService.Delivery.Domain.Entities.DeliveryEntities;
 
 namespace DeliveryService.Delivery.Core.Models.Requests
 {

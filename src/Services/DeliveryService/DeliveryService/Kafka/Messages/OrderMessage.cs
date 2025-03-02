@@ -1,5 +1,5 @@
 ﻿using DeliveryService.Delivery.BusinessLogic.Enums;
-using DeliveryService.Delivery.DataAccess.Domain.External.Entities;
+using DeliveryService.Domain.External.Entities;
 
 namespace DeliveryService.Kafka.Messages
 {

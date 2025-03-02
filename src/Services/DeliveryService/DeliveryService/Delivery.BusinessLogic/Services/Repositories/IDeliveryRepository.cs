@@ -1,4 +1,5 @@
 using DeliveryService.Delivery.BusinessLogic.Enums;
+using DeliveryService.Domain.External.Entities;
 
 namespace DeliveryService.Delivery.BusinessLogic.Services.Delivery.Repositories
 {
@@ -9,14 +10,14 @@ namespace DeliveryService.Delivery.BusinessLogic.Services.Delivery.Repositories
         /// </summary>
         /// <param name="id"> Id сущности. </param>
         /// <returns> Cущность. </returns>
-        DataAccess.Domain.Domain.Entities.Delivery? Get(Guid id);
+        Domain.Entities.DeliveryEntities.Delivery? Get(Guid id, CancellationToken cancellationToken);
 
         ///// <summary>
         ///// Получить сущность по Id.
         ///// </summary>
         ///// <param name="id"> Id сущности. </param>
         ///// <returns> Cущность. </returns>
-        DataAccess.Domain.Domain.Entities.Delivery GetUserId(Guid UserId);
+        Domain.Entities.DeliveryEntities.Delivery GetUserId(Guid UserId, CancellationToken cancellationToken);
 
         /// <summary>
         /// Получить сущность по Id.
@@ -24,7 +25,7 @@ namespace DeliveryService.Delivery.BusinessLogic.Services.Delivery.Repositories
         /// <param name="id"> Id сущности. </param>
         /// <param name="cancellationToken"></param>
         /// <returns> Cущность. </returns>
-        Task<DataAccess.Domain.Domain.Entities.Delivery> GetAsync(Guid id, CancellationToken cancellationToken);
+        Task<Domain.Entities.DeliveryEntities.Delivery> GetAsync(Guid id, CancellationToken cancellationToken);
 
         /// <summary>
         /// Получить сущность по Id.
@@ -32,7 +33,12 @@ namespace DeliveryService.Delivery.BusinessLogic.Services.Delivery.Repositories
         /// <param name="orderId"> Id сущности. </param>
         /// <param name="cancellationToken"></param>
         /// <returns> Cущность. </returns>
-        Task<DataAccess.Domain.Domain.Entities.Delivery?> GetDeliveryByOrderIdAsync(Guid orderId, CancellationToken cancellationToken);
+        Task<Domain.Entities.DeliveryEntities.Delivery?> GetDeliveryByOrderIdAsync(Guid orderId, CancellationToken cancellationToken);
+
+        /// <summary>
+        /// Сохранение статуса доставки.
+        /// </summary>
+        Task SaveDeliveryStatus(Order order);
 
         ///// <summary>
         ///// Запросить все сущности в базе.
@@ -40,44 +46,38 @@ namespace DeliveryService.Delivery.BusinessLogic.Services.Delivery.Repositories
         ///// <param name="cancellationToken"> Токен отмены. </param>
         ///// <param name="asNoTracking"> Вызвать с AsNoTracking. </param>
         ///// <returns> Список сущностей. </returns>
-        Task<List<DataAccess.Domain.Domain.Entities.Delivery>> GetAllAsync(bool asNoTracking, CancellationToken cancellationToken);
+        Task<List<Domain.Entities.DeliveryEntities.Delivery>> GetAllAsync(bool asNoTracking, CancellationToken cancellationToken);
 
         /// <summary>
         /// Добавить в базу одну сущность.
         /// </summary>
         /// <param name="entity"> Сущность для добавления. </param>        
         /// <returns> Добавленная сущность. </returns>
-        Task<DataAccess.Domain.Domain.Entities.Delivery> AddAsync(DataAccess.Domain.Domain.Entities.Delivery entity);
+        Task<Domain.Entities.DeliveryEntities.Delivery> AddAsync(Domain.Entities.DeliveryEntities.Delivery entity, CancellationToken cancellationToken);
 
         /// <summary>
         /// Для сущности определить состояние - то что она изменена.
         /// </summary>
         /// <param name="entity"> Сущность для изменения. </param>
-        void Update(DataAccess.Domain.Domain.Entities.Delivery entity);
+        void Update(Domain.Entities.DeliveryEntities.Delivery entity, CancellationToken cancellationToken);
         /// <summary>
         /// Изменение сущности.
         /// </summary>
         /// <param name="entity"> Сущность для изменения. </param>
-        Task<OperationResult> UpdateAsync(DataAccess.Domain.Domain.Entities.Delivery entity, bool isUpdateDeliveryStatus);
-        /// <summary>
-        /// Удалить сущность.
-        /// </summary>
-        /// <param name="id"> Id удалённой сущности. </param>
-        /// <returns> Была ли сущность удалена. </returns>
-        bool Delete(Guid id);
-
+        Task<OperationResult> UpdateAsync(Domain.Entities.DeliveryEntities.Delivery entity, CancellationToken cancellationToken);
+        
         /// <summary>
         /// Удалить сущность.
         /// </summary>
         /// <param name="entity"> Cущность для удаления. </param>
         /// <returns> Была ли сущность удалена. </returns>
-        bool Delete(DataAccess.Domain.Domain.Entities.Delivery entity);
+        bool Delete(Domain.Entities.DeliveryEntities.Delivery entity);
         /// <summary>
         /// Удалить сущность.
         /// </summary>
         /// <param name="delivery"> Cущность для удаления. </param>
         /// <returns> Была ли сущность удалена. </returns>
-        bool DeleteAsync(DataAccess.Domain.Domain.Entities.Delivery delivery, CancellationToken cancellationToken);
+        bool DeleteAsync(Domain.Entities.DeliveryEntities.Delivery delivery, CancellationToken cancellationToken);
         /// <summary>
         /// Сохранить изменения.
         /// </summary>

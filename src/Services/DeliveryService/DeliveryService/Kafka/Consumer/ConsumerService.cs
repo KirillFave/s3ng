@@ -3,7 +3,7 @@ using Azure.Core;
 using Confluent.Kafka;
 using DeliveryService.Delivery.BusinessLogic.Services.Delivery.Repositories;
 using Mailchimp.Core;
-using DeliveryService.Delivery.DataAccess.Domain.External.Entities;
+using DeliveryService.Domain.External.Entities;
 
 namespace DeliveryService.Kafka.Consumer
 {

@@ -1,5 +1,5 @@
-﻿using DeliveryService.Delivery.BusinessLogic.Enums;
-using DeliveryService.Delivery.DataAccess.Domain.Domain.Entities;
+using DeliveryService.Delivery.BusinessLogic.Enums;
+using DeliveryService.Delivery.Domain.Entities.DeliveryEntities;
 
 namespace DeliveryService.Delivery.BusinessLogic.Models
 {
@@ -14,8 +14,7 @@ namespace DeliveryService.Delivery.BusinessLogic.Models
         public decimal TotalPrice { get; set; }
         public PaymentType PaymentType { get; set; }
         public required string ShippingAddress { get; set; }
-        public Guid? CourierId { get; set; }
-        public Courier? Courier { get; set; }
+        public Guid? CourierId { get; set; }        
         public DateTime EstimatedDeliveryTime { get; set; }
         public DateTime ActualDeliveryTime { get; set; }
     }

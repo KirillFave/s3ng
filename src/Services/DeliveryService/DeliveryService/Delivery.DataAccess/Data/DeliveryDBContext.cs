@@ -1,9 +1,9 @@
-using DeliveryService.Delivery.DataAccess.Domain.Domain.Entities;
-using DeliveryService.Delivery.DataAccess.Domain.External.Entities;
+using DeliveryService.Domain.External.Entities;
 using Microsoft.EntityFrameworkCore;
+using DeliveryService.Delivery.Domain.Entities.DeliveryEntities;
 
 namespace DeliveryService.Delivery.DataAccess.Data
-{    
+{
     public class DeliveryDBContext : DbContext
     {
         public DeliveryDBContext(DbContextOptions<DeliveryDBContext> options) : base(options)
@@ -12,7 +12,7 @@ namespace DeliveryService.Delivery.DataAccess.Data
         /// <summary>
         /// Deliveries
         /// </summary>
-        public DbSet<DataAccess.Domain.Domain.Entities.Delivery> Deliveries { get; set; }
+        public DbSet<DeliveryService.Delivery.Domain.Entities.DeliveryEntities.Delivery> Deliveries { get; set; }
          
         /// <summary>
         /// Orders
@@ -25,10 +25,10 @@ namespace DeliveryService.Delivery.DataAccess.Data
             
 
             // Order > Delivery (Один к одному)
-            modelBuilder.Entity<DataAccess.Domain.Domain.Entities.Delivery>()
+            modelBuilder.Entity<DeliveryService.Delivery.Domain.Entities.DeliveryEntities.Delivery>()
                 .HasOne(d => d.Order)
                 .WithOne(o => o.Delivery)
-                .HasForeignKey<DataAccess.Domain.Domain.Entities.Delivery>(d => d.OrderId)
+                .HasForeignKey<DeliveryService.Delivery.Domain.Entities.DeliveryEntities.Delivery>(d => d.OrderId)
                 .OnDelete(DeleteBehavior.Restrict);
             
             modelBuilder.Entity<Order>().Property(c => c.ShippingAddress).HasMaxLength(200);

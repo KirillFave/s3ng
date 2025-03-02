@@ -5,7 +5,6 @@ using DeliveryService.Delivery.DataAccess.Data;
 using System.Text.Json.Serialization;
 using System.Text.Json;
 using DeliveryService;
-using DeliveryService.Delivery.DataAccess.Domain.External.Entities;
 using Confluent.Kafka;
 using Microsoft.EntityFrameworkCore;
 
