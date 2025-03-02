@@ -9,6 +9,7 @@ using DotNetEnv.Configuration;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.AspNetCore.Server.Kestrel.Core;
 using Serilog;
+using SharedLibrary.Common.Kafka;
 
 var builder = WebApplication.CreateBuilder(args);
 
@@ -40,6 +41,9 @@ builder.Services.AddOpenApiDocument(options =>
     options.Title = "API Doc";
     options.Version = "1.0";
 });
+
+// Kafka
+builder.Services.Configure<KafkaOptions>(builder.Configuration.GetSection(KafkaOptions.Kafka));
 
 // MappingProfile
 builder.Services.AddAutoMapper(typeof(OrderMappingProfile));
