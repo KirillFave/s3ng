@@ -1,4 +1,4 @@
-﻿using Microsoft.EntityFrameworkCore;
+using Microsoft.EntityFrameworkCore;
 using UserService.Domain.Entities;
 using UserService.Infrastructure.EFCore;
 
@@ -32,14 +32,11 @@ public class UserRepository : IUserRepository
     /// <returns> Была ли сущность удалена. </returns>
     public async Task<bool> DeleteAsync(Guid id, CancellationToken cancellationToken)
     {
-        var deleteEntity = await _entityUserSet.FindAsync(id, cancellationToken);
-        if (deleteEntity == null)
-        {
-            return true;
-        }
+        int affectedRows = await _entityUserSet
+                            .Where(e => e.Id == id)
+                            .ExecuteDeleteAsync(cancellationToken);
 
-        _entityUserSet.Remove(deleteEntity);
-        return true;
+        return affectedRows > 0;
     }
 
     /// <summary>
@@ -58,7 +55,7 @@ public class UserRepository : IUserRepository
     /// <param name="id"> Id сущности. </param>
     /// <param name="cancellationToken"></param>
     /// <returns> Cущность. </returns>
-    public async Task<User> GetByIdAsync(Guid id, CancellationToken cancellationToken)
+    public async Task<User?> GetByIdAsync(Guid id, CancellationToken cancellationToken)
     {
         return await _entityUserSet.FindAsync(id, cancellationToken);
     }
@@ -69,7 +66,7 @@ public class UserRepository : IUserRepository
     /// <param name="id"> Id сущности. </param>
     /// <param name="cancellationToken"></param>
     /// <returns> Cущность. </returns>
-    public async Task<User> GetByAuthenticationIdAsync(Guid authenticationId, CancellationToken cancellationToken)
+    public async Task<User?> GetByAuthenticationIdAsync(Guid authenticationId, CancellationToken cancellationToken)
     {
         return await _entityUserSet.FindAsync(authenticationId, cancellationToken);
     }

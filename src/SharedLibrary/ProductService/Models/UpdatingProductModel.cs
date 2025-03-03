@@ -4,9 +4,9 @@ namespace SharedLibrary.ProductService.Models
 {
     public class UpdatingProductModel
     {
-        public string Description { get; set; }
-        public decimal Price { get; set; }
-        public Guid SellerId { get; set; }
+        public string? Description { get; set; }
+        public decimal? Price { get; set; }
+        public required Guid SellerId { get; set; }
 
         public override string ToString()
         {

@@ -57,8 +57,16 @@ namespace ProductService.Services
                 return false;
             }
 
-            product.Description = updatingProductDto.Description;
-            product.Price = updatingProductDto.Price;
+            if (!string.IsNullOrEmpty(updatingProductDto.Description))
+            {
+                product.Description = updatingProductDto.Description;
+            }
+
+            if (updatingProductDto.Price is not null)
+            {
+                product.Price = updatingProductDto.Price.Value;
+            }
+            
             product.SellerId = updatingProductDto.SellerId;
 
             _productRepository.Update(product);

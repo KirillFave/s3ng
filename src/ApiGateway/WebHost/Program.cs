@@ -8,6 +8,7 @@ using WebHost.Configuration.IAMConfiguration;
 using WebHost.Configuration.OrderServiceConfiguration;
 using WebHost.Configuration.ProductServiceClient;
 using WebHost.Configuration.UserServiceClient;
+using WebHost.Extensions;
 using WebHost.Mappers;
 
 var builder = WebApplication.CreateBuilder(args);
@@ -75,13 +76,18 @@ builder.WebHost.ConfigureKestrel(o =>
 builder.Host.UseSerilog(ConfigLogger.AddLogger(configuration));
 
 builder.Services.AddAutoMapper(typeof(Program));
+
+builder.Services.AddCorsWithFrontendPolicy();
+
 var app = builder.Build();
+
 app.UseAuthentication();
 app.UseAuthorization();
 
 app.UseSwagger();
 app.UseSwaggerUI();
 
+app.UseCors("Frontend");
 app.MapControllers();
 
 app.UseExceptionHandler(appBuilder =>
