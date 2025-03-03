@@ -170,73 +170,7 @@ namespace DeliveryService.Delivery.BusinessLogic.Services.Delivery.Repositories
                 Console.WriteLine(e);
                 throw;
             }
-        }
-        /// <summary>
-        /// Сохранение статуса доставки.
-        /// </summary>
-        /// <param name="order"> Id сущности. </param>        
-        /// <returns> Cущность. </returns>
-        public async Task SaveDeliveryStatus(Order order)
-        {
-            var delivery = await _context.Deliveries.FirstOrDefaultAsync(d => d.Id == order.Id);
-            if (delivery == null)
-            {
-                delivery = new Domain.Entities.DeliveryEntities.Delivery
-                {
-                    Id = Guid.NewGuid(),
-                    OrderId = order.Id,
-                    DeliveryStatus = DeliveryStatus.AwaitingShipment,
-                    LastUpdated = DateTime.UtcNow,
-                    ShippingAddress = delivery.ShippingAddress,
-
-                    History = new List<DeliveryHistory>()
-                };
-
-                var history = new DeliveryHistory
-                {
-                    Id = Guid.NewGuid(),
-                    DeliveryId = delivery.Id,
-                    DeliveryStatus = delivery.DeliveryStatus,
-                    Timestamp = DateTime.UtcNow,
-                    Comments = "Status updated based on Order status (Статус обновляется в зависимости от статуса заказа)."
-                };
-                delivery.History?.Add(history);
-
-                _context.Deliveries.Add(delivery);
-                await _context.SaveChangesAsync();
-                return;
-            }
-
-            delivery.DeliveryStatus = GetDeliveryStatusFromOrderStatus(order.OrderStatus);
-
-            delivery.LastUpdated = DateTime.UtcNow;
-
-            var deliveryHistory = new DeliveryHistory
-            {
-                Id = Guid.NewGuid(),
-                DeliveryId = delivery.Id,
-                DeliveryStatus = delivery.DeliveryStatus,
-                Timestamp = DateTime.Now,
-                Comments = "Status updated based on Order status(Статус обновляется в зависимости от статуса заказа)."
-            };
-            delivery.History?.Add(deliveryHistory);
-
-            _context.Deliveries.Update(delivery);
-            await _context.SaveChangesAsync();
-        }
-
-        private static DeliveryStatus GetDeliveryStatusFromOrderStatus(OrderState orderStatus)
-        {
-            return orderStatus switch
-            {
-                OrderState.Pending => DeliveryStatus.AwaitingShipment,
-                OrderState.Processing => DeliveryStatus.Shipped,
-                OrderState.Delivering => DeliveryStatus.InTransit,
-                OrderState.Completed => DeliveryStatus.Delivered,
-                OrderState.Cancelled => DeliveryStatus.Cancelled,
-                _ => DeliveryStatus.AwaitingShipment,
-            };
-        }
+        }        
 
         /// <summary>
         /// Сохранить изменения.

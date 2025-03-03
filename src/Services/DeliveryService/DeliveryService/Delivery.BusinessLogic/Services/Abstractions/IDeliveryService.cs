@@ -1,5 +1,6 @@
 using System;
 using DeliveryService.Delivery.BusinessLogic.Services.Delivery.Contracts.Dto;
+using DeliveryService.Domain.External.Entities;
 
 
 namespace DeliveryService.Delivery.BusinessLogic.Services.Delivery.Abstractions
@@ -26,7 +27,12 @@ namespace DeliveryService.Delivery.BusinessLogic.Services.Delivery.Abstractions
         /// </summary>
         /// <param name="createDeliveryDto"> Dto создаваемой доставки. </param>
         //public Task<Guid> CreateAsync(CreateDeliveryDto createDeliveryDto);
-        Task<Domain.Entities.DeliveryEntities.Delivery> CreateAsync(CreateDeliveryDto createDeliveryDto, CancellationToken cancellationToken);           
+        Task<Domain.Entities.DeliveryEntities.Delivery> CreateAsync(CreateDeliveryDto createDeliveryDto, CancellationToken cancellationToken);
+
+        /// <summary>
+        /// Сохранение статуса доставку.
+        /// </summary>
+        Task SaveDeliveryStatus(Order order);
 
         /// <summary>
         /// Изменить доставку по id.

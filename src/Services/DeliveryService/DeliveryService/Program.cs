@@ -52,7 +52,7 @@ builder.Services.AddDbContext<DeliveryDBContext>(options =>
 
 
 builder.Services.AddScoped<IDeliveryRepository, DeliveryRepository>();
-builder.Services.AddTransient<IDeliveryService, DeliveryServices>();
+builder.Services.AddScoped<IDeliveryService, DeliveryServices>();
 //builder.Services.AddSingleton<IOrderRepository, OrderRepository>();
 //builder.Services.AddHostedService<OrderConsumerService>();
 

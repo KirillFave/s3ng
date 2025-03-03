@@ -1,20 +1,29 @@
 using AutoMapper;
+using DeliveryService.Delivery.BusinessLogic.Enums;
 using DeliveryService.Delivery.BusinessLogic.Services.Delivery.Abstractions;
 using DeliveryService.Delivery.BusinessLogic.Services.Delivery.Contracts.Dto;
 using DeliveryService.Delivery.BusinessLogic.Services.Delivery.Repositories;
 using DeliveryService.Delivery.Core.Models.Responses;
+using DeliveryService.Delivery.DataAccess.Data;
+using DeliveryService.Delivery.Domain.Entities.DeliveryEntities;
+using DeliveryService.Delivery.Domain.Entities.External.Entities;
+using DeliveryService.Domain.External.Entities;
+using Microsoft.EntityFrameworkCore;
 
 namespace DeliveryService.Delivery.BusinessLogic.Services.DeliveryService
 {
     public class DeliveryServices : IDeliveryService
     {
+        private readonly DeliveryDBContext _context;
+        //private readonly OrderContext _context;
         private readonly IDeliveryRepository _deliveryRepository;
         private readonly IMapper _mapper;
 
-        public DeliveryServices(IDeliveryRepository deliveryRepository, IMapper mapper)
+        public DeliveryServices(DeliveryDBContext context, IDeliveryRepository deliveryRepository, IMapper mapper)
         {
             _deliveryRepository = deliveryRepository;
             _mapper = mapper;
+            _context = context;
         }
 
         /// <summary>
@@ -78,8 +87,6 @@ namespace DeliveryService.Delivery.BusinessLogic.Services.DeliveryService
             return true;
         }
 
-
-
         /// <summary>
         /// Удалить доставку.
         /// </summary>
@@ -100,5 +107,73 @@ namespace DeliveryService.Delivery.BusinessLogic.Services.DeliveryService
 
             return true;
         }
+
+        /// <summary>
+        /// Сохранение статуса доставки.
+        /// </summary>
+        /// <param name="order"> Id сущности. </param>        
+        /// <returns> Cущность. </returns>
+        public async Task SaveDeliveryStatus(Order order)
+        {
+            var delivery = await _context.Deliveries.FirstOrDefaultAsync(d => d.Id == order.Id);
+            if (delivery == null)
+            {
+                delivery = new Domain.Entities.DeliveryEntities.Delivery
+                {
+                    Id = Guid.NewGuid(),
+                    OrderId = order.Id,
+                    DeliveryStatus = DeliveryStatus.AwaitingShipment,
+                    LastUpdated = DateTime.UtcNow,
+                    ShippingAddress = delivery.ShippingAddress,
+
+                    History = new List<DeliveryHistory>()
+                };
+
+                var history = new DeliveryHistory
+                {
+                    Id = Guid.NewGuid(),
+                    DeliveryId = delivery.Id,
+                    DeliveryStatus = delivery.DeliveryStatus,
+                    Timestamp = DateTime.UtcNow,
+                    Comments = "Status updated based on Order status (Статус обновляется в зависимости от статуса заказа)."
+                };
+                delivery.History?.Add(history);
+
+                _context.Deliveries.Add(delivery);
+                await _context.SaveChangesAsync();
+                return;
+            }
+
+            delivery.DeliveryStatus = GetDeliveryStatusFromOrderStatus(order.OrderStatus);
+
+            delivery.LastUpdated = DateTime.UtcNow;
+
+            var deliveryHistory = new DeliveryHistory
+            {
+                Id = Guid.NewGuid(),
+                DeliveryId = delivery.Id,
+                DeliveryStatus = delivery.DeliveryStatus,
+                Timestamp = DateTime.Now,
+                Comments = "Status updated based on Order status(Статус обновляется в зависимости от статуса заказа)."
+            };
+            delivery.History?.Add(deliveryHistory);
+
+            _context.Deliveries.Update(delivery);
+            await _context.SaveChangesAsync();
+        }
+
+        private static DeliveryStatus GetDeliveryStatusFromOrderStatus(OrderState orderStatus)
+        {
+            return orderStatus switch
+            {
+                OrderState.Pending => DeliveryStatus.AwaitingShipment,
+                OrderState.Processing => DeliveryStatus.Shipped,
+                OrderState.Delivering => DeliveryStatus.InTransit,
+                OrderState.Completed => DeliveryStatus.Delivered,
+                OrderState.Cancelled => DeliveryStatus.Cancelled,
+                _ => DeliveryStatus.AwaitingShipment,
+            };
+        }
+
     }
 }

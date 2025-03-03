@@ -33,12 +33,7 @@ namespace DeliveryService.Delivery.BusinessLogic.Services.Delivery.Repositories
         /// <param name="orderId"> Id сущности. </param>
         /// <param name="cancellationToken"></param>
         /// <returns> Cущность. </returns>
-        Task<Domain.Entities.DeliveryEntities.Delivery?> GetDeliveryByOrderIdAsync(Guid orderId, CancellationToken cancellationToken);
-
-        /// <summary>
-        /// Сохранение статуса доставки.
-        /// </summary>
-        Task SaveDeliveryStatus(Order order);
+        Task<Domain.Entities.DeliveryEntities.Delivery?> GetDeliveryByOrderIdAsync(Guid orderId, CancellationToken cancellationToken);            
 
         ///// <summary>
         ///// Запросить все сущности в базе.
