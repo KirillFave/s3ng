@@ -12,12 +12,12 @@ namespace ProductService.Domain
         /// </summary>
         /// <param name="file">Файл</param>
         /// <returns>Путь к файлу</returns>
-        Task<string> UploadFileAsync(IFormFile file);
+        Task<string> UploadFileAsync(IFormFile file, CancellationToken ct = default);
 
         /// <summary>
         /// Удалить файл
         /// </summary>
         /// <param name="imageUrl">Путь к файлу</param>
-        Task DeleteFileAsync(string imageUrl);
+        Task DeleteFileAsync(string imageUrl, CancellationToken ct = default);
     }
 }

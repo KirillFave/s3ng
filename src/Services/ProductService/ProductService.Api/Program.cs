@@ -1,11 +1,11 @@
 using Microsoft.AspNetCore.Server.Kestrel.Core;
+using ProductService.Api.Configuration;
 using ProductService.Api.Mappers;
-using ProductService.Api.Settings;
 using ProductService.Application;
 using ProductService.Domain;
 using ProductService.Infrastructure;
 using Serilog;
-using SharedLibrary.ProductService.Minio;
+using SharedLibrary.ProductService.Options;
 
 var builder = WebApplication.CreateBuilder(args);
 

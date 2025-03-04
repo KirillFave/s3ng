@@ -3,7 +3,7 @@ using Serilog;
 using ILogger = Serilog.ILogger;
 using System.Text.Json;
 
-namespace ProductService.Api.Settings;
+namespace ProductService.Api.Configuration;
 
 public static class LoggerConfig
 {

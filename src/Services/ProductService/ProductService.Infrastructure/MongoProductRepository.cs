@@ -12,15 +12,14 @@ namespace ProductService.Infrastructure
             _collection = database.GetCollection<Product>("products");
         }
 
-        public async Task<List<Product>> GetAllAsync() => await _collection.Find(_ => true).ToListAsync();
+        public async Task<List<Product>> GetAllAsync(CancellationToken ct = default) => await _collection.Find(_ => true).ToListAsync(cancellationToken: ct);
 
-        public async Task<Product?> GetByIdAsync(string id) => await _collection.Find(p => p.Id == id).FirstOrDefaultAsync();
+        public async Task<Product?> GetByIdAsync(string id, CancellationToken ct = default) => await _collection.Find(p => p.Id == id).FirstOrDefaultAsync(cancellationToken: ct);
 
-        public Task CreateAsync(Product product) => _collection.InsertOneAsync(product);
+        public Task CreateAsync(Product product, CancellationToken ct = default) => _collection.InsertOneAsync(product, cancellationToken: ct);
 
-        public Task UpdateAsync(Product product) =>
-            _collection.ReplaceOneAsync(p => p.Id == product.Id, product);
+        public Task UpdateAsync(Product product, CancellationToken ct = default) => _collection.ReplaceOneAsync(p => p.Id == product.Id, product, cancellationToken: ct);
 
-        public Task DeleteAsync(string id) => _collection.DeleteOneAsync(p => p.Id == id);
+        public Task DeleteAsync(string id, CancellationToken ct = default) => _collection.DeleteOneAsync(p => p.Id == id, cancellationToken: ct);
     }
 }

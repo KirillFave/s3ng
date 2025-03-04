@@ -1,4 +1,4 @@
-namespace SharedLibrary.ProductService.Minio
+namespace SharedLibrary.ProductService.Options
 {
     public class S3Options
     {

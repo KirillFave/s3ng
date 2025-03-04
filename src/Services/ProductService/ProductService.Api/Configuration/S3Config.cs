@@ -1,9 +1,9 @@
 using Amazon.Runtime;
 using Amazon.S3;
 using Amazon.S3.Model;
-using SharedLibrary.ProductService.Minio;
+using SharedLibrary.ProductService.Options;
 
-namespace ProductService.Api.Settings
+namespace ProductService.Api.Configuration
 {
     public static class S3Config
     {

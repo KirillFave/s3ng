@@ -1,6 +1,6 @@
 using MongoDB.Driver;
 
-namespace ProductService.Api.Settings
+namespace ProductService.Api.Configuration
 {
     public static class DatabaseConfig
     {
