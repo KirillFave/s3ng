@@ -1,4 +1,4 @@
-﻿using UserService.Domain.Entities;
+using UserService.Domain.Entities;
 
 namespace UserService.Infrastructure.Repository;
 
@@ -17,7 +17,7 @@ public interface IUserRepository
     /// <param name="id"> Id сущности. </param>
     /// <param name="cancellationToken"></param>
     /// <returns> Cущность. </returns>
-    Task<User> GetByIdAsync(Guid id, CancellationToken cancellationToken);
+    Task<User?> GetByIdAsync(Guid id, CancellationToken cancellationToken);
 
     /// <summary>
     /// Получить сущность по AuthenticationId.
@@ -25,7 +25,7 @@ public interface IUserRepository
     /// <param name="id"> Id сущности. </param>
     /// <param name="cancellationToken"></param>
     /// <returns> Cущность. </returns>
-    Task<User> GetByAuthenticationIdAsync(Guid authenticationId, CancellationToken cancellationToken);
+    Task<User?> GetByAuthenticationIdAsync(Guid authenticationId, CancellationToken cancellationToken);
 
     /// <summary>
     /// Добавить в базу одну сущность.

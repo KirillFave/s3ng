@@ -92,6 +92,15 @@ namespace WebHost.Controllers
 
             if (result.Result == AuthenticationResult.AuthSuccess)
             {
+                var cookieOptions = new CookieOptions
+                {
+                    HttpOnly = true,
+                    Secure = true,
+                    SameSite = SameSiteMode.Strict
+                };
+
+                HttpContext.Response.Cookies.Append("jwt-token-cookie", result.Token, cookieOptions);
+
                 return Ok(new
                 {
                     AccessToken = result.Token,
@@ -128,6 +137,17 @@ namespace WebHost.Controllers
 
             if (result.Result == RefreshTokenResult.RefreshSuccess)
             {
+                HttpContext.Response.Cookies.Delete("jwt-token-cookie");
+
+                var cookieOptions = new CookieOptions
+                {
+                    HttpOnly = true,
+                    Secure = true,
+                    SameSite = SameSiteMode.Strict
+                };
+
+                HttpContext.Response.Cookies.Append("jwt-token-cookie", result.Token, cookieOptions);
+
                 return Ok(new
                 {
                     AccessToken = result.Token,
@@ -141,6 +161,21 @@ namespace WebHost.Controllers
                 RefreshTokenResult.RefreshUserNotFound => NotFound(new { Message = "User not found" }),
                 _ => StatusCode((int)HttpStatusCode.InternalServerError, new { Message = "Internal Server Error" })
             };
+        }
+
+        /// <summary>
+        /// Выйти из системы
+        /// </summary>
+        [HttpPost("/Logout/")]
+        public IActionResult Logout()
+        {
+            const string apiMethodName = nameof(Logout);
+
+            _logger.Information($"Api method {apiMethodName} was called");
+            HttpContext.Response.Cookies.Delete("jwt-token-cookie");
+
+            _logger.Information($"end call {apiMethodName}");
+            return Ok(new { message = "Logged out successfully" });
         }
     }
 }
