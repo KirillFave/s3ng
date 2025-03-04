@@ -7,16 +7,10 @@ using SharedLibrary.ProductService.Options;
 
 namespace ProductService.Infrastructure
 {
-    public class S3FileStorage : IFileStorage
+    public class S3FileStorage(IAmazonS3 s3Client, IOptions<S3Options> s3Options) : IFileStorage
     {
-        private readonly IAmazonS3 _s3Client;
-        private readonly S3Options _s3Options;
-
-        public S3FileStorage(IAmazonS3 s3Client, IOptions<S3Options> s3Options)
-        {
-            _s3Client = s3Client;
-            _s3Options = s3Options.Value;
-        }
+        private readonly IAmazonS3 _s3Client = s3Client;
+        private readonly S3Options _s3Options = s3Options.Value;
 
         public async Task DeleteFileAsync(string imageUrl, CancellationToken ct = default)
         {

@@ -3,14 +3,9 @@ using ProductService.Domain;
 
 namespace ProductService.Infrastructure
 {
-    public class MongoProductRepository : IProductRepository
+    public class MongoProductRepository(IMongoDatabase database) : IProductRepository
     {
-        private readonly IMongoCollection<Product> _collection;
-
-        public MongoProductRepository(IMongoDatabase database)
-        {
-            _collection = database.GetCollection<Product>("products");
-        }
+        private readonly IMongoCollection<Product> _collection = database.GetCollection<Product>("products");
 
         public async Task<List<Product>> GetAllAsync(CancellationToken ct = default) => await _collection.Find(_ => true).ToListAsync(cancellationToken: ct);
 

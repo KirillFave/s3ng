@@ -41,10 +41,10 @@ namespace ProductService.Api.Controllers
 
         [HttpPut("{id}")]
         [ProducesResponseType((int)HttpStatusCode.OK)]
-        public async Task<IActionResult> Update([FromForm] ProductUpdateDto dto)
+        public async Task<IActionResult> Update(string id, [FromForm] ProductUpdateDto dto)
         {
-            var result = await _service.UpdateAsync(dto);
-            return Ok(result);
+            await _service.UpdateAsync(id, dto);
+            return Ok();
         }
 
         [HttpDelete("{id}")]

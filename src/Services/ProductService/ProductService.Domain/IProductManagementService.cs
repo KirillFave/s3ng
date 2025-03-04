@@ -24,7 +24,7 @@ namespace ProductService.Domain
         /// Обновить продукт
         /// </summary>
         /// <returns>ИД</returns>
-        Task<string> UpdateAsync(ProductUpdateDto dto, CancellationToken ct = default);
+        Task UpdateAsync(string id, ProductUpdateDto dto, CancellationToken ct = default);
         /// <summary>
         /// Удалить продукт
         /// </summary>
