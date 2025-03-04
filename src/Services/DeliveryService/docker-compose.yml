@@ -1,0 +1,34 @@
+services:
+  deliveryservice:
+    image: ${DOCKER_REGISTRY-}deliveryservice
+    build:
+      context: .
+      dockerfile: DeliveryService/Dockerfile
+    environment:
+      "DOTNET_ENVIRONMENT": "Development"
+      ASPNETCORE_HTTP_PORTS: 8080
+      ConnectionStrings:Postgres: "Server=deliverypostgres;Database=deliveryDB;Port=5432;Username=postgres;Password=password;" 
+    ports:
+      - "50055:8080"    
+    depends_on:
+      - deliverypostgres
+
+  deliverypostgres:
+    image: postgres:latest
+    environment:
+      POSTGRES_DB: deliveryDB
+      POSTGRES_USER: postgres
+      POSTGRES_PASSWORD: password   
+    ports:
+      - "5436:5432"
+    volumes:
+      - postgres_delivery_data:/var/lib/postgresql/data    
+
+volumes:
+  pg-data:
+  pg-admin:
+    driver: local
+  postgres_data: 
+  seq-data:
+  postgres_delivery_data:
+
