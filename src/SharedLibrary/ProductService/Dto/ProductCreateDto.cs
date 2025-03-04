@@ -3,7 +3,7 @@ using Microsoft.AspNetCore.Http;
 namespace SharedLibrary.ProductService.Dto
 {
     /// <summary>
-    /// DTO создания товара
+    /// Запрос на создание толвара
     /// </summary>
     public class ProductCreateDto
     {

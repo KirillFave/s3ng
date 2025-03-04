@@ -1,5 +1,8 @@
 namespace SharedLibrary.ProductService.Dto
 {
+    /// <summary>
+    /// Ответ о товаре
+    /// </summary>
     public class ProductResponseDto
     {
         public string Id { get; set; }

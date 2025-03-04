@@ -2,6 +2,9 @@ using Microsoft.AspNetCore.Http;
 
 namespace SharedLibrary.ProductService.Dto
 {
+    /// <summary>
+    /// Запрос на обновление товара
+    /// </summary>
     public class ProductUpdateDto
     {
         public string Name { get; set; }
