@@ -1,6 +1,8 @@
 using AutoMapper;
 using Microsoft.AspNetCore.Mvc;
 using OrderService.Repositories;
+using OrderService.Producers;
+using SharedLibrary.Common.Kafka.Messages;
 using SharedLibrary.OrderService.Dto;
 using SharedLibrary.OrderService.Models;
 
@@ -12,11 +14,13 @@ public class OrderController : ControllerBase
 {
     private readonly IMapper _mapper;
     private readonly OrderRepository _orderRepository;
+    private readonly OrderCreatedProducer _orderCreatedProducer;
 
-    public OrderController(OrderRepository orderRepository, IMapper mapper)
+    public OrderController(OrderRepository orderRepository, IMapper mapper, OrderCreatedProducer orderCreatedProducer)
     {
         _mapper = mapper;
         _orderRepository = orderRepository;
+        _orderCreatedProducer = orderCreatedProducer;
     }
 
     [HttpGet("/api/order/{id}")]
@@ -50,7 +54,38 @@ public class OrderController : ControllerBase
 
         bool result = await _orderRepository.AddAsync(order);
 
-        return result ? Created("", order.Id) : BadRequest();
+        if (result)
+        {
+            ActionResult response = await Get(order.Id);
+
+            GetOrderResponseDto getOrderResponseDto;
+
+            if (response is OkObjectResult okResult)
+            {
+                getOrderResponseDto = okResult.Value as GetOrderResponseDto;
+            }
+            else
+            {
+                throw new NotImplementedException();
+            }
+            
+            await _orderCreatedProducer.ProduceAsync(
+                order.Id.ToString(),
+                new OrderCreatedMessage
+                {
+                    Id = getOrderResponseDto!.Id,
+                    UserGuid = getOrderResponseDto!.UserGuid,
+                    Items = getOrderResponseDto!.Items,
+                    Status = getOrderResponseDto!.Status,
+                    PaymentType = getOrderResponseDto!.PaymentType,
+                    ShipAddress = getOrderResponseDto!.ShipAddress,
+                    CreatedTimestamp = getOrderResponseDto!.CreatedTimestamp
+                }
+            );
+            return Created("", order.Id);
+        }
+
+        return BadRequest();
     }
 
     [HttpPatch("/api/UpdateOrder")]
