@@ -1,81 +1,112 @@
-using System.Text;
-using System.Text.Json;
-using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
-using SharedLibrary.IAM.Enums;
-using SharedLibrary.ProductService.Models;
-using ILogger = Serilog.ILogger;
+using Refit;
+using SharedLibrary.ProductService.Contracts;
+using SharedLibrary.ProductService.Dto;
 
 namespace WebHost.Controllers
 {
     [ApiController]
     [Route("[controller]")]
-    [Authorize(Roles = nameof(RoleType.Admin))]
-    public class ProductController : ControllerBase
+    public class ProductController(IProductServiceClient productServiceClient) : ControllerBase
     {
-        private readonly HttpClient _httpClient;
-        private readonly ILogger _logger;
+        private readonly IProductServiceClient _productServiceClient = productServiceClient;
 
-        public ProductController(IHttpClientFactory httpClientFactory, ILogger logger)
+        // GET /api/gateway/products
+        [HttpGet]
+        public async Task<ActionResult<List<ProductResponseDto>>> GetAllProducts()
         {
-            _httpClient = httpClientFactory.CreateClient("ProductService");
-            _logger = logger.ForContext<ProductController>();
-        }
-
-        [HttpGet("get/{id}")]
-        public async Task<IActionResult> GetAsync(Guid id)
-        {
-            _logger.Information($"Api method GetAsync was called with parameters {id}");
-            var response = await _httpClient.GetAsync($"/api/product/{id}");
-
-            if (response.IsSuccessStatusCode)
+            try
             {
-                var content = await response.Content.ReadAsStringAsync();
-                return Content(content, "application/json");
+                var products = await _productServiceClient.GetAllAsync();
+                return Ok(products);
             }
-            return NotFound();
-        }
-
-        [HttpPost("create")]
-        public async Task<IActionResult> CreateAsync(CreatingProductModel creatingProductModel)
-        {
-            _logger.Information($"Api method CreateAsync was called with creatingProductModel: {creatingProductModel}");
-            var content = new StringContent(JsonSerializer.Serialize(creatingProductModel), Encoding.UTF8, "application/json");
-            var response = await _httpClient.PostAsync($"/api/create-product", content);
-
-            if (response.IsSuccessStatusCode)
+            catch (Exception ex)
             {
-                var result = await response.Content.ReadAsStringAsync();
-                return Created("", result);
+                return StatusCode(500, $"Error fetching products: {ex.Message}");
             }
-            return BadRequest();
         }
 
-        [HttpPut("update/{id}")]
-        public async Task<IActionResult> UpdateAsync(Guid id, UpdatingProductModel updatingProductModel)
+        // GET /api/gateway/products/{id}
+        [HttpGet("{id}")]
+        public async Task<ActionResult<ProductResponseDto>> GetProductById(string id)
         {
-            _logger.Information($"Api method UpdateAsync was called");
-            var content = new StringContent(JsonSerializer.Serialize(updatingProductModel), Encoding.UTF8, "application/json");
-            var response = await _httpClient.PutAsync($"/api/update-product/{id}", content);
-
-            if (response.IsSuccessStatusCode)
+            try
             {
+                var product = await _productServiceClient.GetByIdAsync(id);
+                return Ok(product);
+            }
+            catch (Exception ex)
+            {
+                return StatusCode(500, $"Error fetching product with id {id}: {ex.Message}");
+            }
+        }
+
+        // POST /api/gateway/products
+        [HttpPost]
+        [ProducesResponseType(typeof(string), 200)]
+        public async Task<ActionResult<string>> CreateProduct([FromForm] ProductCreateDto dto)
+        {
+            try
+            {
+                // Преобразуем IFormFile в StreamPart для изображения
+                StreamPart? imagePart = null;
+                if (dto.Image != null)
+                {
+                    imagePart = new StreamPart(dto.Image.OpenReadStream(), dto.Image.FileName, dto.Image.ContentType);
+                }
+
+                // Вызов метода через Refit с DTO
+                var result = await _productServiceClient.CreateAsync(dto.Name, dto.Description, dto.Price, imagePart);
+
+                return Ok(result);
+            }
+            catch (Exception ex)
+            {
+                return StatusCode(500, $"Error creating product: {ex.Message}");
+            }
+        }
+
+        // PUT /api/gateway/products/{id}
+        [HttpPut("{id}")]
+        [ProducesResponseType(200)]
+        public async Task<IActionResult> UpdateProduct(string id, [FromForm] ProductUpdateDto dto)
+        {
+            try
+            {
+                // Преобразуем IFormFile в StreamPart для изображения
+                StreamPart? imagePart = null;
+                if (dto.Image != null)
+                {
+                    imagePart = new StreamPart(dto.Image.OpenReadStream(), dto.Image.FileName, dto.Image.ContentType);
+                }
+
+                // Вызов метода через Refit с DTO
+                await _productServiceClient.UpdateAsync(id, dto.Name, dto.Description, dto.Price, imagePart);
+
                 return Ok();
             }
-            return NotFound();
+            catch (Exception ex)
+            {
+                return StatusCode(500, $"Error updating product with id {id}: {ex.Message}");
+            }
         }
 
-        [HttpDelete("delete/{id}")]
-        public async Task<IActionResult> DeleteAsync(Guid id)
+        // DELETE /api/gateway/products/{id}
+        [HttpDelete("{id}")]
+        [ProducesResponseType(204)]
+        public async Task<IActionResult> DeleteProduct(string id)
         {
-            _logger.Information($"Api method DeleteAsync was called with parameters {id}");
-            var response = await _httpClient.DeleteAsync($"/api/delete-product/{id}");
-
-            if (response.IsSuccessStatusCode)
+            try
             {
-                return Ok();
+                // Вызов метода через Refit для удаления товара
+                await _productServiceClient.DeleteAsync(id);
+
+                return NoContent(); // No Content for successful DELETE
             }
-            return NotFound();
+            catch (Exception ex)
+            {
+                return StatusCode(500, $"Error deleting product with id {id}: {ex.Message}");
+            }
         }
     }
 }

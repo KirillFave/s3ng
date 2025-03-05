@@ -90,37 +90,49 @@ services:
   product_service:
     image: ${DOCKER_REGISTRY-}product_service
     build:
-      context: .
-      dockerfile: Services/ProductService/ProductService.Host/Dockerfile
+      context: ${PRODUCT_SERVICE_PATH}
+      dockerfile: ProductService.Api/Dockerfile
     environment:
       DOTNET_ENVIRONMENT: "Development"
-      PRODUCT_POSTGRES_HOST: ${PRODUCT_POSTGRES_HOST}
-      PRODUCT_POSTGRES_PORT: ${PRODUCT_POSTGRES_PORT}
-      PRODUCT_POSTGRES_DB: ${PRODUCT_POSTGRES_DB}
-      PRODUCT_POSTGRES_USER: ${PRODUCT_POSTGRES_USER}
-      PRODUCT_POSTGRES_PASSWORD: ${PRODUCT_POSTGRES_PASSWORD}
     ports:
       - "50052:50052"
     networks:
       - app-network
     depends_on:
-      - product_bd
+      - "minio"
+      - "mongo"
 
-  product_bd:
-    image: postgres:latest
+  minio:
+    image: minio/minio:latest
     environment:
-      POSTGRES_DB: ${PRODUCT_POSTGRES_DB}
-      POSTGRES_USER: ${PRODUCT_POSTGRES_USER}
-      POSTGRES_PASSWORD: ${PRODUCT_POSTGRES_PASSWORD}
-    expose:
-      - "5433"
+      MINIO_ROOT_USER: minioadmin
+      MINIO_ROOT_PASSWORD: minioadmin
     ports:
-      - "5433:5433"
+      - "9000:9000"
+      - "9001:9001"  # Для веб-интерфейса
+    command: server --console-address ":9001" /data
     volumes:
-      - product-data:/var/lib/postgresql/data
+      - minio_data:/data
     networks:
       - app-network
-    command: -p 5433
+
+  mongo:
+    image: "mongo"
+    ports:
+      - "27017:27017"
+    networks:
+      - app-network
+
+  mongo-ui:
+    image: mongo-express
+    environment:
+      - ME_CONFIG_MONGODB_SERVER=mongo
+    ports:
+      - 8081:8081
+    networks:
+      - app-network
+    depends_on:
+      - "mongo"
 
   zookeeper:
     image: confluentinc/cp-zookeeper:latest
@@ -221,3 +233,4 @@ volumes:
   product-data:
   order-data:
   redis-data:
+  minio_data:
