@@ -25,16 +25,16 @@ builder.Services.AddControllers();
 //    ServiceLifetime.Singleton
 //);
 
-builder.Services.AddSingleton<IConsumer<Null, string>>(sp =>
-{
-    var config = new ConsumerConfig
-    {
-        GroupId = "DeliveryService",
-        BootstrapServers = "localhost:9092",
-        AutoOffsetReset = AutoOffsetReset.Earliest
-    };
-    return new ConsumerBuilder<Null, string>(config).Build();
-});
+//builder.Services.AddSingleton<IConsumer<Null, string>>(sp =>
+//{
+//    var config = new ConsumerConfig
+//    {
+//        GroupId = "DeliveryService",
+//        BootstrapServers = "localhost:9092",
+//        AutoOffsetReset = AutoOffsetReset.Earliest
+//    };
+//    return new ConsumerBuilder<Null, string>(config).Build();
+//});
 
 
 
@@ -78,7 +78,7 @@ if (app.Environment.IsDevelopment())
     app.UseSwaggerUI();
 }
 
-app.UseHttpsRedirection();
+//app.UseHttpsRedirection();
 
 app.UseAuthorization();
 

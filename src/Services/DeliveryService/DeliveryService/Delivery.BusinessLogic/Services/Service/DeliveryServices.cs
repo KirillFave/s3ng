@@ -73,9 +73,7 @@ namespace DeliveryService.Delivery.BusinessLogic.Services.DeliveryService
                 return false;
             }
 
-            delivery.PaymentType = updateDeliveryDto.PaymentType;
-            delivery.DeliveryStatus = updateDeliveryDto.DeliveryStatus;
-            delivery.OrderId = updateDeliveryDto.OrderId;            
+            delivery.PaymentType = updateDeliveryDto.PaymentType;           
             delivery.ShippingAddress = updateDeliveryDto.ShippingAddress;
             delivery.TotalQuantity = updateDeliveryDto.TotalQuantity;
             delivery.TotalPrice = updateDeliveryDto.TotalPrice;

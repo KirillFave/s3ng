@@ -13,9 +13,8 @@ namespace DeliveryService.Delivery.BusinessLogic.Models
         public int TotalQuantity { get; set; }
         public decimal TotalPrice { get; set; }
         public PaymentType PaymentType { get; set; }
-        public required string ShippingAddress { get; set; }
-        public Guid? CourierId { get; set; }        
+        public required string ShippingAddress { get; set; }          
         public DateTime EstimatedDeliveryTime { get; set; }
-        public DateTime ActualDeliveryTime { get; set; }
+        public DateTime? ActualDeliveryTime { get; set; }
     }
 }

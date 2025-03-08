@@ -14,7 +14,6 @@ namespace DeliveryService.Delivery.Core.Models.Requests
         public decimal TotalPrice { get; set; }
         public PaymentType PaymentType { get; set; }
         public required string ShippingAddress { get; set; }       
-        public DateTime EstimatedDeliveryTime { get; set; }
-        public DateTime ActualDeliveryTime { get; set; }
+        public DateTime EstimatedDeliveryTime { get; set; }       
     }
 }

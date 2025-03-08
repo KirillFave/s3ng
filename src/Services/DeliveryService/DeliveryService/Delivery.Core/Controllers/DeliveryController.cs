@@ -9,6 +9,7 @@ using DeliveryService.Delivery.Core.Models.Requests;
 using DeliveryService.Delivery.Core.Models.Responses;
 using DeliveryService.Delivery.DataAccess.Data;
 using Microsoft.AspNetCore.Mvc;
+using Microsoft.Extensions.Caching.Distributed;
 
 namespace DeliveryService.Delivery.Core.Controllers
 {
@@ -25,10 +26,21 @@ namespace DeliveryService.Delivery.Core.Controllers
         /// <returns></returns>
         /// 
         [HttpGet("/api/delivery/{id}")]
-        public async Task<IActionResult> GetByIdAsync(Guid id, CancellationToken cancellationToken)
+        public async Task<ActionResult<GetDeliveryResponse>> GetByIdAsync(Guid id, CancellationToken cancellationToken)
         {
-            var deliveryModel = _mapper.Map<DeliveryDto>(await _deliveryService.GetByIdAsync(id, cancellationToken));
-            return Ok(_mapper.Map<DeliveryDBContext>(await _deliveryService.GetByIdAsync(id, cancellationToken)));
+            //string? serialized = await _distributedCache.GetStringAsync(KeyForCache.DeliveryKey(id), HttpContext.RequestAborted);
+
+            //if (serialized is not null)
+            //{
+            //    var cachResult = JsonSerializer.Deserialize<IEnumerable<GetDeliveryResponse>>(serialized);
+
+            //    if (cachResult is not null)
+            //    {
+            //        return Ok(cachResult);
+            //    }
+            //}
+            var delivery = _mapper.Map<GetDeliveryResponse>(await _deliveryService.GetByIdAsync(id, cancellationToken));
+            return Ok(delivery);
 
         }
         /// <summary>
