@@ -11,7 +11,8 @@ public static class CorsExtension
                 {
                     policy.WithOrigins("http://localhost:5173") //TODO вынести в env
                         .AllowAnyHeader()
-                        .AllowAnyMethod();
+                        .AllowAnyMethod()
+                        .AllowCredentials();
                 });
         });
 

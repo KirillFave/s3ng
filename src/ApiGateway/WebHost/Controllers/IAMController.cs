@@ -95,7 +95,7 @@ namespace WebHost.Controllers
                 var cookieOptions = new CookieOptions
                 {
                     HttpOnly = true,
-                    Secure = true,
+                    Secure = false,
                     SameSite = SameSiteMode.Strict
                 };
 
@@ -142,7 +142,7 @@ namespace WebHost.Controllers
                 var cookieOptions = new CookieOptions
                 {
                     HttpOnly = true,
-                    Secure = true,
+                    Secure = false,
                     SameSite = SameSiteMode.Strict
                 };
 
