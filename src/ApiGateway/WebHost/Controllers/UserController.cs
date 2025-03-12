@@ -111,28 +111,4 @@ public class UserController : ControllerBase
 
         return new OkObjectResult(true);
     }
-
-    /// <summary>
-    /// Получить профиль юзера
-    /// </summary>
-    [HttpGet("profile")]
-    [Authorize]
-    public IActionResult GetProfile()
-    {
-        if (!Request.Cookies.TryGetValue("jwt-token-cookie", out var token))
-        {
-            return Unauthorized(new { message = "Токен не найден" });
-        }
-
-        //TODO сделать запрос информвции о юзере по email + кешировать
-        //TODO добавить миделвеер чтобы там добавлять accessToken
-        var handler = new JwtSecurityTokenHandler();
-        var jwtToken = handler.ReadJwtToken(token);
-
-        var email = jwtToken.Claims.FirstOrDefault(c => c.Type == ClaimTypes.Email)?.Value;
-        return Ok(new
-        {
-            email = email
-        });
-    }
 }

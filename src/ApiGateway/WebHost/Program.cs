@@ -88,6 +88,7 @@ app.UseSwagger();
 app.UseSwaggerUI();
 
 app.UseCors("Frontend");
+
 app.MapControllers();
 
 app.UseExceptionHandler(appBuilder =>

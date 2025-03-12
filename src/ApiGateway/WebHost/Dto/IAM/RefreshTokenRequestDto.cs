@@ -1,7 +1,3 @@
-namespace WebHost.Dto.IAM
-{
-    public class RefreshTokenRequestDto
-    {
-        public string RefreshToken { get; set; }
-    }
-}
+namespace WebHost.Dto.IAM;
+
+public record RefreshTokenRequestDto(string RefreshToken);

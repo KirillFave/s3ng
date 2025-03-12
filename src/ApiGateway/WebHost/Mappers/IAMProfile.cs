@@ -23,6 +23,7 @@ namespace WebHost.Mappers
             CreateMap<RegistrationRequestDto, RegisterRequest>();
             CreateMap<AuthenticationRequestDto, AuthenticationRequest>();
             CreateMap<RefreshTokenRequestDto, RefreshAccessTokenRequest>();
+            CreateMap<GetProfileRequestDto, GetProfileRequest>();
         }
     }
 }
