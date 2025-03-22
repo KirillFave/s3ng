@@ -22,7 +22,7 @@ public class CartCacheService : ICartCacheService
         {
             _logger.Information("Adding item {ProductId} to cart for user {UserId}", item.ProductId, userId);
 
-            var existingItems = await GetCartAsync(userId, ct);
+            var existingItems = (List<CartItemDto>)await GetCartAsync(userId, ct);
             var existingItem = existingItems.FirstOrDefault(i => i.ProductId == item.ProductId);
 
             if (existingItem != null)
@@ -42,6 +42,7 @@ public class CartCacheService : ICartCacheService
         catch (Exception ex)
         {
             _logger.Error(ex, "Error adding item to cart for user {UserId}", userId);
+            throw;
         }
     }
 
@@ -51,7 +52,7 @@ public class CartCacheService : ICartCacheService
         {
             _logger.Information("Removing item {ProductId} from cart for user {UserId}", productId, userId);
 
-            var existingItems = await GetCartAsync(userId, ct);
+            var existingItems = (List<CartItemDto>) await GetCartAsync(userId, ct);
             var itemToRemove = existingItems.FirstOrDefault(i => i.ProductId == productId);
 
             if (itemToRemove != null)
@@ -78,10 +79,11 @@ public class CartCacheService : ICartCacheService
         catch (Exception ex)
         {
             _logger.Error(ex, "Error removing item from cart for user {UserId}", userId);
+            throw;
         }
     }
 
-    public async Task<List<CartItemDto>> GetCartAsync(string userId, CancellationToken ct)
+    public async Task<IReadOnlyList<CartItemDto>> GetCartAsync(string userId, CancellationToken ct)
     {
         try
         {
@@ -93,7 +95,7 @@ public class CartCacheService : ICartCacheService
                 return new List<CartItemDto>();
             }
 
-            var cartItems = JsonConvert.DeserializeObject<List<CartItemDto>>(cart);
+            var cartItems = JsonConvert.DeserializeObject<IReadOnlyList<CartItemDto>>(cart);
             _logger.Information("Cart fetched successfully for user {UserId}, items: {Count}", userId, cartItems.Count);
             return cartItems;
         }
