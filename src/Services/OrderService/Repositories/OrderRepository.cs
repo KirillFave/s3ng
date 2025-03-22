@@ -98,4 +98,13 @@ public class OrderRepository
         int stateEntriesWritten = await _databaseContext.SaveChangesAsync();
         return stateEntriesWritten > 0 ? OperationResult.Success : OperationResult.NotChangesApplied;
     }
+
+    public async Task<List<Order>> GetOrdersByUserAsync(Guid userId)
+    {
+        var allOrder = await _databaseContext.Orders
+            .Where(order => order.UserGuid == userId)
+            .ToListAsync();
+
+        return allOrder;
+    }
 }

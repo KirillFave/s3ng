@@ -224,6 +224,25 @@ services:
     networks:
       - app-network
 
+  cart_service:
+    image: ${DOCKER_REGISTRY-}cart_service
+    build:
+      context: .
+      dockerfile: Services/CartService/Dockerfile
+    ports:
+      - "5015:5015"
+    networks:
+      - app-network
+
+  redis-cart:
+    image: redis:7
+    restart: always
+    volumes:
+      - redis-cart-data:/data
+    command: ["redis-server", "--appendonly", "yes"]
+    networks:
+      - app-network
+
 volumes:
   pg-data:
   pg-admin:
@@ -234,3 +253,4 @@ volumes:
   order-data:
   redis-data:
   minio_data:
+  redis-cart-data:
