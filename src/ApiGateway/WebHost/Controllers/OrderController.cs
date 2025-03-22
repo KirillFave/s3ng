@@ -79,4 +79,19 @@ public class OrderController(IHttpClientFactory httpClientFactory) : ControllerB
             _ => throw new NotImplementedException(),
         };
     }
+
+    [HttpGet("get-orders/user/{userId}")]
+    public async Task<ActionResult<List<Order>>> GetOrdersByUser(Guid userId)
+    {
+        var response = await _httpClient.GetAsync($"/api/orders/user/{userId}");
+
+        string content = await response.Content.ReadAsStringAsync();
+
+        return response.StatusCode switch
+        {
+            HttpStatusCode.OK => Ok(content),
+            HttpStatusCode.NotFound => NotFound(),
+            _ => throw new NotImplementedException(),
+        };
+    }
 }

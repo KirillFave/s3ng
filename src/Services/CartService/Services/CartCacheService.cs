@@ -22,7 +22,7 @@ public class CartCacheService : ICartCacheService
         {
             _logger.Information("Adding item {ProductId} to cart for user {UserId}", item.ProductId, userId);
 
-            var existingItems = (List<CartItemDto>)await GetCartAsync(userId, ct);
+            var existingItems = (await GetCartAsync(userId, ct)).ToList();
             var existingItem = existingItems.FirstOrDefault(i => i.ProductId == item.ProductId);
 
             if (existingItem != null)
@@ -52,7 +52,7 @@ public class CartCacheService : ICartCacheService
         {
             _logger.Information("Removing item {ProductId} from cart for user {UserId}", productId, userId);
 
-            var existingItems = (List<CartItemDto>) await GetCartAsync(userId, ct);
+            var existingItems = (await GetCartAsync(userId, ct)).ToList();
             var itemToRemove = existingItems.FirstOrDefault(i => i.ProductId == productId);
 
             if (itemToRemove != null)
@@ -95,7 +95,7 @@ public class CartCacheService : ICartCacheService
                 return new List<CartItemDto>();
             }
 
-            var cartItems = JsonConvert.DeserializeObject<IReadOnlyList<CartItemDto>>(cart);
+            var cartItems = JsonConvert.DeserializeObject<List<CartItemDto>>(cart);
             _logger.Information("Cart fetched successfully for user {UserId}, items: {Count}", userId, cartItems.Count);
             return cartItems;
         }
@@ -103,6 +103,23 @@ public class CartCacheService : ICartCacheService
         {
             _logger.Error(ex, "Error fetching cart for user {UserId}", userId);
             return new List<CartItemDto>();
+        }
+    }
+
+    public async Task ClearCartAsync(string userId, CancellationToken ct)
+    {
+        try
+        {
+            _logger.Information("Clear cart for user {UserId}", userId);
+
+            await _cache.RemoveAsync(userId, ct);
+
+            _logger.Information("Cart clear successfully for user {UserId}", userId);
+        }
+        catch (Exception ex)
+        {
+            _logger.Error(ex, "Error clear cart for user {UserId}", userId);
+            throw;
         }
     }
 }

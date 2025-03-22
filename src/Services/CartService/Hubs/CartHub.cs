@@ -44,4 +44,13 @@ public class CartHub : Hub
         _logger.Information("Cart fetched successfully for user {UserId}", userId);
         await Clients.Caller.SendAsync("ReceiveCartUpdate", userId, cart);
     }
+
+    public async Task ClearCart(string userId, CancellationToken ct = default)
+    {
+        _logger.Information("Clear cart cart for user {UserId}", userId);
+
+        await _cartCacheService.ClearCartAsync(userId, ct);
+
+        await Clients.Caller.SendAsync("ReceiveCartUpdate", userId);
+    }
 }

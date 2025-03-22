@@ -5,6 +5,7 @@ using OrderService.Producers;
 using SharedLibrary.Common.Kafka.Messages;
 using SharedLibrary.OrderService.Dto;
 using SharedLibrary.OrderService.Models;
+using SharedLibrary.ProductService.Dto;
 
 namespace OrderService.Controllers;
 
@@ -117,5 +118,12 @@ public class OrderController : ControllerBase
             OperationResult.NotChangesApplied => StatusCode(500, $"Failed to delete the {nameof(Order)} from the database."),
             _ => throw new NotImplementedException(),
         };
+    }
+
+    [HttpGet("/api/orders/user/{userId}")]
+    public async Task<ActionResult<List<Order>>> GetOrdersByUser(Guid userId)
+    {
+        var orders = await _orderRepository.GetOrdersByUserAsync(userId);
+        return Ok(orders);
     }
 }
