@@ -15,6 +15,7 @@ services:
       IAM_SERVICE_URI: ${IAM_SERVICE_URI}
       ORDER_SERVICE_URI: ${ORDER_SERVICE_URI}
       PRODUCT_SERVICE_URI: ${PRODUCT_SERVICE_URI}
+      DELIVERY_SERVICE_URI: ${DELIVERY_SERVICE_URI}
       DOTNET_ENVIRONMENT: "Development"
     ports:
       - "8080:8080"
@@ -213,6 +214,22 @@ services:
       - app-network
     command: -p 50056
 
+  delivery_bd:
+    image: postgres:latest
+    environment:
+      POSTGRES_DB: ${DELIVERY_POSTGRES_DB}
+      POSTGRES_USER: ${DELIVERY_POSTGRES_USER}
+      POSTGRES_PASSWORD: ${DELIVERY_POSTGRES_PASSWORD}
+    expose:
+      - "50057"
+    ports:
+      - "50057:50057"
+    volumes:
+      - delivery-data:/var/lib/postgresql/data
+    networks:
+      - app-network
+    command: -p 50057
+
   redis:
     image: redis:7
     restart: always
@@ -232,5 +249,6 @@ volumes:
   seq-data:
   product-data:
   order-data:
+  delivery-data:
   redis-data:
   minio_data:
