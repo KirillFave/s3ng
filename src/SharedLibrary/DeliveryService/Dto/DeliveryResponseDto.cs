@@ -4,6 +4,7 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 using SharedLibrary.OrderService.Models;
+using SharedLibrary.DeliveryService.Models;
 
 namespace SharedLibrary.DeliveryService.Dto
 {
