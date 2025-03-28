@@ -1,11 +1,13 @@
-// Licensed to the .NET Foundation under one or more agreements.
-// The .NET Foundation licenses this file to you under the MIT license.
+using System;
+using System.Collections.Generic;
+using System.Linq;
+using System.Text;
+using System.Threading.Tasks;
+using SharedLibrary.OrderService.Models;
 
-using DeliveryService.Delivery.BusinessLogic.Enums;
-
-namespace DeliveryService.Delivery.Core.Models.Requests
+namespace SharedLibrary.DeliveryService.Dto
 {
-    public class GetDeliveryRequest
+    public class DeliveryResponseDto
     {
         public Guid Id { get; set; }
         public required Guid UserGuid { get; set; }

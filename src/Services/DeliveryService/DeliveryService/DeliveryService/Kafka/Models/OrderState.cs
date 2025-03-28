@@ -3,7 +3,7 @@
 
 namespace DeliveryService.Kafka.Models
 {
-    public enum OrderState
+    public enum OrderStatus
     {
         Created = 1,
         Modified = 2,
