@@ -1,4 +1,5 @@
 using Confluent.Kafka;
+using Confluent.Kafka.Admin;
 using DeliveryService.Kafka.Models;
 using DeliveryService.Kafka.Options;
 using DeliveryService.Kafka.Utils;
@@ -17,6 +18,7 @@ public sealed class BaseConsumer<TKey, TValue> where TValue : IKafkaMessage
         _logger = logger;
         _kafkaOptions = kafkaOptions;
 
+        try
         {
             var consumerConfig = new ConsumerConfig
             {
@@ -71,5 +73,4 @@ public sealed class BaseConsumer<TKey, TValue> where TValue : IKafkaMessage
             _logger.Error($"Error for creation '{topicName}': {ex}");
         }
     }
-
 }
