@@ -8,7 +8,7 @@ using System.Threading.Tasks;
 
 namespace SharedLibrary.DeliveryService.Dto
 {
-    class UpdateDeliveryDto
+    public class UpdateDeliveryDto
     {
         public Guid Id { get; set; }
         public required Guid UserGuid { get; set; }

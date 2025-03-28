@@ -7,7 +7,7 @@ using SharedLibrary.OrderService.Models;
 
 namespace SharedLibrary.DeliveryService.Dto
 {
-    class CreateDeliveryDto
+    public class CreateDeliveryDto
     {
         public Guid Id { get; set; }
         public required Guid UserGuid { get; set; }
