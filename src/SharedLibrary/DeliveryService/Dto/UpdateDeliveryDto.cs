@@ -13,6 +13,7 @@ namespace SharedLibrary.DeliveryService.Dto
         public Guid Id { get; set; }
         public required Guid UserGuid { get; set; }
         public Guid OrderId { get; set; }
+        public OrderStatus OrderStatus { get; set; }
         public DeliveryStatus DeliveryStatus { get; set; }
         public PaymentType PaymentType { get; set; }
         public required int TotalQuantity { get; set; }
