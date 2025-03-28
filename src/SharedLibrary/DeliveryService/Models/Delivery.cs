@@ -7,7 +7,7 @@ using SharedLibrary.OrderService.Models;
 
 namespace SharedLibrary.DeliveryService.Models
 {
-    public class Delivery : IEntity<Guid>
+    public class Delivery 
     {
         public Guid Id { get; set; } = Guid.NewGuid();
         /// <summary>

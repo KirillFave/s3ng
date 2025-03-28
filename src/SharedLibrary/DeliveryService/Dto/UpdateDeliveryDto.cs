@@ -1,3 +1,4 @@
+using SharedLibrary.DeliveryService.Models;
 using SharedLibrary.OrderService.Models;
 using System;
 using System.Collections.Generic;
