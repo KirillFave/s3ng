@@ -107,5 +107,39 @@ namespace IAM.Services
                 return new RefreshAccessTokenResponse() { Result = RefreshTokenResult.RefreshUnspecified };
             }
         }
+
+        public override async Task<GetProfileResponse> GetProfile(GetProfileRequest request, ServerCallContext context)
+        {
+            _logger.Information($"Получили запрос на получение профиля");
+
+            try
+            {
+                var userId = await _refreshTokenRepository.ValidateRefreshToken(request.RefreshToken);
+                if (userId is null)
+                {
+                    _logger.Error($"Invalid refresh token");
+                    return new GetProfileResponse { Result = GetProfileResult.GetProfileInvalidToken};
+                }
+
+                var user = await _repository.GetByIdAsync(userId.Value, context.CancellationToken);
+                if (user is null)
+                {
+                    _logger.Error($"User not found");
+                    return new GetProfileResponse { Result = GetProfileResult.GetProfileUserNotFound };
+                }
+
+                return new GetProfileResponse
+                {
+                    Result = GetProfileResult.GetProfileSuccess,
+                    Email = user.Email,
+                    AuthenticationId = user.Id.ToString()
+                };
+            }
+            catch (Exception ex)
+            {
+                _logger.Error("Ошибка при получении профиля", ex);
+                return new GetProfileResponse { Result = GetProfileResult.GetProfileFail };
+            }
+        }
     }
 }

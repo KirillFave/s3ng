@@ -2,6 +2,7 @@ using System.Net;
 using AutoMapper;
 using FluentValidation;
 using Grpc.Core;
+using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 using s3ng.Contracts.IAM;
 using WebHost.Dto.IAM;
@@ -95,16 +96,15 @@ namespace WebHost.Controllers
                 var cookieOptions = new CookieOptions
                 {
                     HttpOnly = true,
-                    Secure = true,
+                    Secure = false,  // TODO при https сменить на true
                     SameSite = SameSiteMode.Strict
                 };
 
-                HttpContext.Response.Cookies.Append("jwt-token-cookie", result.Token, cookieOptions);
+                HttpContext.Response.Cookies.Append("jwt-token-cookie", result.RefreshToken, cookieOptions);
 
                 return Ok(new
                 {
-                    AccessToken = result.Token,
-                    RefreshToken = result.RefreshToken
+                    AccessToken = result.Token
                 });
             }
 
@@ -119,19 +119,23 @@ namespace WebHost.Controllers
         /// <summary>
         /// Обновить токен
         /// </summary>
-        /// <param name="requestDto">Запрос</param>
         /// <param name="ct">Токен отмены</param>
         [HttpPost("/Refresh/")]
         [ProducesResponseType<string>(StatusCodes.Status200OK)]
         [ProducesResponseType(StatusCodes.Status400BadRequest)]
         [ProducesResponseType(StatusCodes.Status404NotFound)]
         [ProducesResponseType(StatusCodes.Status500InternalServerError)]
-        public async Task<IActionResult> RefreshToken(RefreshTokenRequestDto requestDto, CancellationToken ct)
+        public async Task<IActionResult> RefreshToken(CancellationToken ct)
         {
             const string apiMethodName = nameof(RefreshToken);
 
-            _logger.Information($"Api method {apiMethodName} was called with {nameof(requestDto.RefreshToken)} {requestDto.RefreshToken}");
-            var serviceRequest = _mapper.Map<RefreshAccessTokenRequest>(requestDto);
+            if (!Request.Cookies.TryGetValue("jwt-token-cookie", out var token))
+            {
+                return Unauthorized(new { message = "RefreshToken не найден" });
+            }
+
+            _logger.Information($"Api method {apiMethodName} was called");
+            var serviceRequest = _mapper.Map<RefreshAccessTokenRequest>(new RefreshTokenRequestDto(token));
             var result = await _authenticationClient.RefreshAccessTokenAsync(serviceRequest, cancellationToken: ct);
             _logger.Information($"end call {apiMethodName} with result {result.Result}, {result.Token}");
 
@@ -142,16 +146,15 @@ namespace WebHost.Controllers
                 var cookieOptions = new CookieOptions
                 {
                     HttpOnly = true,
-                    Secure = true,
+                    Secure = false, // TODO при https сменить на true
                     SameSite = SameSiteMode.Strict
                 };
 
-                HttpContext.Response.Cookies.Append("jwt-token-cookie", result.Token, cookieOptions);
+                HttpContext.Response.Cookies.Append("jwt-token-cookie", result.RefreshToken, cookieOptions);
 
                 return Ok(new
                 {
-                    AccessToken = result.Token,
-                    RefreshToken = result.RefreshToken
+                    AccessToken = result.Token
                 });
             }
 
@@ -176,6 +179,47 @@ namespace WebHost.Controllers
 
             _logger.Information($"end call {apiMethodName}");
             return Ok(new { message = "Logged out successfully" });
+        }
+
+        /// <summary>
+        /// Получить профиль юзера
+        /// </summary>
+        [HttpGet("profile")]
+        [ProducesResponseType<string>(StatusCodes.Status200OK)]
+        [ProducesResponseType(StatusCodes.Status400BadRequest)]
+        [ProducesResponseType(StatusCodes.Status404NotFound)]
+        [ProducesResponseType(StatusCodes.Status403Forbidden)]
+        [ProducesResponseType(StatusCodes.Status500InternalServerError)]
+        [Authorize]
+        public async Task<IActionResult> GetProfile(CancellationToken ct)
+        {
+            const string apiMethodName = nameof(GetProfile);
+
+            if (!Request.Cookies.TryGetValue("jwt-token-cookie", out var token))
+            {
+                return Forbid();
+            }
+
+            _logger.Information($"Api method {apiMethodName} was called");
+            var serviceRequest = _mapper.Map<GetProfileRequest>(new GetProfileRequestDto(token));
+            var result = await _authenticationClient.GetProfileAsync(serviceRequest, cancellationToken: ct);
+            _logger.Information($"end call {apiMethodName} with result {result.Result}, {result.Email}");
+
+            if (result.Result == GetProfileResult.GetProfileSuccess)
+            {
+                return Ok(new
+                {
+                    Email = result.Email,
+                    AuthenticationId = result.AuthenticationId
+                });
+            }
+
+            return result.Result switch
+            {
+                GetProfileResult.GetProfileInvalidToken => BadRequest(new { Message = "Invalid token" }),
+                GetProfileResult.GetProfileUserNotFound => NotFound(new { Message = "User not found" }),
+                _ => StatusCode((int)HttpStatusCode.InternalServerError, new { Message = "Internal Server Error" })
+            };
         }
     }
 }

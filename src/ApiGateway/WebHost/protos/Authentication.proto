@@ -10,6 +10,8 @@ service Authentication {
 	rpc AuthenticateUser (AuthenticationRequest) returns (AuthenticationResponse);
 	//Обновить токен
 	rpc RefreshAccessToken (RefreshAccessTokenRequest) returns (RefreshAccessTokenResponse);
+    //Получить профиль аутентифиции
+	rpc GetProfile (GetProfileRequest) returns (GetProfileResponse);
 }
 
 //Перечисление результата аутентификации
@@ -36,6 +38,20 @@ enum RefreshTokenResult{
 	REFRESH_SUCCESS = 3;
 }
 
+//Перечисление результата запроса профиля
+enum GetProfileResult {
+	//Неизвестно
+	GET_PROFILE_UNSPECIFIED = 0;
+	//Пользователь не найден
+	GET_PROFILE_USER_NOT_FOUND = 1;
+	//Некорректный рефреш токен
+	GET_PROFILE_INVALID_TOKEN = 2;
+	//Успех
+	GET_PROFILE_SUCCESS = 3;
+    //Неудача
+    GET_PROFILE_FAIL = 4;
+}
+
 //Запрос на авторизацию
 message AuthenticationRequest {
   string email = 1;
@@ -59,4 +75,16 @@ message RefreshAccessTokenResponse{
 	RefreshTokenResult result = 1;
 	string token = 2;
 	string refreshToken = 3;
+}
+
+//Запрос профиля
+message GetProfileRequest{
+	string refreshToken = 1;
+}
+
+//Ответ на запрос профиля
+message GetProfileResponse{
+	GetProfileResult result = 1;
+	string email = 2;
+	string authentication_id = 3;
 }

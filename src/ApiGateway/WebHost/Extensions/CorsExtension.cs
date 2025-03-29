@@ -9,9 +9,10 @@ public static class CorsExtension
             options.AddPolicy(name: "Frontend",
                 policy =>
                 {
-                    policy.WithOrigins("http://localhost:5173") //TODO вынести в env
+                    policy.WithOrigins("http://client:3000") //TODO вынести в env
                         .AllowAnyHeader()
-                        .AllowAnyMethod();
+                        .AllowAnyMethod()
+                        .AllowCredentials();
                 });
         });
 
