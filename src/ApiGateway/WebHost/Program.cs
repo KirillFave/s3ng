@@ -84,7 +84,17 @@ var app = builder.Build();
 app.UseAuthentication();
 app.UseAuthorization();
 
-app.UseSwagger();
+app.UseSwagger(c =>
+{
+    c.PreSerializeFilters.Add((swaggerDoc, httpReq) =>
+    {
+        swaggerDoc.Servers = new List<OpenApiServer>
+        {
+            new OpenApiServer { Url = "http://localhost/api" }
+        };
+    });
+});
+
 app.UseSwaggerUI();
 
 app.UseCors("Frontend");

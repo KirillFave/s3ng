@@ -17,7 +17,7 @@ services:
       PRODUCT_SERVICE_URI: ${PRODUCT_SERVICE_URI}
       DOTNET_ENVIRONMENT: "Development"
     ports:
-      - "8080:8080"
+      - "8080:80"
     networks:
       - app-network
 
@@ -110,7 +110,6 @@ services:
     ports:
       - "9000:9000"
       - "9001:9001"  # Для веб-интерфейса
-    command: server --console-address ":9001" /data
     volumes:
       - minio_data:/data
     networks:
@@ -230,7 +229,7 @@ services:
       context: .
       dockerfile: Services/CartService/Dockerfile
     ports:
-      - "5015:5015"
+      - "5015:80"
     networks:
       - app-network
 
@@ -242,7 +241,29 @@ services:
     command: ["redis-server", "--appendonly", "yes"]
     networks:
       - app-network
-
+      
+  proxy:
+    image: nginx:latest
+    volumes:
+     - ./nginx.conf:/etc/nginx/nginx.conf
+    ports:
+      - "80:80"
+    networks:
+      - app-network
+    depends_on:
+      - webhost
+      - client
+      
+  client:
+    image: client
+    build:
+      context: ./Front
+      dockerfile: Dockerfile
+    ports:
+     - "3000:3000"
+    networks:
+     - app-network
+      
 volumes:
   pg-data:
   pg-admin:
