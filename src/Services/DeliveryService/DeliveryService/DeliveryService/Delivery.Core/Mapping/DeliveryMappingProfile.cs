@@ -25,7 +25,7 @@ namespace DeliveryService.Delivery.Core.Mapping
             .ForMember(dest => dest.ActualDeliveryTime, opt => opt.Ignore());
 
             CreateMap<Domain.Entities.DeliveryEntities.Delivery, DeliveryResponseDto>()
-            .ForMember(dest => dest.Id, opt => opt.MapFrom(src => src.Id))
+            .ForMember(dest => dest.Id, opt => opt.Ignore())
             .ForMember(dest => dest.UserGuid, opt => opt.MapFrom(src => src.UserGuid))
             .ForMember(dest => dest.OrderId, opt => opt.MapFrom(src => src.OrderId))
             .ForMember(dest => dest.OrderStatus, opt => opt.MapFrom(src => src.OrderStatus))

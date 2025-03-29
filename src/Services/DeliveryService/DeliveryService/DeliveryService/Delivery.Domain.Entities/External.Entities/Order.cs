@@ -12,7 +12,7 @@ namespace DeliveryService.Domain.External.Entities
         public List<OrderItem>? Items { get; set; }
         public int TotalQuantity { get; set; }
         public decimal TotalPrice { get; set; }
-        public OrderState OrderStatus { get; set; }
+        public OrderStatus OrderStatus { get; set; }
         public PaymentType PaymentType { get; set; }
         public required string ShippingAddress { get; set; }
         public DateTime CreatedTimestamp { get; set; }

@@ -27,15 +27,15 @@ namespace DeliveryService.Application.Tests
         DeliveryService.Delivery.Domain.Entities.DeliveryEntities.Delivery delivery,
         [Frozen] Mock<IDeliveryRepository> deliveryRepositoryMock,
         DeliveryService.Delivery.BusinessLogic.Services.DeliveryService.DeliveryServices deliveryService,
-        CancellationToken ÒancellationToken)
+        CancellationToken —ÅancellationToken)
         {
             //// Arrange
             //delivery.Id = id;
-            //deliveryRepositoryMock.Setup(repo => repo.GetByIdAsync(id, ÒancellationToken /*, It.IsAny<string>()*/))
+            //deliveryRepositoryMock.Setup(repo => repo.GetByIdAsync(id, —ÅancellationToken))
             //    .ReturnsAsync(delivery);
 
             //// Act
-            //var result = await deliveryService.GetByIdAsync(id, ÒancellationToken);
+            //var result = await deliveryService.GetByIdAsync(id, —ÅancellationToken);
 
             //// Assert
             //result.Should().NotBeNull();
@@ -47,21 +47,21 @@ namespace DeliveryService.Application.Tests
         Guid id,
         [Frozen] Mock<IDeliveryRepository> deliveryRepositoryMock,
         DeliveryService.Delivery.BusinessLogic.Services.DeliveryService.DeliveryServices deliveryService,
-        CancellationToken ÒancellationToken)
+        CancellationToken —ÅancellationToken)
         {
             // Arrange
             DeliveryService.Delivery.Domain.Entities.DeliveryEntities.Delivery delivery = null;
-            deliveryRepositoryMock.Setup(repo => repo.GetAsync(id, ÒancellationToken/*, It.IsAny<string>()*/))
+            deliveryRepositoryMock.Setup(repo => repo.GetAsync(id, —ÅancellationToken))
                                     .ToString();
 
-            // Act & Assert: ÔÓ‚ÂÍ‡ ‚˚Á˚‚‡ ËÒÍÎ˛˜ÂÌËˇ
+            // Act & Assert: –ø—Ä–æ–≤–µ—Ä–∫–∞ –≤—ã–∑—ã–≤–∞ –∏—Å–∫–ª—é—á–µ–Ω–∏—è
             var exception = await Assert.ThrowsAsync<NotFoundException>(
-                () => deliveryService.GetByIdAsync(id, ÒancellationToken));
+                () => deliveryService.GetByIdAsync(id, —ÅancellationToken));
 
-            Func<Task> act = async () => await deliveryService.GetByIdAsync(id, ÒancellationToken);
+            Func<Task> act = async () => await deliveryService.GetByIdAsync(id, —ÅancellationToken);
 
             //Assert
-            //await act.Should().ThrowAsync<NotFoundException>();
+            await act.Should().ThrowAsync<NotFoundException>();
         }
     }
 }

@@ -9,7 +9,7 @@ namespace DeliveryService.Delivery.BusinessLogic.Services.Delivery.Contracts.Dto
         public Guid Id { get; set; }
         public required Guid UserGuid { get; set; }
         public Guid OrderId { get; set; }
-        public OrderState OrderStatus { get; set; }
+        public OrderStatus OrderStatus { get; set; }
         public DeliveryStatus DeliveryStatus { get; set; }
         public int TotalQuantity { get; set; }
         public decimal TotalPrice { get; set; }

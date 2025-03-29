@@ -1,8 +1,10 @@
 using Confluent.Kafka;
+using Confluent.Kafka.Admin;
 using DeliveryService.Kafka.Models;
 using DeliveryService.Kafka.Options;
 using DeliveryService.Kafka.Utils;
 using Microsoft.Extensions.Logging;
+//using ILogger = Serilog.ILogger;
 
 namespace DeliveryService.Kafka.Consumers;
 public sealed class BaseConsumer<TKey, TValue> where TValue : IKafkaMessage
