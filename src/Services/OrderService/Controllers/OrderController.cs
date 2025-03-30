@@ -15,12 +15,18 @@ public class OrderController : ControllerBase
     private readonly IMapper _mapper;
     private readonly OrderRepository _orderRepository;
     private readonly OrderCreatedProducer _orderCreatedProducer;
+    private readonly OrderCanceledProducer _orderCanceledProducer;
 
-    public OrderController(OrderRepository orderRepository, IMapper mapper, OrderCreatedProducer orderCreatedProducer)
+    public OrderController(
+        OrderRepository orderRepository,
+        IMapper mapper,
+        OrderCreatedProducer orderCreatedProducer,
+        OrderCanceledProducer orderCanceledProducer)
     {
         _mapper = mapper;
         _orderRepository = orderRepository;
         _orderCreatedProducer = orderCreatedProducer;
+        _orderCanceledProducer = orderCanceledProducer;
     }
 
     [HttpGet("/api/order/{id}")]
@@ -71,7 +77,7 @@ public class OrderController : ControllerBase
             
             await _orderCreatedProducer.ProduceAsync(
                 order.Id.ToString(),
-                new OrderCreatedMessage
+                new OrderCreatedMessage()
                 {
                     Id = getOrderResponseDto!.Id,
                     UserGuid = getOrderResponseDto!.UserGuid,
@@ -88,33 +94,29 @@ public class OrderController : ControllerBase
         return BadRequest();
     }
 
-    [HttpPatch("/api/UpdateOrder")]
-    public async Task<ActionResult> Update(UpdateOrderDto updateOrderDto)
+    [HttpPatch("/api/order/cancel/{id}")]
+    public async Task<ActionResult> Cancel(Guid id) 
     {
-        Order order = _mapper.Map<Order>(updateOrderDto);
+        OperationResult result = await _orderRepository.CancelAsync(id);
 
-        OperationResult result = await _orderRepository.UpdateAsync(order);
+        if (result is OperationResult.Success)
+        {
+            await _orderCanceledProducer.ProduceAsync(
+                id.ToString(),
+                new OrderCanceledMessage()
+                {
+                    Id = id
+                }
+            );
+
+            return NoContent();
+        }
 
         return result switch
         {
             OperationResult.NotEntityFound => NotFound(),
-            OperationResult.Success => NoContent(),
             OperationResult.NotModified => StatusCode(304, $"{nameof(Order)} not modified."),
             OperationResult.NotChangesApplied => StatusCode(500, $"Failed to save the {nameof(Order)} to the database."),
-            _ => throw new NotImplementedException(),
-        };
-    }
-
-    [HttpDelete("/api/DeleteOrder/{guid}")]
-    public async Task<ActionResult> Delete(Guid guid)
-    {
-        OperationResult result = await _orderRepository.DeleteAsync(guid);
-
-        return result switch
-        {
-            OperationResult.NotEntityFound => NotFound(),
-            OperationResult.Success => NoContent(),
-            OperationResult.NotChangesApplied => StatusCode(500, $"Failed to delete the {nameof(Order)} from the database."),
             _ => throw new NotImplementedException(),
         };
     }

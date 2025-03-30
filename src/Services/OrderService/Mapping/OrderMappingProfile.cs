@@ -16,7 +16,8 @@ public class OrderMappingProfile : Profile
            .ForMember(dest => dest.Status, opt => opt.MapFrom(src => src.Status))
            .ForMember(dest => dest.PaymentType, opt => opt.MapFrom(src => src.PaymentType))
            .ForMember(dest => dest.ShipAddress, opt => opt.MapFrom(src => src.ShipAddress))
-           .ForMember(dest => dest.CreatedTimestamp, opt => opt.MapFrom(src => src.CreatedTimestamp));
+           .ForMember(dest => dest.CreatedTimestamp, opt => opt.MapFrom(src => src.CreatedTimestamp))
+           .ForMember(dest => dest.IsCanceled, opt => opt.MapFrom(src => src.IsCanceled));
 
         CreateMap<CreateOrderDto, Order>()
             .ForMember(dest => dest.Id, opt => opt.Ignore())

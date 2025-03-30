@@ -45,37 +45,17 @@ public class OrderController(IHttpClientFactory httpClientFactory) : ControllerB
         };
     }
 
-    [HttpPatch("Update")]
-    public async Task<ActionResult> Update(UpdateOrderDto updateOrderDto)
+    [HttpPatch("cancel/{id}")]
+    public async Task<ActionResult> Cancel(Guid id)
     {
-        StringContent content = new(System.Text.Json.JsonSerializer.Serialize(updateOrderDto),
-                                    Encoding.UTF8,
-                                    "application/json");
-        HttpResponseMessage response = await _httpClient.PatchAsync($"/api/UpdateOrder", 
-                                                            content);
-
-        string responseContent = await response.Content.ReadAsStringAsync();
+        HttpResponseMessage response = await _httpClient.PatchAsync($"/api/order/cancel/{id}", null);
 
         return response.StatusCode switch
         {
             HttpStatusCode.NotFound => NotFound(),
             HttpStatusCode.NoContent => NoContent(),
-            HttpStatusCode.NotModified => StatusCode(304, responseContent),
+            HttpStatusCode.NotModified => StatusCode(304),
             HttpStatusCode.InternalServerError => StatusCode(500, $"Failed to save the {nameof(Order)} to the database."),
-            _ => throw new NotImplementedException(),
-        };
-    }
-
-    [HttpDelete("Delete")]
-    public async Task<ActionResult> Delete(Guid guid)
-    {
-        HttpResponseMessage response = await _httpClient.DeleteAsync($"/api/DeleteOrder/{guid}");
-
-        return response.StatusCode switch
-        {
-            HttpStatusCode.NotFound => NotFound(),
-            HttpStatusCode.NoContent => NoContent(),
-            HttpStatusCode.InternalServerError => StatusCode(500, $"Failed to delete the {nameof(Order)} from the database."),
             _ => throw new NotImplementedException(),
         };
     }

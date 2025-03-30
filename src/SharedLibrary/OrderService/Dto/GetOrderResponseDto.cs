@@ -11,4 +11,5 @@ public class GetOrderResponseDto
     public required PaymentType PaymentType { get; set; }
     public string? ShipAddress { get; set; }
     public required DateTime CreatedTimestamp { get; set; }
+    public required bool IsCanceled { get; set; }
 }
