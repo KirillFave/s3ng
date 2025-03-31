@@ -214,6 +214,25 @@ services:
       - app-network
     command: -p 50056
 
+  deliveryservice:
+    image: ${DOCKER_REGISTRY-}deliveryservice
+    build:
+      context: .
+      dockerfile: Services/DeliveryService/Dockerfile
+    environment:
+      DOTNET_ENVIRONMENT: "Development"
+      PRODUCT_POSTGRES_HOST: ${DELIVERY_POSTGRES_HOST}
+      PRODUCT_POSTGRES_PORT: ${DELIVERY_POSTGRES_PORT}
+      PRODUCT_POSTGRES_DB: ${DELIVERY_POSTGRES_DB}
+      PRODUCT_POSTGRES_USER: ${DELIVERY_POSTGRES_USER}
+      PRODUCT_POSTGRES_PASSWORD: ${DELIVERY_POSTGRES_PASSWORD}
+    ports:
+      - "50065:50065"
+    networks:
+      - app-network
+    depends_on:
+      - delivery_bd
+
   delivery_bd:
     image: postgres:latest
     environment:
@@ -221,14 +240,14 @@ services:
       POSTGRES_USER: ${DELIVERY_POSTGRES_USER}
       POSTGRES_PASSWORD: ${DELIVERY_POSTGRES_PASSWORD}
     expose:
-      - "50057"
+      - "50066"
     ports:
-      - "50057:50057"
+      - "50066:50066"
     volumes:
       - delivery-data:/var/lib/postgresql/data
     networks:
       - app-network
-    command: -p 50057
+    command: -p 50066
 
   redis:
     image: redis:7
