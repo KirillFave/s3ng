@@ -1,10 +1,13 @@
-using DeliveryService.Delivery.BusinessLogic.Enums;
-using DeliveryService.Domain.External.Entities;
-using System.Diagnostics.Metrics;
+using System;
+using System.Collections.Generic;
+using System.Linq;
+using System.Text;
+using System.Threading.Tasks;
+using SharedLibrary.OrderService.Models;
 
-namespace DeliveryService.Delivery.Domain.Entities.DeliveryEntities
+namespace SharedLibrary.DeliveryService.Models
 {
-    public class Delivery : IEntity<Guid>
+    public class Delivery 
     {
         public Guid Id { get; set; } = Guid.NewGuid();
         /// <summary>

@@ -160,15 +160,15 @@ namespace DeliveryService.Delivery.BusinessLogic.Services.DeliveryService
             await _context.SaveChangesAsync();
         }
 
-        private static DeliveryStatus GetDeliveryStatusFromOrderStatus(OrderState orderStatus)
+        private static DeliveryStatus GetDeliveryStatusFromOrderStatus(OrderStatus orderStatus)
         {
             return orderStatus switch
             {
-                OrderState.Pending => DeliveryStatus.AwaitingShipment,
-                OrderState.Processing => DeliveryStatus.Shipped,
-                OrderState.Delivering => DeliveryStatus.InTransit,
-                OrderState.Completed => DeliveryStatus.Delivered,
-                OrderState.Cancelled => DeliveryStatus.Cancelled,
+                OrderStatus.Pending => DeliveryStatus.AwaitingShipment,
+                OrderStatus.Processing => DeliveryStatus.Shipped,
+                OrderStatus.Delivering => DeliveryStatus.InTransit,
+                OrderStatus.Completed => DeliveryStatus.Delivered,
+                OrderStatus.Cancelled => DeliveryStatus.Cancelled,
                 _ => DeliveryStatus.AwaitingShipment,
             };
         }

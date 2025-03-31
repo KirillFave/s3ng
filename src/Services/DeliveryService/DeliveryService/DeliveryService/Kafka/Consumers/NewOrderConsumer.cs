@@ -17,7 +17,7 @@ public class NewOrderConsumer : ConsumerBackgroundService<string, OrderCreatedMe
         : base(logger, applicationOptions)
     {
         TopicName = "order_events";
-        //TopicName = "mytopic4";
+        //TopicName = "mytopic";
         _logger = logger;
     }
 

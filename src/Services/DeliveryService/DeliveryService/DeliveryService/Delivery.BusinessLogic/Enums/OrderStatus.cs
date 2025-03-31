@@ -1,6 +1,6 @@
 namespace DeliveryService.Delivery.BusinessLogic.Enums
 {
-    public enum OrderState
+    public enum OrderStatus
     {
         Created = 1,
         Pending = 2,
