@@ -28,7 +28,7 @@ namespace DeliveryService.Kafka.Consumers
                 var consumeResult = _kafkaConsumer.Consume(stoppingToken);
                 var order = JsonSerializer.Deserialize<Order>(consumeResult.Message.Value);
                 Console.WriteLine("Order received in OrderConsumerService:\nData: {consumeResult.Message.Value}");
-                Update delivery status in the database.
+                //Update delivery status in the database.
                 await UpdateOrderStatusAsync(order);
             }
         }
