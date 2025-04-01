@@ -8,6 +8,7 @@ using DeliveryService;
 using Confluent.Kafka;
 using Microsoft.EntityFrameworkCore;
 using DeliveryService.Infrastructure;
+using DeliveryService.Kafka.Consumers;
 
 var builder = WebApplication.CreateBuilder(args);
 
@@ -30,6 +31,7 @@ builder.Services.AddScoped<IDeliveryService, DeliveryServices>();
 
 builder.Services.AddDistributedMemoryCache();
 builder.Services.ConfigureDistributedCache(builder.Configuration);
+builder.Services.AddSingleton(typeof(ConsumerBackgroundService));
 
 builder.Services.AddControllers()
     .AddJsonOptions(options =>
