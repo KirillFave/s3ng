@@ -218,7 +218,7 @@ services:
     image: ${DOCKER_REGISTRY-}deliveryservice
     build:
       context: .
-      dockerfile: Services/DeliveryService/Dockerfile
+      dockerfile: Services/DeliveryService/DeliveryService/DeliveryService/Dockerfile
     environment:
       DOTNET_ENVIRONMENT: "Development"
       PRODUCT_POSTGRES_HOST: ${DELIVERY_POSTGRES_HOST}
