@@ -51,6 +51,7 @@ builder.Services.AddAutoMapper(typeof(OrderItemMappingProfile));
 
 // Producers
 builder.Services.AddSingleton(typeof(OrderCreatedProducer));
+builder.Services.AddSingleton(typeof(OrderCanceledProducer));
 
 builder.Host.UseSerilog(LoggerConfig.AddLogger());
 

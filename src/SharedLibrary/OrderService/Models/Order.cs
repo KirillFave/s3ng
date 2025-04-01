@@ -9,4 +9,5 @@ public class Order
     public PaymentType PaymentType { get; set; }
     public string ShipAddress { get; set; }
     public DateTime CreatedTimestamp { get; set; }
+    public bool IsCanceled { get; set; }
 }
