@@ -38,7 +38,7 @@ const CartPage = () => {
       pricePerUnit: item.price,
       count: item.quantity
     }));
-    const orderData = new OrderInfo(userId, orderItems, 0, 1, "Ваш адрес");
+    const orderData = new OrderInfo(userId, orderItems, 0, 1, "Новосибирск, ул. Мира 50");
     const response = await OrderService.createOrder(orderData);
     if(response) {
       dispatch(clearCart(userId))

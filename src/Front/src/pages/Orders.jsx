@@ -32,9 +32,9 @@ const OrdersPage = () => {
         orders.map((order) => (
           <div key={order.id} className="border-b pb-4 mb-4">
             <h4 className="text-xl font-semibold">Заказ ID: {order.id}</h4>
-            <p className="text-gray-700">Статус: {order.status}</p>
+            <p className="text-gray-700">Статус: В работе</p>
             <p className="text-gray-700">Адрес доставки: {order.shipAddress}</p>
-            <p className="text-gray-700">Дата: {new Date(order.createdTimestamp).toLocaleString()}</p>
+            <p className="text-gray-700">Дата: {order.createdTimestamp}</p>
           </div>
         ))
       ) : (

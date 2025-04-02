@@ -110,6 +110,7 @@ services:
     ports:
       - "9000:9000"
       - "9001:9001"  # Для веб-интерфейса
+    command: server --console-address ":9001" /data
     volumes:
       - minio_data:/data
     networks:
